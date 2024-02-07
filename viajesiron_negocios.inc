@@ -48,6 +48,7 @@ function buscar_varios_whs_por_id($whss, $data)
             if ($response['despachosDTO'] != array()) {
                 //Consulta OK
                 $data['busqueda'] = array();
+                $peso_busqueda_kg = 0;
                 foreach ($response['despachosDTO'] as $despacho) {
                     if (isset($despacho['nombreViaje'])) {
                         $viaje = $despacho['nombreViaje'];
@@ -63,6 +64,12 @@ function buscar_varios_whs_por_id($whss, $data)
                         $sin_errores = 0;
                     }
 
+                    $peso_despacho =  $despacho['tmsMaestroDTO']['pesoBruto'];
+                    if ($despacho['tmsMaestroDTO']['unidadPesoBruto'] == 'LB') {
+                        $peso_despacho /= 2;
+                    }
+                    $peso_busqueda_kg += $peso_despacho;
+
                     $data['busqueda'][] = array(
                         'id' => $despacho['tmsMaestroDTO']['idExpedicion'],
                         'info' => $despacho['tmsMaestroDTO'],
@@ -71,6 +78,8 @@ function buscar_varios_whs_por_id($whss, $data)
                         'sin_errores' => $sin_errores,
                     );
                 }
+                $data['peso_busqueda_kg'] = $peso_busqueda_kg;
+
             } else {
                 //Consulta sin resultado
                 $data['busqueda'] = array();
@@ -204,6 +213,25 @@ function consultar_remisiones_sin_viajes() {
 	$decoded_data = call_get_remisiones_sin_viaje();
 	return $decoded_data;
 }
+
+function consultar_capacidad_carga($nombre_carga) {
+    if (isset($_SESSION['viajesrion_capacidad_carga'][$nombre_carga])) {
+        return $_SESSION['viajesrion_capacidad_carga'][$nombre_carga];
+    } else {
+        $decoded_data = call_consultar_carga($nombre_carga);
+        if ($decoded_data) {
+            $response = array(
+                'carga_maxima' => $decoded_data['cargaBO']['cargaMaxima'],
+                'carga_minima' => $decoded_data['cargaBO']['cargaMinima'],
+            );
+            $_SESSION['viajesrion_capacidad_carga'][$nombre_carga] = $response;
+        } else {
+            $response = FALSE;
+        }
+        return $response;
+    }
+}
+
 
 function cargar_opciones_transportadora()
 {

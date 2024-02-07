@@ -121,7 +121,7 @@ function generador_webpage() {
   );
 
   //imprimir errores debug
-  //mostrar_errores();
+  mostrar_errores();
 
   return $build;
 }

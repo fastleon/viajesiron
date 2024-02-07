@@ -102,13 +102,42 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#options' => $options2,
     '#attributes' => array('class' => array('vi-conformador-textfield'),),
     '#element_validate' => array('datos_viaje_formulario_guardar_dato'),
-    '#ajax' => array('callback' => 'test'),
+    '#ajax' => array(
+      'callback' => 'verificar_capacidad_carga_callback',
+      'wrapper' => 'info-capacidad',
+    ),
+    '#default_value' => $data['tipo_carro'],
   );
-  //Cargar dato por defecto en tipo_carga segun si existe una sesion o no
+  /*/Cargar dato por defecto en tipo_carga segun si existe una sesion o no
   if ($data['tipo_carro'] != '') {
     $form['tipo_carro_wrapper']['tipo_carro']['#default_value'] = $data['tipo_carro'];
-  } else {
+  }*/
+
+  //Mensaje de información de la capacidad de carga
+  $mensaje = '';
+  if ($data['tipo_carro'] != '') {
+    $datos_capacidad_carga = consultar_capacidad_carga($data['tipo_carro']);
+    $peso_viaje_kg = $data['peso_remisiones_kg'];
+    if ($peso_viaje_kg < $datos_capacidad_carga['carga_minima']) {
+      $mensaje = 'Advertencia: El peso minimo de carga para el tipo de carro<strong>@tipo_carro</strong> es<strong>@peso_minimo</strong> Kg';
+      //$mensaje = t($mensaje, array('@tipo_carro' => $data['tipo_carro'], '@peso_minimo' => $datos_capacidad_carga['carga_minima']));
+    } elseif ($peso_viaje_kg > $datos_capacidad_carga['capacidad_maxima']) {
+      $mensaje = 'Advertencia: Se ha superado el peso máximo de carga (@peso_maximo Kg) para el tipo de carro <strong>@tipo_carro</strong>, por lo que el sobrepeso se registrara en el sistema como un concepto adicional dentro del viaje.';
+    }
+    $mensaje .= '<br> la carga actualmente conformada es de<strong>@peso_viaje_kg</strong> Kg.';
+    $mensaje = t($mensaje, array(
+      '@tipo_carro' => $data['tipo_carro'], 
+      '@peso_minimo' => $datos_capacidad_carga['carga_minima'],
+      '@peso_maximo' => $datos_capacidad_carga['carga_maxima'],
+      '@peso_viaje_kg' => $peso_viaje_kg,
+    ));
   }
+  $form['tipo_carro_wrapper']['info_capacidad'] = array(
+    '#markup' => $mensaje,
+    '#prefix' => '<p id="info-capacidad">',
+    '#suffix' => '</p>',
+    '#attributes' => ($data['tipo_carro'] != '') ? array('style' => 'display:none;') : array('style' => 'display:block;'),
+  );
 
 
   //Cargar las opciones para TRANSPORTADORA del servidor
@@ -121,7 +150,7 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#options' => $options,
     '#required' => TRUE,
     '#element_validate' => array('datos_viaje_formulario_guardar_dato'),
-    '#ajax' => array('callback' => 'test'),
+    //'#ajax' => array('callback' => 'test'),
     '#attributes' => array(
       'class' => array('vi-conformador-textfield'),
     ),
@@ -130,7 +159,7 @@ function datos_viaje_formulario_form($form, &$form_state)
   if (!($data['transportadora'] == '')) {
     $form['transportadora']['#default_value'] = $data['transportadora'];
   }
-
+  
   //Boton para evitar que se active algun otro al presiona la tecla enter
   $form['invisible_submit'] = array(
     '#type' => 'submit',
@@ -138,7 +167,7 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#value' => 'Submit Invisible',
     '#attributes' => array('style' => 'display:none;'),
   );
-
+  
   /*//PRUEBA****************************************************
   $form['boton_pruebas'] = array(
     '#type' => 'submit',
@@ -309,6 +338,7 @@ function datos_remisiones_formulario_form($form, $data)
     'direccion_receptor' => t('Dirección del receptor'),
     'fecha_entrega' => t('Fecha entrega planificada'),
     'peso' => t('Peso Bruto'),
+    'unidad_peso' => t('Unidad'),
   ); 
 
   $options = array();
@@ -320,6 +350,7 @@ function datos_remisiones_formulario_form($form, $data)
       }
     }
   }
+
   //quitamos la columna id
   unset($options['id']);
   //Creamos el render de la tabla
@@ -404,6 +435,7 @@ function busqueda_remisiones_formulario_form($form, $data)
       'Direccion_receptor' => t('Dirección del receptor'),
       'Poblacion_receptor' => t('Población del receptor'),
       'Peso' => t('Peso Bruto'),
+      'Unidad_peso' => t('Unidad'),
       'Fecha_empaquetado' => t('Fecha nota Empaquetado'),
       'Fecha_entrega' => t('Fecha entrega calculada'),
       'Sin_errores' => t('Validado'),
@@ -445,6 +477,7 @@ function busqueda_remisiones_formulario_form($form, $data)
         'Direccion_receptor' => $resultado['info']['direccionReceptor'],
         'Poblacion_receptor' => $resultado['info']['poblacionReceptor'],
         'Peso' => $resultado['info']['pesoBruto'],
+        'Unidad_peso' => $resultado['info']['unidadPesoBruto'],
         'Fecha_empaquetado' => substr($resultado['info']['fechaNotaEmpaquetadoFormato'], 0, 10),
         'Fecha_entrega' => substr($resultado['info']['fechaEntregaPlanificadaFormato'], 0, 10),
         'Sin_errores' => array(
@@ -454,12 +487,19 @@ function busqueda_remisiones_formulario_form($form, $data)
         'Viaje_Actual' => $viaje_actual,
       );
     }
-    //Creamos el render de la tabla
+    //Render de la tabla
     $form['fs_remisiones']['tabla_resultados_whs'] = array(
       '#name' => 'tabla_resultados_whs',
       '#theme' => 'table',
       '#header' => $header,
       '#rows' => $options,
+    );
+    //Mensaje de información del peso total en kg de la busqueda 
+    $peso_busqueda_kg = $data['peso_busqueda_kg'];
+    $form['fs_remisiones']['info_peso_busqueda'] = array(
+      '#markup' => t('El peso total de las remisiones en esta busqueda es:<strong>@peso</strong> Kg', array('@peso' => $peso_busqueda_kg)),
+      '#prefix' => '<p id="info-peso-busqueda">',
+      '#suffix' => '</p>',
     );
     //Boton para Anexar remision
     $form['fs_remisiones']['submit_anexar_remision'] = array(
@@ -518,6 +558,11 @@ function check_valores_tipo_carro($valor_tipo_carga) {
   return $options;
 }
 
+
+function verificar_capacidad_carga_callback ($form, &$form_state) {
+
+}
+
 /**
  * Funcion usada para guardar los primeros campos del formulario y no se pierdan al hacer modificaciones
  * @param mixed element elemento que llama esta funcion 
@@ -526,10 +571,6 @@ function datos_viaje_formulario_guardar_dato($element) {
 
   $data = bring_data();
   $data[$element['#name']] = $element['#value'];
-  
-  add_error($data['tipo_carga']);
-  add_error($data['tipo_carro']);
-  add_error($data['transportadora']);
   send_data($data);
 
 }

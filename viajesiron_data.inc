@@ -13,6 +13,8 @@ function datos_en_blanco() {
       //'concepto' => '',
       //'costo' => 0,    ),
     'remisiones' => array(),
+    'peso_remisiones_kg' => 0,
+    'peso_busqueda_kg' => 0,
       //'remision' => '',
       //'costo' => 0,    ),
     'busqueda' => array(),
@@ -20,6 +22,7 @@ function datos_en_blanco() {
   send_data($data);
   unset($_SESSION['viajesiron_transportadoras']);
   unset($_SESSION['viajesiron_conceptos_adicionales']);
+  unset($_SESSION['viajesrion_capacidad_carga']);
 }
 
 //PLANTILLA de datos para reporte (ligado al back)

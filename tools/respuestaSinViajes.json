@@ -1,0 +1,100 @@
+{
+  "despachosDTO": [
+    {
+      "fechaCreacionFormato": "",
+      "cargado": true,
+      "entregaDTO": {
+        "status": false
+      },
+      "enviado": false,
+      "fechaCalculadaEntregaPlanificadaFormato": "",
+      "id": 79134,
+      "sinErrores": true,
+      "status": true,
+      "tmsMaestroDTO": {
+        "fechaCreacionFormato": "",
+        "usuarioCreacion": 1,
+        "archivoTMSDTO": {},
+        "fechaEntregaPlanificadaFormato": "",
+        "fechaExpedicionFormato": "",
+        "fechaFacturaFormato": "",
+        "fechaNotaEmpaquetadoFormato": "",
+        "idExpedicion": "10413341",
+        "match": false,
+        "status": false
+      }
+    },
+    {
+      "fechaCreacionFormato": "",
+      "cargado": true,
+      "entregaDTO": {
+        "status": false
+      },
+      "enviado": false,
+      "fechaCalculadaEntregaPlanificadaFormato": "",
+      "id": 78932,
+      "sinErrores": true,
+      "status": true,
+      "tmsMaestroDTO": {
+        "fechaCreacionFormato": "",
+        "usuarioCreacion": 1,
+        "archivoTMSDTO": {},
+        "fechaEntregaPlanificadaFormato": "",
+        "fechaExpedicionFormato": "",
+        "fechaFacturaFormato": "",
+        "fechaNotaEmpaquetadoFormato": "",
+        "idExpedicion": "50877254",
+        "match": false,
+        "status": false
+      }
+    },
+    {
+      "fechaCreacionFormato": "",
+      "cargado": true,
+      "entregaDTO": {
+        "status": false
+      },
+      "enviado": false,
+      "fechaCalculadaEntregaPlanificadaFormato": "",
+      "id": 78933,
+      "sinErrores": true,
+      "status": true,
+      "tmsMaestroDTO": {
+        "fechaCreacionFormato": "",
+        "usuarioCreacion": 1,
+        "archivoTMSDTO": {},
+        "fechaEntregaPlanificadaFormato": "",
+        "fechaExpedicionFormato": "",
+        "fechaFacturaFormato": "",
+        "fechaNotaEmpaquetadoFormato": "",
+        "idExpedicion": "50877256",
+        "match": false,
+        "status": false
+      }
+    },
+    {
+      "fechaCreacionFormato": "",
+      "cargado": true,
+      "entregaDTO": {
+        "status": false
+      },
+      "enviado": false,
+      "fechaCalculadaEntregaPlanificadaFormato": "",
+      "id": 78934,
+      "sinErrores": true,
+      "status": true,
+      "tmsMaestroDTO": {
+        "fechaCreacionFormato": "",
+        "usuarioCreacion": 1,
+        "archivoTMSDTO": {},
+        "fechaEntregaPlanificadaFormato": "",
+        "fechaExpedicionFormato": "",
+        "fechaFacturaFormato": "",
+        "fechaNotaEmpaquetadoFormato": "",
+        "idExpedicion": "50877257",
+        "match": false,
+        "status": false
+      }
+    }
+  ]
+}

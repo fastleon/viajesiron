@@ -1,0 +1,12 @@
+; $Id$
+name = Administrador de viajes
+description = Modulo encargado de la creación y edición de viajes, con sus respectivos costos.
+package = "Toxement"
+project = "Intranet"
+core = 7.x
+php = 5.6.4
+dependencies:
+  - field_collection
+  - taxonomy
+;files[] = pages.module
+;files[] = pages.admin.inc

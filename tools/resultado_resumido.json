@@ -1,0 +1,85 @@
+{
+  "viajeBO": {
+      "id": 19,
+      "nombre": "TOXTMS19",
+      "pesoTotalFlete": 1101.4400024414062,
+      "tipoDeCarga": {
+          "nombre": "Carga Seca"
+      },
+      "tipoDeCarro": {
+          "nombre": "Turbo"
+      },
+      "transportadora": {
+          "id": 1,
+          "nombre": "EXPRESO ANDINO DE CARGA SA"
+      },
+      "costoTotalFlete": 10054342.00,
+      "adicionalViaje": [
+          {
+              "conceptoBO": {
+                  "id": 5186,
+                  "nombre": "Pernoctaje"
+              },
+              "valor": 2230000.0
+          },
+          {
+              "conceptoBO": {
+                  "id": 5188,
+                  "nombre": "Cuadrilla de descargue"
+              },
+              "valor": 2400220.0
+          }
+      ],
+      "despachos": [
+          {
+              "entregaDTO": {
+                  "costoFlete": 2542020.0,
+                  "pesoTotal": 20.639999389648438
+              },
+              "fechaCalculadaEntregaPlanificadaFormato": "2023-11-06 12:00:00 AM",
+              "tmsMaestroDTO": {
+                  "direccionExpedidor": "TOCANCIPA",
+                  "direccionReceptor": "CL 58 D SUR 51 35 GAITAN",
+                  "idExpedicion": "50809847",
+                  "pesoBruto": 20.64,
+                  "poblacionExpedidor": "MEDELLIN",
+                  "poblacionReceptor": "BELLO",
+                  "unidadPesoBruto": "KG"
+              }
+          },
+          {
+              "entregaDTO": {
+                  "costoFlete": 2332121.0,
+                  "pesoTotal": 80.80000305175781
+              },
+              "fechaCalculadaEntregaPlanificadaFormato": "2023-11-02 12:00:00 AM",
+              "tmsMaestroDTO": {
+                  "direccionExpedidor": "MEDELLIN",
+                  "direccionReceptor": "VEREDA CHACHAFRUTO, ZONA FRANCA BODEGA 237",
+                  "idExpedicion": "50810229",
+                  "pesoBruto": 80.8,
+                  "poblacionExpedidor": "MEDELLIN",
+                  "poblacionReceptor": "BELLO",
+                  "unidadPesoBruto": "KG"
+              }
+          },
+          {
+              "entregaDTO": {
+                  "costoFlete": 5424122.0,
+                  "pesoTotal": 1000.0
+              },
+              "enviado": true,
+              "fechaCalculadaEntregaPlanificadaFormato": "2023-11-02 12:00:00 AM",
+              "tmsMaestroDTO": {
+                  "direccionExpedidor": "MEDELLIN",
+                  "direccionReceptor": "DIAGONAL 52# 10-177",
+                  "idExpedicion": "50809666",
+                  "pesoBruto": 1000.0,
+                  "poblacionExpedidor": "MEDELLIN",
+                  "poblacionReceptor": "BELLO",
+                  "unidadPesoBruto": "KG"
+              }
+          }
+      ],
+ }
+}

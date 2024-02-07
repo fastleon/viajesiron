@@ -1,0 +1,12 @@
+<?php 
+/**
+ * Implementa hook_install().
+ */
+function viajesiron_install() {
+
+  //Verificar que esta instalada la taxonomia y el tipo de dato necesario
+  include_once 'viajesiron_taxonomia.inc';
+  include_once 'viajesiron_data.inc';
+  verificar_taxonomia();
+  verificar_tipo_contenido();
+}

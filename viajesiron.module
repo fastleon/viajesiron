@@ -1,0 +1,276 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Modulo para administrar viajes y sus costos relacionados 
+ * creado: Alejandro Leon - Norberto Villegas
+ */
+
+  require 'vendor/autoload.php';
+
+  use PhpOffice\PhpSpreadsheet\Spreadsheet;
+  use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
+ /** 
+  * Implements hook_init() - Llamado de codigo antes de iniciar
+  */
+function viajesiron_init(){
+  include_once 'viajesiron_taxonomia.inc';
+  include_once 'viajesiron_conformador_render.inc';
+  include_once 'viajesiron_conformador_submit.inc';
+  include_once 'viajesiron_remisiones_modal.inc';
+  include_once 'viajesiron_data.inc';
+  include_once 'viajesiron_busqueda_render.inc';
+  include_once 'viajesiron_busqueda_submit.inc';
+  include_once 'viajesiron_negocios.inc';
+  include_once 'viajesiron_servicios.inc';
+  include_once 'viajesiron_reporte_render.inc';
+  module_load_include('inc', 'entity', 'includes/entity.query');
+  return;
+}
+
+/** 
+ * Implements hook_preprocess_page 
+ */
+function viajesiron_preprocess_page(&$variables) {
+  //$path = current_path();
+  //drupal_set_message($path);
+  //PARA COLOCAR EL DATO VACIO A LA HORA DE CREAR DATO NUEVO
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function viajesiron_menu() {
+  // Module settings.
+  $items['admin/config/viajesiron'] = array(
+    'title' => 'Viajes Iron Module',
+    'description' => 'viajes iron module configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('viajesiron_admin_settings_form'),
+    'access arguments' => array('administrador modulo viajes'),
+    'file' => 'viajesiron.admin.inc',
+    'file path' => drupal_get_path('module', 'viajesiron'),
+  );
+
+  $items['viajes'] = array(
+    'title' => 'Conformador de Viajes',
+    'description' => 'Administrador de Viajes - Toxement',
+    'page callback' => 'generador_webpage',
+    'access arguments' => array('administrador modulo viajes'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['ajax/%ctools_js/show/modal'] = array(
+    'title' => 'Remisiones sin viaje',
+    'page callback' => 'generador_modal_remisiones_sin_viajes',
+    'page arguments' => array(1),
+    'access arguments' => array('administrador modulo viajes'),
+    //'file' => 'tools/prueba_modal.inc
+  );
+
+  $items['viajes/%'] = array(
+    'title' => 'Resumen de Viaje',
+    'description' => 'Reporte de Viajes - Toxement',
+    'page callback' => 'generador_webpage_reporte',
+    'access arguments' => array('usuario modulo viajes'),
+    'type' => MENU_NORMAL_ITEM,
+    'page arguments' => array(1),
+  );
+  $items['viajes/busqueda'] = array(
+    'title' => 'Busqueda de Viajes',
+    'description' => 'Busqueda de Viajes - Toxement',
+    'page callback' => 'generador_webpage_busqueda',
+    'access arguments' => array('usuario modulo viajes'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['viajes/editar'] = array(
+    'title' => 'Editar Viajes',
+    'description' => 'Edición de Viajes - Toxement',
+    'page callback' => 'generador_webpage_edicion',
+    'access arguments' => array('administrador modulo viajes'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+* Callbacks
+* Llama a cada funcion que renderiza los formularios a los distintos enlaces
+*/
+
+
+/**
+ * Callback para el menu conformador de viajes
+ */
+function generador_webpage() {
+  
+  //Revisar si existe la variable local de viajes
+  if (isset($_SESSION['viajesiron_data'])){
+    $nuevo = ($_SESSION['viajesiron_data']['id'] == 'new');
+    if (!$nuevo) {
+      datos_en_blanco();
+    }
+  }
+
+  //Render de la pagina donde estan los formularios Iniciales
+  $build = array(
+      'formulario_viajes' => drupal_get_form('datos_viaje_formulario_form'),
+  );
+
+  //imprimir errores debug
+  //mostrar_errores();
+
+  return $build;
+}
+
+
+/**
+ * Callback para la ventana modal con las remisiones
+ */
+function generador_modal_remisiones_sin_viajes($js = NULL) {
+
+  if ($js) {
+    ctools_include('ajax');
+    ctools_include('modal');
+    /*drupal_add_library('system', 'jquery');
+
+    //$title = t('REMISIONES SIN VIAJE');
+    $build = array(
+      'formulario_remisiones' => drupal_get_form('remisiones_modal_form'),
+    );
+    $output = render($build);
+    ctools_modal_render($title, $output);*/
+
+    $form_state = array(
+      'title' => t('REMISIONES SIN VIAJE'),
+      'ajax' => TRUE,
+      'build_info' => array(
+        'args' => array(),
+      ),
+    );
+  
+    $commands = ctools_modal_form_wrapper('remisiones_modal_form', $form_state);
+  
+    if (!empty($form_state['executed'])) {
+      $commands = array();
+      $commands[] = ctools_modal_command_dismiss();
+      $commands[] = ctools_ajax_command_reload();
+    }
+  
+    print ajax_render($commands);
+    drupal_exit();
+
+  } else {
+    //NO JS
+    form_set_error('', 'para habilitar esta opcion se requiere JS habilitado en el navegador', FALSE);
+    drupal_access_denied();
+    drupal_exit();
+
+  }
+}
+
+
+/**
+ * Callback para generar el reporte de cada viaje 
+ * @param {integer} viaje_id
+ */
+function generador_webpage_reporte($viaje_id = NULL) {
+
+  //cargar datos del $viaje_id
+  consultar_viaje_por_id($viaje_id);
+  
+  $build = array(
+    'plantilla_viajes' => drupal_get_form('datos_viaje_reporte_form'),
+  );
+
+  //imprimir errores debug
+  //mostrar_errores();
+
+  return $build;
+}
+
+
+/**
+ * Callback para generar el formulario de busquedas de viajes con ciertos criterios
+ */
+function generador_webpage_busqueda() {
+
+  //render esttructura de la pagina
+  $build = array(
+    'formulario_busqueda' => drupal_get_form('formulario_busqueda_viajes_form'),
+  );
+
+  //imprimir errores debug
+  //mostrar_errores();
+
+  return $build;
+
+}
+
+
+/**
+ * Callback para editar viajes, es llamado desde el formulario de reportes
+ */
+function generador_webpage_edicion() {
+  
+  //Revisar si existe la variable local de viajes
+  if ((!isset($_SESSION['viajesiron_data']['id'])) || ($_SESSION['viajesiron_data']['id'] == 'new')) {
+    drupal_set_message('Error cargando información a editar, creando nuevo viaje', 'error');
+    datos_en_blanco();
+    $url_redirect = 'viajes';
+    drupal_goto($url_redirect);
+  }
+
+  //Render de la pagina donde estan los formularios Iniciales
+  $build = array(
+      'formulario_viajes' => drupal_get_form('datos_viaje_formulario_form'),
+  );
+
+  //imprimir errores debug
+  //mostrar_errores();
+  
+  return $build;
+}
+
+
+/**
+ * Funcion para depuracion de datos o errores dentro de las funciones callback
+ * @param {varios} dato, string o similar para visualizar
+ */
+function add_error($dato) {
+  $errores = variable_get('viajesiron_error',array());
+  $errores[] = $dato;
+  variable_set('viajesiron_error', $errores);
+}
+
+
+/**
+ * Funcion para desplegar todos los errores almacenados antes del llamado al callback
+ */
+function mostrar_errores() {
+  echo "<pre>";
+  print_r(variable_get('viajesiron_error', 'no errores'));
+  echo "</pre>";
+  variable_del('viajesiron_error');
+}
+
+
+/**
+ * Implementacion del hook permission para la administracion de roles
+ */
+function viajesiron_permission() {
+  $roles = array(
+    'administrador modulo viajes' => array(
+      'title' => t('Administrador del Modulo Viajes'),
+      'description' => t('Puede generar nuevos viajes y visualizar los reportes'),
+    ),
+    'usuario modulo viajes' => array(
+      'title' => t('Usuario basico Modulo Viajes'),
+      'description' => t('Puede visualizar los reportes de los viajes'),
+    ),
+  );
+  return $roles;
+}

@@ -145,7 +145,7 @@ function datos_viaje_formulario_form_submit($form, &$form_state) {
       }
       break; 
 
-    case 'submit_anexar_remision':  //********************************* */
+    case 'submit_anexar_remision':
       $no_anexados = array();
       foreach ($data['busqueda'] as $resultado){
         if (is_null($resultado['viaje']) && $resultado['sin_errores']){
@@ -172,10 +172,19 @@ function datos_viaje_formulario_form_submit($form, &$form_state) {
                 'direccion_receptor' => $resultado['info']['direccionReceptor'],
                 'fecha_entrega' => $resultado['info']['fechaEntregaPlanificadaFormato'],
                 'peso' => $resultado['info']['pesoBruto'],
+                'unidad_peso' => $resultado['info']['unidadPesoBruto'],
               );
+              //sumamos el peso anexado al viaje
+              if ($resultado['info']['unidadPesoBruto'] == 'KG') {
+                $data['peso_remisiones_kg'] += $resultado['info']['pesoBruto'];
+              } else {
+                $data['peso_remisiones_kg'] += ($resultado['info']['pesoBruto'] / 2);
+              }
+              
               //guardamos la información actual
               $data['remisiones'][] = array_merge($new_remision, $data_plus);
               drupal_set_message (t('Remisión @whs anexada', array('@whs' => $resultado['id'])), 'status');
+
             }
           }
         } else{
@@ -194,6 +203,11 @@ function datos_viaje_formulario_form_submit($form, &$form_state) {
       $tabla_info = $form_state['input']['tabla_remisiones'];
       foreach ($tabla_info as $id_remision_borrar) {
         if (is_numeric($id_remision_borrar)){
+          if ($data['remisiones'][$id_remision_borrar]['unidad_peso'] == 'KG') {
+            $data['peso_remisiones_kg'] -= $data['remisiones'][$id_remision_borrar]['peso'];
+          } else {
+            $data['peso_remisiones_kg'] -= ($data['remisiones'][$id_remision_borrar]['peso'] / 2);
+          }
           unset($data['remisiones'][$id_remision_borrar]);
         }
       }
@@ -224,7 +238,6 @@ function datos_viaje_formulario_form_submit($form, &$form_state) {
 
 function guardar_informacion(&$form_state){
   //guardar los campos para que no se pierda el cambio
-  add_error('entre a guardar informacion');
   $data = bring_data();
   $data['nombre'] = $form_state['values']['nombre'];
   $data['tipo_carga'] = $form_state['values']['tipo_carga'];

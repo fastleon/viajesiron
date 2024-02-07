@@ -14,6 +14,7 @@ function load_server_parameters() {
     $propiedad_post_crear_viaje = variable_get('viajesiron_post_viaje', '');
     $propiedad_get_viaje_por_id = variable_get('viajesiron_get_viaje_por_id', '');
     $propiedad_get_remisiones_sin_viaje = variable_get('viajesiron_get_remisiones_sin_viaje', '');
+    $propiedad_get_consultar_carga = variable_get('viajesiron_get_consultar_carga', '');
     $propiedad_post_editar_viaje = variable_get('viajesiron_post_editar_viaje', '');
     $propiedad_post_eliminar_viaje = variable_get('viajesiron_post_delete_viaje', '');
     
@@ -28,6 +29,7 @@ function load_server_parameters() {
             'url_post_viaje' => $server_path . '/' . $propiedad_post_crear_viaje,
             'url_get_viaje_por_id' => $server_path . '/' . $propiedad_get_viaje_por_id,
             'url_get_remisiones_sin_viaje' => $server_path . '/' . $propiedad_get_remisiones_sin_viaje,
+            'url_get_consultar_carga' => $server_path . '/' . $propiedad_get_consultar_carga,
             'url_post_editar_viaje' => $server_path . '/' . $propiedad_post_editar_viaje,
             'url_post_eliminar_viaje' => $server_path . '/' . $propiedad_post_eliminar_viaje,
         );
@@ -74,7 +76,22 @@ function call_get_remisiones_sin_viaje() {
     //FIN TEMPORAL*/
 
 }
-    
+
+
+/**
+ * Llama al servicio GET para consultar carga y su capacidad
+ * @param string $nombre_carga - nombre de la carga a consultar (Carry, Turbo, Sencillo, Doble Troque, Mula)
+ * @return array response, FALSE si no hay exito. 
+ */
+function call_consultar_carga($nombre_carga) {
+    $params = array(
+        'propiedad' => 'url_get_consultar_carga',
+        'parametros' => array('nombre' => $nombre_carga),
+        'method' => 'GET',
+    );
+    return llamar_servicio_viajesiron($params);
+}
+
 
 /**
  * Llama al servicio POST para crear viaje
@@ -225,7 +242,7 @@ function llamar_servicio_viajesiron($params) {
     $server_params = load_server_parameters();
     $url = $server_params[$params['propiedad']];
     if (($params['method'] == 'GET') && ($params['parametros'])) {
-        $url = $url . '?' . http_build_query($params['parametros']);
+        $url = $url . '?' . http_build_query($params['parametros']); 
     }
 
     $options = array();

@@ -112,6 +112,20 @@
   font-weight: normal;
 } 
 
+/*texto informacion capacidad*/
+#info-capacidad,
+#info-peso-busqueda {
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  font-style: italic;
+  color: chocolate;
+}
+#info-capacidad {
+  margin-left: 100px;
+}
+
+
 /*textfield buscar whs*/
 #edit-campo-whs{
     width: 200px;

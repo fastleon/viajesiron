@@ -1,0 +1,68 @@
+/***************************BUSQUEDA*/
+
+/***************OPCION BUSQUEDA*********/
+  .form-item-opcion-busqueda .form-required{
+    display: none;
+  }
+  .vi-conformador-textfield{ 
+    width: 300px;
+    background-color:white;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    padding: 5px !important;
+  }
+  #datos_busqueda_wrapper .form-type-date-popup{
+    display:inline-flex !important;
+  }
+/***************Texfields**************/
+  .vi-texfields-busqueda_items{
+    width: 300px;
+    background-color:rgba(255, 229, 159, 0.164);
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    padding: 5px !important;
+  }
+  .vi-texfields-textright{
+    text-align: right;
+  }
+
+  .form-item label {
+    display: inline-block;
+    width: 180px;
+  }
+
+  .form-item-opcion-busqueda h3{
+    width: max-content;
+  }
+
+/***************Resultados**************/
+  .vi-fieldset-resultado .fieldset-wrapper{
+    margin-top: 5px !important;
+  }
+  .vi-fieldset-resultado .form-type-textfield{
+    margin-bottom: 2px !important;
+    margin-top: 2px !important;
+  }
+  .vi-consolidado-container{
+    text-align: right !important;
+  }
+  .vi-textfields-consolidado{
+    text-align: right !important;
+    width: 250px;
+    background-color:rgba(255, 229, 159, 0.164);
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    padding: 5px 10px !important;
+  }
+  .sticky-header th, .sticky-table th{
+    text-align: center !important;
+  }
+  .sticky-table td{
+    text-align: center !important;
+  }
+  .even *{
+    background-color: #f3f3f3 !important;
+  }

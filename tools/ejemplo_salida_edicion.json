@@ -1,0 +1,24 @@
+{
+  "id": 15,
+  "transportadora": {
+    "id": "1"
+  },
+  "tipoDeCarga": {
+    "nombre": "Carga Seca"
+  },
+  "tipoDeCarro": {
+    "nombre": "Sencillo"
+  },
+  "adicionalViaje": [
+    {
+      "valor": 120000,
+      "conceptoBO": {
+        "id": 5188
+      }
+    }
+  ],
+  "remisiones": [
+    "50809848",
+    "50809850"
+  ]
+}

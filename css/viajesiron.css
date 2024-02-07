@@ -1,0 +1,145 @@
+/*Estilos personalizados propios del modulo CSS*/
+
+.vi-reporte-tabla-adicionales {
+  width: fit-content;
+  margin: 0 auto 0 0; 
+  min-width: 400px;
+}
+.vi-reporte-tabla-adicionales td,
+.vi-reporte-tabla-adicionales th {
+  text-align: center;
+}
+
+
+.vi-reporte-tabla-remisiones {
+  width: fit-content;
+  margin: 0 auto 0 0;
+  min-width: 300px;
+}
+
+.vi-reporte-tabla-remisiones td,
+.vi-reporte-tabla-remisiones th {
+  text-align: center;
+}
+
+
+.vi-texfields-reporte {
+  width: 300px;
+  background-color:rgba(255, 229, 159, 0.164);
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+}
+
+.form-item label {
+  display: inline-block;
+  width: 180px;
+}
+
+/*.form-item {
+  width: fit-content;
+}*/
+
+.form-type-select h3 {
+  width: 150px;
+}
+
+.form-type-select h3,
+.form-type-select .form-required {
+  display: inline-block;
+}
+
+.vi-texfields-reporte {
+  width: 300px;
+  background-color:rgba(255, 229, 159, 0.164);
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  }
+
+.vi-conformador-busqueda-whs * {
+  display: inline-block;
+}
+
+.vi-conformador-busqueda-whs .form-type-textfield {
+  width: fit-content;
+}
+
+/*TABLA ADICIONALES CONFORMADOR*/
+.vi-conformador-tabla-adicionales {
+  margin: 0 auto 0 0;
+  width: fit-content;
+}
+.vi-conformador-tabla-adicionales td,
+.vi-conformador-tabla-adicionales th {
+  text-align: center !important;
+}
+.sticky-header th, .sticky-table th{
+  text-align: center !important;
+}
+.vi-conformador-tabla-adicionales tr th:first-child,
+.vi-conformador-tabla-adicionales tr td:first-child {
+  max-width: 60px;
+}
+.vi-conformador-tabla-adicionales tr th:nth-child(2),
+.vi-conformador-tabla-adicionales tr td:nth-child(2) {
+  width: auto;
+  min-width: 320px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.vi-conformador-tabla-adicionales tr th:nth-child(3),
+.vi-conformador-tabla-adicionales tr td:nth-child(3) {
+  width: auto;
+  min-width: 180px;;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.form-item .form-type-radio .form-item-tabla-adicionales {
+  width: 100px;
+}
+.vi-conformador-tabla-adicionales .form-radio {
+  max-width: 60px;
+  width: auto;
+}
+
+/*TEXTFIELDS CONFORMADOR*/
+.vi-conformador-textfield {
+  width: 300px;
+  background-color:rgba(255, 229, 159, 0.164);
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+} 
+
+/*textfield buscar whs*/
+#edit-campo-whs{
+    width: 200px;
+}
+
+/*TEXT FIELDS PRECIOS*/
+#edit-costo-total-flete, 
+#edit-peso-total-flete{
+  text-align: right;
+  padding-right: 20px;
+}
+
+.valor-peso-derecha {
+  text-align: right !important; 
+  padding-right: 20px;
+}
+
+.even *{
+  background-color: #f3f3f3 !important;
+}
+
+/*TABLA BUSQUEDA, CASILLA CON ERRORES Y SIN ERRORES*/
+.clase-sin-errores {
+  color: green;
+  background-color: rgb(222, 255, 222) !important;
+}
+
+.clase-con-errores {
+  color: red;
+  background-color: rgb(255, 222, 222) !important;
+}

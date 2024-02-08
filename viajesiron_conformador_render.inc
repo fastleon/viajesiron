@@ -108,38 +108,8 @@ function datos_viaje_formulario_form($form, &$form_state)
     ),
     '#default_value' => $data['tipo_carro'],
   );
-  /*/Cargar dato por defecto en tipo_carga segun si existe una sesion o no
-  if ($data['tipo_carro'] != '') {
-    $form['tipo_carro_wrapper']['tipo_carro']['#default_value'] = $data['tipo_carro'];
-  }*/
 
-  //Mensaje de información de la capacidad de carga
-  $mensaje = '';
-  if ($data['tipo_carro'] != '') {
-    $datos_capacidad_carga = consultar_capacidad_carga($data['tipo_carro']);
-    $peso_viaje_kg = $data['peso_remisiones_kg'];
-    if ($peso_viaje_kg < $datos_capacidad_carga['carga_minima']) {
-      $mensaje = 'Advertencia: El peso minimo de carga para el tipo de carro<strong>@tipo_carro</strong> es<strong>@peso_minimo</strong> Kg';
-      //$mensaje = t($mensaje, array('@tipo_carro' => $data['tipo_carro'], '@peso_minimo' => $datos_capacidad_carga['carga_minima']));
-    } elseif ($peso_viaje_kg > $datos_capacidad_carga['capacidad_maxima']) {
-      $mensaje = 'Advertencia: Se ha superado el peso máximo de carga (@peso_maximo Kg) para el tipo de carro <strong>@tipo_carro</strong>, por lo que el sobrepeso se registrara en el sistema como un concepto adicional dentro del viaje.';
-    }
-    $mensaje .= '<br> la carga actualmente conformada es de<strong>@peso_viaje_kg</strong> Kg.';
-    $mensaje = t($mensaje, array(
-      '@tipo_carro' => $data['tipo_carro'], 
-      '@peso_minimo' => $datos_capacidad_carga['carga_minima'],
-      '@peso_maximo' => $datos_capacidad_carga['carga_maxima'],
-      '@peso_viaje_kg' => $peso_viaje_kg,
-    ));
-  }
-  $form['tipo_carro_wrapper']['info_capacidad'] = array(
-    '#markup' => $mensaje,
-    '#prefix' => '<p id="info-capacidad">',
-    '#suffix' => '</p>',
-    '#attributes' => ($data['tipo_carro'] != '') ? array('style' => 'display:none;') : array('style' => 'display:block;'),
-  );
-
-
+  
   //Cargar las opciones para TRANSPORTADORA del servidor
   $options = cargar_opciones_transportadora();
   $form['transportadora'] = array(
@@ -159,6 +129,9 @@ function datos_viaje_formulario_form($form, &$form_state)
   if (!($data['transportadora'] == '')) {
     $form['transportadora']['#default_value'] = $data['transportadora'];
   }
+
+  //ADVERTENCIA Mensaje de información de la capacidad de carga
+  $form['info_capacidad'] = verificar_capacidad_carga_callback($form, $form_state);
   
   //Boton para evitar que se active algun otro al presiona la tecla enter
   $form['invisible_submit'] = array(
@@ -560,6 +533,32 @@ function check_valores_tipo_carro($valor_tipo_carga) {
 
 
 function verificar_capacidad_carga_callback ($form, &$form_state) {
+  $mensaje = '';
+  $data = bring_data();
+  if ($data['tipo_carro'] != '') {
+    $datos_capacidad_carga = consultar_capacidad_carga($data['tipo_carro']);
+    $peso_viaje_kg = $data['peso_remisiones_kg'];
+    if ($peso_viaje_kg < $datos_capacidad_carga['carga_minima']) {
+      $mensaje = 'Advertencia: El peso mínimo de carga para el tipo de carro<strong>@tipo_carro</strong> es<strong>@peso_minimo</strong> Kg. ';
+      //$mensaje = t($mensaje, array('@tipo_carro' => $data['tipo_carro'], '@peso_minimo' => $datos_capacidad_carga['carga_minima']));
+    } elseif ($peso_viaje_kg > $datos_capacidad_carga['capacidad_maxima']) {
+      $mensaje = 'Advertencia: Se ha superado el peso máximo de carga (@peso_maximo Kg) para el tipo de carro <strong>@tipo_carro</strong>, por lo que el sobrepeso se registrara en el sistema como un concepto adicional dentro del viaje. ';
+    }
+    $mensaje .= 'La carga actualmente conformada es de<strong>@peso_viaje_kg</strong> Kg.';
+    $mensaje = t($mensaje, array(
+      '@tipo_carro' => $data['tipo_carro'], 
+      '@peso_minimo' => $datos_capacidad_carga['carga_minima'],
+      '@peso_maximo' => $datos_capacidad_carga['carga_maxima'],
+      '@peso_viaje_kg' => $peso_viaje_kg,
+    ));
+  }
+  $form['info_capacidad'] = array(
+    '#markup' => $mensaje,
+    '#prefix' => '<p id="info-capacidad">',
+    '#suffix' => '</p>',
+    '#attributes' => ($data['tipo_carro'] != '') ? array('style' => 'display:none;') : array('style' => 'display:block;'),
+  );
+  return $form['info_capacidad'];
 
 }
 

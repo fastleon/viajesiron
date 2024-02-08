@@ -56,6 +56,7 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
 
     //SELECT TRANSPORTADORA
     $options = cargar_opciones_transportadora();
+    $options[0] = 'BUSCAR EN TODAS';
     $form['datos_busqueda_wrapper']['fs_busqueda_fechas']['transportadora'] = array(
         '#type' => 'select',
         '#title' => '<h3>' . t('Transportadora: ') . '</h3>',

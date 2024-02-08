@@ -59,6 +59,8 @@ function formulario_busqueda_viajes_form_submit($form, &$form_state) {
                     'fechaFinal' => $state['fecha_final'], 
                     'idTransportadora' => $state['transportadora'],
                 );
+                add_error('revisando parametros');
+                add_error($params);
                 $response = buscar_viaje_por_fechas($params);
             } elseif($_SESSION['viajesiron_busqueda']['state']['opcion_busqueda'] == 'Nombre'){ //Nombre
                 $params = array(

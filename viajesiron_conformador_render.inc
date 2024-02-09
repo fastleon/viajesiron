@@ -71,17 +71,10 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#element_validate' => array('datos_viaje_formulario_guardar_dato'),
     '#ajax' => array(
       'callback' => 'tipo_carga_ajax_callback',
-      'wrapper' => 'tipo_carro_wrapper',
-    )
+      'wrapper' => array('tipo_carro_wrapper', 'info-capacidad'),
+    ),
+    '#default_value' => ($data['tipo_carga'] != '') ? $data['tipo_carga'] : reset($options),
   );
-  //Cargar dato por defecto en tipo_carga segun si existe una sesion o no
-  if ($data['tipo_carga'] != '') {
-    $form['tipo_carga']['#default_value'] = $data['tipo_carga'];
-    //$options2 = check_valores_tipo_carro($data['tipo_carga']);
-  } else {
-    //$form['tipo_carga']['#default_value'] = reset($options);
-  }
-
 
   //Cargar las opciones para el TIPO CARRO
   //Select de texto - Tipo Carro -> Tipo de contenido Drupal
@@ -91,7 +84,8 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#suffix' => '</div>'
   );
 
-  $options2 = check_valores_tipo_carro('Todas');
+  $tipo_carga = (isset($form['tipo_carga']['#default_value'])) ? $form['tipo_carga']['#default_value'] : 'Todas';
+  $options2 = check_valores_tipo_carro($tipo_carga);
   $options2 = drupal_map_assoc($options2);
 
   $form['tipo_carro_wrapper']['tipo_carro'] = array(
@@ -510,12 +504,20 @@ function tipo_carga_ajax_callback($form, $form_state)
   }
 
   $form['tipo_carro_wrapper']['tipo_carro']['#options'] = $options;
-  $form['tipo_carro_wrapper']['tipo_carro']['#default_value'] = $options[0];
+  $form['tipo_carro_wrapper']['tipo_carro']['#default_value'] = reset($options);
+  $form['tipo_carro_wrapper']['tipo_carro']['#value'] = reset($options);
+  $_SESSION['viajesiron_data']['tipo_carro'] = reset($options); //data['tipo_carro]
 
-  // Actualiza el formulario.
-  //$form_state['rebuild'] = TRUE;
+  $form['info_capacidad'] = verificar_capacidad_carga_callback($form, $form_state);
 
-  return $form['tipo_carro_wrapper'];
+  return array(
+    '#type' => 'ajax',
+    '#commands' => array(
+      ajax_command_replace("#tipo_carro_wrapper", render($form['tipo_carro_wrapper'])),
+      ajax_command_replace("#info-capacidad", render($form['info_capacidad']))  
+    )
+  );
+
 }
 
 

@@ -541,7 +541,7 @@ function verificar_capacidad_carga_callback ($form, &$form_state) {
     if ($peso_viaje_kg < $datos_capacidad_carga['carga_minima']) {
       $mensaje = 'Advertencia: El peso mínimo de carga para el tipo de carro<strong>@tipo_carro</strong> es<strong>@peso_minimo</strong> Kg. ';
       //$mensaje = t($mensaje, array('@tipo_carro' => $data['tipo_carro'], '@peso_minimo' => $datos_capacidad_carga['carga_minima']));
-    } elseif ($peso_viaje_kg > $datos_capacidad_carga['capacidad_maxima']) {
+    } elseif ($peso_viaje_kg > $datos_capacidad_carga['carga_maxima']) {
       $mensaje = 'Advertencia: Se ha superado el peso máximo de carga (@peso_maximo Kg) para el tipo de carro <strong>@tipo_carro</strong>, por lo que el sobrepeso se registrara en el sistema como un concepto adicional dentro del viaje. ';
     }
     $mensaje .= 'La carga actualmente conformada es de<strong>@peso_viaje_kg</strong> Kg.';

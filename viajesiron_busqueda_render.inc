@@ -13,7 +13,7 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
     $options = array(
         'opcion1' => 'Por Transportadora - Fechas',
         'opcion2' => 'Por Nombre',
-    );
+    );  //Si se modifican estas Opciones se debe edit el submit y validate (OJO)
 
     $options = drupal_map_assoc($options);
     //Select de texto - Tipo Carga -> Tipo de contenido Drupal

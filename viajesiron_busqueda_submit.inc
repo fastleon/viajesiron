@@ -4,18 +4,27 @@ function formulario_busqueda_viajes_form_validate($form, &$form_state) {
 
     $button_clicked = $form_state['triggering_element']['#name'];
     $valores = $form_state['values'];
-
+    
     switch ($button_clicked){
         case 'Buscar':
+            add_error('opcion de busqueda');
+            add_error($valores['opcion_busqueda']);
             //Revisar parametros
-            if ($valores['opcion_busqueda'] == 'Nombre'){ //por nombre
+            if ($valores['opcion_busqueda'] == 'Por Nombre'){ //por nombre
                 if ($valores['nombre'] == ''){
                     form_set_error('nombre', 'Debe escribir algun valor.');
                 }
             } else { //por fecha
-                if ($valores['fecha_final'] < $valores['fecha_inicial']){
+                $fecha_inicial = strtotime($valores['fecha_inicial']);
+                $fecha_final = strtotime($valores['fecha_final']);
+                $diferencia = $fecha_final - $fecha_inicial; //segundos
+                $diferencia = $diferencia / ( 60*60*24 );  //dias
+                if ($fecha_final < $fecha_inicial){
                     form_set_error('fecha_final', 'La fecha final debe ser posterior o igual a la inicial.');
-                }
+
+                } elseif ($diferencia > 31){
+                    form_set_error('fecha_final', 'La fecha final no puede ser mayor a 30 días.');
+                }            
             }
             break;
         case 'Limpiar':

@@ -1,6 +1,8 @@
 <?php
 
 require_once (drupal_get_path('module', 'viajesiron') . '/models/viajesiron_reporte_cumplidos_model.inc');
+require_once (drupal_get_path('module', 'viajesiron') . '/domain/viajesiron_reporte_cumplidos_entity.inc');
+require_once (drupal_get_path('module', 'viajesiron') . '/tools/simulacion_cumplidos.inc');
 
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
@@ -23,8 +25,22 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     //RENDER FORMULARIO BUSQUEDA
 
 
+    //Llamado de data simulacion
+    $json = mockup_cumplidos();
+    $datos = json_decode($json);
+    $datos_modelo = array();
+    foreach ($datos as $dato) {
+        $temp_cumplido_model = new ReporteCumplidosModel();
+        $temp_cumplido_model->fromEntity($dato);
+        $datos_modelo[] = $temp_cumplido_model;
+    }
+
+    $data_control = new DataControlReportesCumplidos();
+    $data_control->guardarSesion($datos_modelo);
+    unset($data_control);
+
     //RENDER TABLA RESULTADOS
-    $form .= tabla_resultados();
+    $form = array_merge($form, tabla_resultados());
 
     return $form;
 }
@@ -58,23 +74,13 @@ function tabla_resultados() {
     );
 
     //datos
-    if ( $reporte_cumplidos[0]->isEmpty() ) {
-        /* $temp_data = array(
-            'remision' => l($remision['remision'], $URL_REMISION_DETAIL, $link_options),
-            'poblacion_expedidor' => $remision['poblacion_expedidor'],
-            'direccion_expedidor' => $remision['direccion_expedidor'],
-            'poblacion_receptor' => $remision['poblacion_receptor'],
-            'direccion_receptor' => $remision['direccion_receptor'],
-            'fecha_entrega' => $remision['fecha_entrega'],
-            'costo' => money_format20($remision['costo']),
-            'peso' => round($remision['peso'], 2),
-            'unidad_peso' => $remision['unidad_peso'],
-        );
-        $options[] = $temp_data;*/
-        $options = array();
-    } else {
-        $options = get_object_vars($reporte_cumplidos);
+    $options = array();
+    if ( (isset($reporte_cumplidos)) && ($reporte_cumplidos != array()) ) {
+        foreach ($reporte_cumplidos as $dato) {
+            $options[] = $dato->toArray();
+        }
     }
+
     //Creamos el render de la tabla
     $form['fs_tabla_resultados']['tabla_resultados'] = array(
         '#name' => 'tabla_',
@@ -85,4 +91,6 @@ function tabla_resultados() {
             //'class' => array('vi-reporte-tabla-'),
         ),
     );
+
+    return $form;
 }

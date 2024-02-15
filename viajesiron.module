@@ -26,6 +26,7 @@ function viajesiron_init(){
   include_once 'viajesiron_negocios.inc';
   include_once 'viajesiron_servicios.inc';
   include_once 'viajesiron_reporte_render.inc';
+  include_once 'viajesiron_reporte_cumplidos_render.inc';
   module_load_include('inc', 'entity', 'includes/entity.query');
   return;
 }
@@ -90,6 +91,13 @@ function viajesiron_menu() {
     'title' => 'Editar Viajes',
     'description' => 'Edición de Viajes - Toxement',
     'page callback' => 'generador_webpage_edicion',
+    'access arguments' => array('administrador modulo viajes'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['busqueda/temporal'] = array(
+    'title' => 'Busqueda',
+    'description' => 'Cumplidos',
+    'page callback' => 'generador_webpage_cumplidos',
     'access arguments' => array('administrador modulo viajes'),
     'type' => MENU_NORMAL_ITEM,
   );
@@ -233,6 +241,24 @@ function generador_webpage_edicion() {
   //mostrar_errores();
   
   return $build;
+}
+
+
+/**
+ * Callback para generar el formulario de busquedas de viajes con ciertos criterios
+ */
+function generador_webpage_cumplidos() {
+
+  //render esttructura de la pagina
+  $build = array(
+    'formulario_busqueda' => drupal_get_form('reporte_cumplidos_render_form'),
+  );
+
+  //imprimir errores debug
+  mostrar_errores();
+
+  return $build;
+
 }
 
 

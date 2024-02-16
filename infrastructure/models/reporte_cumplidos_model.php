@@ -1,7 +1,5 @@
 <?php
 
-require_once (drupal_get_path('module', 'viajesiron') . '/domain/viajesiron_reporte_cumplidos_entity.inc');
-
 class ReporteCumplidosModel {
 
     private $whs_pedido;
@@ -69,17 +67,17 @@ class ReporteCumplidosModel {
     
     public function fromArray($array_data) {
         $this->__construct(
-            isset($array_data['whs_pedido']) ? $array_data['whs_pedido'] : '',
-            isset($array_data['creacion_remision']) ? $array_data['creacion_remision'] : '',
-            isset($array_data['planeacion_informe']) ? $array_data['planeacion_informe'] : '',
-            isset($array_data['fecha_estimada_entrega']) ? $array_data['fecha_estimada_entrega'] : '',
-            isset($array_data['localidad_origen']) ? $array_data['localidad_origen'] : '',
-            isset($array_data['prueba_entrega']) ? $array_data['prueba_entrega'] : '',
-            isset($array_data['tipo_carga']) ? $array_data['tipo_carga'] : '',
-            isset($array_data['dias_entrega']) ? $array_data['dias_entrega'] : '',
-            isset($array_data['ciudad']) ? $array_data['ciudad'] : '',
-            isset($array_data['transportadora']) ? $array_data['transportadora'] : '',
-            isset($array_data['fotos']) ? $array_data['fotos'] : ''
+            isset($array_data['whs_pedido']) ? $array_data['whs_pedido'] : null,
+            isset($array_data['creacion_remision']) ? $array_data['creacion_remision'] : null,
+            isset($array_data['planeacion_informe']) ? $array_data['planeacion_informe'] : null,
+            isset($array_data['fecha_estimada_entrega']) ? $array_data['fecha_estimada_entrega'] : null,
+            isset($array_data['localidad_origen']) ? $array_data['localidad_origen'] : null,
+            isset($array_data['prueba_entrega']) ? $array_data['prueba_entrega'] : null,
+            isset($array_data['tipo_carga']) ? $array_data['tipo_carga'] : null,
+            isset($array_data['dias_entrega']) ? $array_data['dias_entrega'] : null,
+            isset($array_data['ciudad']) ? $array_data['ciudad'] : null,
+            isset($array_data['transportadora']) ? $array_data['transportadora'] : null,
+            isset($array_data['fotos']) ? $array_data['fotos'] : null
         );
     }
     
@@ -104,48 +102,13 @@ class ReporteCumplidosModel {
     }
 
     public function toArray() {
-        return array(
-            'whs_pedido' => $this->whs_pedido,
-            'creacion_remision' => $this->creacion_remision,
-            'planeacion_informe' => $this->planeacion_informe,
-            'fecha_estimada_entrega' => $this->fecha_estimada_entrega,
-            'localidad_origen' => $this->localidad_origen,
-            'prueba_entrega' => $this->prueba_entrega,
-            'tipo_carga' => $this->tipo_carga,
-            'dias_entrega' => $this->dias_entrega,
-            'ciudad' => $this->ciudad,
-            'transportadora' => $this->transportadora,
-            'fotos' => $this->fotos,
-        );
-    }
-    
-}
-
-class DataControlReportesCumplidos {
-
-    private $variable_sesion = 'viajesiron_reporte_cumplidos';
-    
-    public function guardarSesion($reports) {
-        $_SESSION[$this->variable_sesion] = $reports;
-    }
-    
-    public function cargarSesion() {
-        $response = array();
-        if (isset($_SESSION[$this->variable_sesion])) {
-            $reports = $_SESSION[$this->variable_sesion];
-            foreach( $reports as $report ) {
-                $response[] = $report;
-            }
-
-        } else {
-            $response = new ReporteCumplidosModel();
-
+        $resultado = array();
+        $propiedades = get_class_vars(__CLASS__);
+        foreach($propiedades as $key => $value) {
+            $resultado[$key] = $this->$key;
         }
-        return ($response);
-    } 
-    
-    public function borrarSesion() {
-        unset($_SESSION[$this->variable_sesion]);
-    }
-}
 
+        return $resultado;
+    }
+    
+}

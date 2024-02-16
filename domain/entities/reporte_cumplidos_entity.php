@@ -65,18 +65,27 @@ class ReporteCumplidosEntity {
     public function getTransportadora() {return $this->transportadora;}
 
     public function toArray() {
-        return array(
-            'whs_id' => $this->whs_id,
-            'fecha_creacion' => $this->fecha_creacion,
-            'planeacion_informe' => $this->planeacion_informe,
-            'fecha_estimada_entrega' => $this->fecha_estimada_entrega,
-            'localidad_origen' => $this->localidad_origen,
-            'prueba_entrega' => $this->prueba_entrega,
-            'tipo_carga' => $this->tipo_carga,
-            'dias_entrega' => $this->dias_entrega,
-            'ciudad' => $this->ciudad,
-            'fotos' => $this->fotos,
-            'transportadora' => $this->transportadora,
-        );
+        $propiedades = get_class_vars(__CLASS__);
+        
+        $result = array();
+        foreach ($propiedades as $key => $value){
+            $result[$key] = isset($value) ? $value : '';
+        }
+
+
+
+        // return array(
+            // 'whs_id' => $this->whs_id,
+            // 'fecha_creacion' => $this->fecha_creacion,
+            // 'planeacion_informe' => $this->planeacion_informe,
+            // 'fecha_estimada_entrega' => $this->fecha_estimada_entrega,
+            // 'localidad_origen' => $this->localidad_origen,
+            // 'prueba_entrega' => $this->prueba_entrega,
+            // 'tipo_carga' => $this->tipo_carga,
+            // 'dias_entrega' => $this->dias_entrega,
+            // 'ciudad' => $this->ciudad,
+            // 'fotos' => $this->fotos,
+            // 'transportadora' => $this->transportadora,
+        // );
     }
 }

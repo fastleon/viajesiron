@@ -1,8 +1,9 @@
 <?php
 
-require_once (drupal_get_path('module', 'viajesiron') . '/models/viajesiron_reporte_cumplidos_model.inc');
-require_once (drupal_get_path('module', 'viajesiron') . '/domain/viajesiron_reporte_cumplidos_entity.inc');
-require_once (drupal_get_path('module', 'viajesiron') . '/tools/simulacion_cumplidos.inc');
+module_load_include('php', 'viajesiron', 'infrastructure/models/reporte_cumplidos_model');
+module_load_include('php', 'viajesiron', 'domain/entities/reporte_cumplidos_entity');
+module_load_include('php', 'viajesiron', 'domain/session/data_control');
+module_load_include('php', 'viajesiron', 'tools/simulacion_cumplidos');
 
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
@@ -36,7 +37,7 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     }
 
     $data_control = new DataControlReportesCumplidos();
-    $data_control->guardarSesion($datos_modelo);
+    $data_control->llamarGuardarSesion($datos_modelo);
     unset($data_control);
 
     //RENDER TABLA RESULTADOS
@@ -50,8 +51,9 @@ function reporte_cumplidos_render_form($form, &$form_state) {
  */
 function tabla_resultados() {
 
-    $data_control = new DataControlReportesCumplidos();
-    $reporte_cumplidos = $data_control->cargarSesion();
+    $reporte_cumplidos = (new DataControlReportesCumplidos())->llamarCargarSesion();
+
+    // DataControlReportesCumplidos::cargarSesion();
 
     //Titulo
     $form['fs_']['titulo_tabla_'] = array(

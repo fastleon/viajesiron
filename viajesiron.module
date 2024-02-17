@@ -266,8 +266,9 @@ function generador_webpage_reporte_cumplidos() {
  * Funcion para depuracion de datos o errores dentro de las funciones callback
  * @param {varios} dato, string o similar para visualizar
  */
-function add_error($dato) {
+function add_error($dato, $clave = '') {
   $errores = variable_get('viajesiron_error',array());
+  if ($clave != '') { $errores[] = "clave: " . $clave; }
   $errores[] = $dato;
   variable_set('viajesiron_error', $errores);
 }

@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('php', 'viajesiron', 'Utils/utils');
+
 class ReporteCumplidosModel {
 
     private $whs_pedido;
@@ -41,6 +43,7 @@ class ReporteCumplidosModel {
             $this->fotos = $fotos;
         }
         
+    
     public function setWhsPedido($whs_pedido) {$this->whs_pedido = $whs_pedido;}
     public function setCreacionRemision($creacion_remision) {$this->creacion_remision = $creacion_remision;}
     public function setPlaneacionInforme($planeacion_informe) {$this->planeacion_informe = $planeacion_informe;}
@@ -102,13 +105,7 @@ class ReporteCumplidosModel {
     }
 
     public function toArray() {
-        $resultado = array();
-        $propiedades = get_class_vars(__CLASS__);
-        foreach($propiedades as $key => $value) {
-            $resultado[$key] = $this->$key;
-        }
-
-        return $resultado;
+        return Utils::toArray($this);
     }
     
 }

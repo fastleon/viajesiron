@@ -5,6 +5,9 @@ module_load_include('php', 'viajesiron', 'domain/entities/reporte_cumplidos_enti
 module_load_include('php', 'viajesiron', 'domain/session/data_control');
 module_load_include('php', 'viajesiron', 'tools/simulacion_cumplidos');
 
+//TEST
+module_load_include('php', 'viajesiron', 'infrastructure/models/transportadora_model');
+
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
  */
@@ -39,6 +42,17 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     $data_control = new DataControlReportesCumplidos();
     $data_control->llamarGuardarSesion($datos_modelo);
     unset($data_control);
+
+    //TEST
+    $dato_guardado = (new DataControlTransportadoras())->llamarCargarSesion();
+    add_error($dato_guardado,'dato');
+    $transportadora = new TransportadoraModel('1', 'Transportadora1');
+    (new DataControlTransportadoras())->llamarGuardarSesion($transportadora);
+    add_error($transportadora,'transportadora');
+    add_error($_SESSION[MINS_LAST_MOD]['viajesiron_transportadoras']);
+
+
+    //FIN TEST
 
     //RENDER TABLA RESULTADOS
     $form = array_merge($form, tabla_resultados());

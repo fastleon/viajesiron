@@ -18,38 +18,31 @@ class ConformadorModel {
         $nombre = 'autogenerado',
         $tipo_carga = '',
         $tipo_carro = '',
-        $transportadora = '',
+        $transportadora = new TransportadoraModel(),
         $adicionales = array(),
         $remisiones = array(),
         $peso_remisiones_kg = 0,
         $peso_busqueda_kg = 0,
-        $busqueda = array(),
+        $busqueda = array()
     )
     {
-        
+        $this->id = $id;
+        $this->nombre = $nombre;
+        $this->tipo_carga = $tipo_carga;
+        $this->tipo_carro = $tipo_carro;
+        $this->transportadora = $transportadora;
+        $this->adicionales = $adicionales;
+        $this->remisiones = $remisiones;
+        $this->peso_remisiones_kg = $peso_remisiones_kg;
+        $this->peso_busqueda_kg = $peso_busqueda_kg;
+        $this->busqueda = $busqueda;
     }
 
     public function datos_en_blanco() {
-    $data = array();
-    $data = array(
-        'id' => 'new',
-        'nombre' => 'autogenerado',
-        'tipo_carga' => '',
-        'tipo_carro' => '',
-        'transportadora' => '',
-        'adicionales' => array(),
-        //'id' => '',
-        //'concepto' => '',
-        //'costo' => 0,    ),
-        'remisiones' => array(),
-        'peso_remisiones_kg' => 0,
-        'peso_busqueda_kg' => 0,
-        //'remision' => '',
-        //'costo' => 0,    ),
-        'busqueda' => array(),
-    );
-    send_data($data);
-    unset($_SESSION['viajesiron_transportadoras']);
-    unset($_SESSION['viajesiron_conceptos_adicionales']);
-    unset($_SESSION['viajesrion_capacidad_carga']);
+        this->__construct();
+        (new DataControlConformador())->llamarGuardarSesion();
+        (new DataControlTransportadoras())->llamarGuardarSesion();
+        (new DataControlConceptosAdicionales())->llamarGuardarSesion();
+        (new DataControlCapacidadCarga())->llamarGuardarSesion();
+    }
 }

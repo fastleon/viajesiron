@@ -46,7 +46,7 @@ class DataControlReportesCumplidos extends DataControl {
     public function llamarGuardarSesion($data) {
         DataControl::guardarSesion($this->variable_sesion, $data);
     }
-    
+
     public function llamarCargarSesion($last_time_checked = 0) {
         $data = DataControl::cargarSesion($this->variable_sesion);
         if ( isset($_SESSION[MINS_LAST_MOD][$this->variable_sesion]) && $_SESSION[MINS_LAST_MOD][$this->variable_sesion]>$last_time_checked ) {

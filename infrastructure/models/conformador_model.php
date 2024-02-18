@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('php', 'viajesiron', 'Utils/utils');
+
 class ConformadorModel {
     
     public $id;

@@ -43,7 +43,7 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     $data_control->llamarGuardarSesion($datos_modelo);
     unset($data_control);
 
-    //TEST
+    //TEST +++++++++++++++++++++++++++++++++++++
     $dato_guardado = (new DataControlTransportadoras())->llamarCargarSesion();
     add_error($dato_guardado,'dato');
     $transportadora = new TransportadoraModel('1', 'Transportadora1');

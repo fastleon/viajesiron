@@ -42,9 +42,9 @@ class ConformadorModel {
 
     public function datos_en_blanco() {
         this->__construct();
-        (new DataControlConformador())->llamarGuardarSesion();
-        (new DataControlTransportadoras())->llamarGuardarSesion();
-        (new DataControlConceptosAdicionales())->llamarGuardarSesion();
-        (new DataControlCapacidadCarga())->llamarGuardarSesion();
+        (new DataControlConformador())->llamarGuardarDato();
+        (new DataControlTransportadoras())->llamarGuardarDato();
+        (new DataControlConceptosAdicionales())->llamarGuardarDato();
+        (new DataControlCapacidadCarga())->llamarGuardarDato();
     }
 }

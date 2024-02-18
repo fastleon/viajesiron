@@ -1,7 +1,7 @@
 <?php
 
-abstract class TransportadorasRepository {
+interface TransportadorasRepository {
 
-    abstract function getTransportadoras();
+    public function getTransportadoras();
 
 }

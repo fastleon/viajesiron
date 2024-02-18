@@ -40,17 +40,12 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     }
 
     $data_control = new DataControlReportesCumplidos();
-    $data_control->llamarGuardarSesion($datos_modelo);
+    $data_control->llamarGuardarDato($datos_modelo);
     unset($data_control);
 
     //TEST +++++++++++++++++++++++++++++++++++++
-    $dato_guardado = (new DataControlTransportadoras())->llamarCargarSesion();
-    add_error($dato_guardado,'dato');
-    $transportadora = new TransportadoraModel('1', 'Transportadora1');
-    (new DataControlTransportadoras())->llamarGuardarSesion($transportadora);
-    add_error($transportadora,'transportadora');
-    add_error($_SESSION[MINS_LAST_MOD]['viajesiron_transportadoras']);
-
+    $transportadoras = (new DataControlTransportadoras())->llamarCargarDato(0);
+    add_error($transportadoras, 'transportadoras');
 
     //FIN TEST
 
@@ -65,7 +60,7 @@ function reporte_cumplidos_render_form($form, &$form_state) {
  */
 function tabla_resultados() {
 
-    $reporte_cumplidos = (new DataControlReportesCumplidos())->llamarCargarSesion();
+    $reporte_cumplidos = (new DataControlReportesCumplidos())->llamarCargarDato();
 
     // DataControlReportesCumplidos::cargarSesion();
 

@@ -1,12 +1,13 @@
 <?php
 
 module_load_include('php', 'viajesiron', 'Utils/utils');
+module_load_include('php', 'viajesiron', 'domain\entities\transportadora_entity');
 
 class TransportadoraModel {
     private $id;
     private $nombre;
 
-    public function __construct($id, $nombre) {
+    public function __construct($id=0, $nombre='sin_nombre') {
         $this->id = $id;
         $this->nombre = $nombre;
     }
@@ -21,8 +22,10 @@ class TransportadoraModel {
         return Utils::toArray($this); 
     }
 
-    public function fromEntity($transportadora) {
-        $this->__construct($transportadora['id'], $transportadora['nombre']);
+    public function fromEntityWebservice($transportadora) {
+        //EntityWebservice -> $id; $nombre; $status;
+        $this->setId( $transportadora->getId() );
+        $this->setNombre( $transportadora->getNombre() );
         return $this;
     }
 

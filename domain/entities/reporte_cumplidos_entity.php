@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('php', 'viajesiron', 'Utils/utils');
+
 class ReporteCumplidosEntity {
     private $whs_id;
     private $fecha_creacion;

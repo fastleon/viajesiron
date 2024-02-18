@@ -17,8 +17,13 @@ class TransportadoraModel {
     public function setId($id) { $this->id = $id; }
     public function setNombre($nombre) { $this->nombre = $nombre; }
 
-    public function toArray() {
-        return Utils::toArray($this);
+    public function toArray() { 
+        return Utils::toArray($this); 
+    }
+
+    public function fromEntity($transportadora) {
+        $this->__construct($transportadora['id'], $transportadora['nombre']);
+        return $this;
     }
 
 }

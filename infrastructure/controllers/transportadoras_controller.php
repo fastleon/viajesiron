@@ -7,14 +7,14 @@ module_load_include('php', 'viajesiron', 'infrastructure\datasources\transportad
 
 class TransportadorasController  {
 
-    protected $transportadora_source;
+    protected $transportadoras_source;
 
     public function __construct() {
-        $this->transportadora_source = new TransportadorasWebserviceDatasource(); 
+        $this->transportadoras_source = new TransportadorasWebserviceDatasource(); 
     }
 
     public function getTransportadoras() {
-        return $this->transportadora_source->getTransportadoras();
+        return $this->transportadoras_source->getTransportadoras();
     }
 
     

@@ -1,12 +1,14 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'infrastructure/models/reporte_cumplidos_model');
-module_load_include('php', 'viajesiron', 'domain/entities/reporte_cumplidos_entity');
-module_load_include('php', 'viajesiron', 'domain/session/data_control');
-module_load_include('php', 'viajesiron', 'tools/simulacion_cumplidos');
+module_load_include('php', 'viajesiron', 'infrastructure\models\reporte_cumplidos_model');
+module_load_include('php', 'viajesiron', 'domain\entities\reporte_cumplidos_entity');
+module_load_include('php', 'viajesiron', 'domain\session\data_control');
+module_load_include('php', 'viajesiron', 'tools\simulacion_cumplidos');
 
 //TEST
-module_load_include('php', 'viajesiron', 'infrastructure/models/transportadora_model');
+module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
+module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
+
 
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
@@ -40,17 +42,23 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     }
 
     $data_control = new DataControlReportesCumplidos();
-    $data_control->llamarGuardarDato($datos_modelo);
+    // $data_control->llamarGuardarDato($datos_modelo);
     unset($data_control);
 
     //TEST +++++++++++++++++++++++++++++++++++++
-    $transportadoras = (new DataControlTransportadoras())->llamarCargarDato(0);
+    // (new DataControlTransportadoras())->llamarBorrarDato();
+    $transportadoras = (new DataControlTransportadoras())->llamarCargarDato(20);
     add_error($transportadoras, 'transportadoras');
+    
+    // (new DataControlCapacidadCargas())->llamarBorrarDato();
+    $capacidad_carga = new CapacidadCargaModel();
+    $capacidad_carga = (new DataControlCapacidadCargas())->llamarCargarDato('Sencillo');
+    add_error($capacidad_carga, 'capacidad carga');
 
     //FIN TEST
 
     //RENDER TABLA RESULTADOS
-    $form = array_merge($form, tabla_resultados());
+    //$form = array_merge($form, tabla_resultados());
 
     return $form;
 }

@@ -2,6 +2,11 @@
 
 //dependencias
 module_load_include('php', 'viajesiron', 'infrastructure\controllers\transportadoras_controller');
+module_load_include('php', 'viajesiron', 'infrastructure\controllers\capacidad_carga_controller');
+module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
+module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
+
+
 
 //constantes para guardar los ultimos cambios de cada variable
 define('LAST_MOD', 'viajesiron_last_modification');
@@ -10,9 +15,9 @@ define('MINS_LAST_MOD', 'viajesiron_mins_last_modification');
 //constantes de sesion para cada dato bajo control de esta clase
 define('PARAMETROS_REST', 'viajesiron_rest_viajes');
 define('TRANSPORTADORAS', 'viajesiron_transportadoras');
-define('CONFORMADOR', 'viajesiron_conformador');
+define('CAPACIDAD_CARGAS', 'viajesiron_lista_capacidad_carga');
+//define('CONFORMADOR', 'viajesiron_conformador');
 define('REPORTES_CUMPLIDOS', 'viajesiron_reportes_cumplidos');
-// define('', 'viajesiron_');
 // define('', 'viajesiron_');
 
 
@@ -26,7 +31,8 @@ abstract class DataControl {
     protected static function guardarSesion($variable_sesion, $data)  {
         $_SESSION[LAST_MOD][$variable_sesion] = REQUEST_TIME;
         $_SESSION[$variable_sesion] = $data;
-        // add_error('Guardando :' . $variable_sesion);
+        add_error('Guardando :' . $variable_sesion);
+        // add_error($data, 'dato a guardar');
     }
     
     protected static function cargarSesion($variable_sesion) {
@@ -37,17 +43,21 @@ abstract class DataControl {
         if (isset($_SESSION[$variable_sesion])) {
             $response = array();
             $all_data = $_SESSION[$variable_sesion];
-            foreach( $all_data as $single_data ) {
-                $response[] = $single_data;
+            if ( is_array($all_data) ) {
+                foreach( $all_data as $key=>$value ) {
+                    $response[$key] = $value;
+                }
+            } else {
+                $response = $all_data;
             }
         }
-        // add_error('Cargando: ' . $variable_sesion);
-        // add_error($response);
+        add_error('Cargando: ' . $variable_sesion);
+        // add_error($response, 'respuesta:');
         return ($response);
     } 
     
     protected static function borrarSesion($variable_sesion) {
-        // add_error('eliminando: ' . $variable_sesion);
+        add_error('eliminando: ' . $variable_sesion);
         unset($_SESSION[$variable_sesion]);
     }
 }
@@ -73,6 +83,8 @@ class DataControlParametrosREST extends DataControl {
     
     public function llamarBorrarDato() {
         DataControl::borrarSesion($this->variable_sesion);
+        unset($_SESSION[LAST_MOD][$this->variable_sesion]);
+        unset($_SESSION[MINS_LAST_MOD][$this->variable_sesion]);
     }
 }
 
@@ -101,7 +113,8 @@ class DataControlReportesCumplidos extends DataControl {
 }
 
 
-class DataControlTransportadoras extends DataControl{
+class DataControlTransportadoras extends DataControl 
+{
     protected $variable_sesion = TRANSPORTADORAS;
 
     public function llamarGuardarDato($data) {
@@ -112,8 +125,43 @@ class DataControlTransportadoras extends DataControl{
         $data = DataControl::cargarSesion($this->variable_sesion);
         if ( (!$data) || ($_SESSION[MINS_LAST_MOD][$this->variable_sesion] > $last_time_checked) ) {
             $data = (new TransportadorasController())->getTransportadoras();
+            if ($data) {
+                $data = $data->toArray();
+                DataControl::guardarSesion($this->variable_sesion, $data);
+            }
         }
         return ($data);
+    } 
+    
+    public function llamarBorrarDato() {
+        DataControl::borrarSesion($this->variable_sesion);
+    }
+}
+
+
+class DataControlCapacidadCargas extends DataControl 
+{
+    protected $variable_sesion = CAPACIDAD_CARGAS;
+
+    public function llamarGuardarDato($data) {
+        DataControl::guardarSesion($this->variable_sesion, $data);
+    }
+    
+    public function llamarCargarDato($nombre_carga, $last_time_checked = 15) {
+        $data = DataControl::cargarSesion($this->variable_sesion);
+        $data = ($data) ? $data : array();
+                
+        if ( !isset($data[$nombre_carga]) || ($_SESSION[MINS_LAST_MOD][$this->variable_sesion] > $last_time_checked) ) {
+            $capacidad_carga = (new CapacidadCargaController())->getCapacidadCarga($nombre_carga);
+            if ($capacidad_carga) {
+                $data[$nombre_carga] = $capacidad_carga->toArray();
+                add_error($data, 'datos antes de guardado');
+                DataControl::guardarSesion($this->variable_sesion, $data);
+            } else {
+                return false;
+            }
+        } 
+        return $data[$nombre_carga];
     } 
     
     public function llamarBorrarDato() {
@@ -141,23 +189,6 @@ class DataControlConformador extends DataControl{
 
 class DataControlConceptosAdicionales extends DataControl{
     protected $variable_sesion = 'viajesiron_conceptos_adicionales';
-    public function llamarGuardarDato($data) {
-        DataControl::guardarSesion($this->variable_sesion, $data);
-    }
-    
-    public function llamarCargarDato() {
-        $data = DataControl::cargarSesion($this->variable_sesion);
-        if ($data == array()){ $data = new ConformadorModel(); }
-        return ($data);
-    } 
-    
-    public function llamarBorrarDato() {
-        DataControl::borrarSesion($this->variable_sesion);
-    }
-}
-
-class DataControlCapacidadCarga extends DataControl{
-    protected $variable_sesion = 'viajesiron_capacidad_carga';
     public function llamarGuardarDato($data) {
         DataControl::guardarSesion($this->variable_sesion, $data);
     }

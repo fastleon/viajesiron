@@ -30,3 +30,25 @@ class TransportadoraModel {
     }
 
 }
+
+class TransportadorasModel {
+
+    private $transportadoras;
+
+    public function __construct(array $transportadoras) {
+        $datos = array();
+        foreach ($transportadoras as $transportadora) {
+            $datos[$transportadora->getId()] = $transportadora->getNombre();
+        }
+        $this->transportadoras = $datos;
+    }
+
+    public function toArray(){
+        $datos = array();
+        foreach ($this->transportadoras as $key=>$value) {
+            $datos[$key] = $value; 
+        }
+        return $datos;
+    }
+
+}

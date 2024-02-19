@@ -10,15 +10,16 @@ class TransportadorasWebserviceDatasource implements TransportadorasRepository {
         $response = false;
         $json = CallWebServiceEndpoints::call_get_transportadoras();
         if ($json) {
-            $response = array();
+            $list_transportadoras = array();
             foreach ($json['transportadoras'] as $transportadora) {
                 $entity = new TransportadoraEntityWebservice();
                 $entity = $entity->fromJson($transportadora);
                 $local_model = new TransportadoraModel();
-                $response[] = $local_model->fromEntityWebservice($entity);
+                $list_transportadoras[] = $local_model->fromEntityWebservice($entity);
             }
         }
-        return $response;
+        $transportadoras = new TransportadorasModel($list_transportadoras);
+        return $transportadoras;
     }
 
 } 

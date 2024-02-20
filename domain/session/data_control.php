@@ -6,8 +6,6 @@ module_load_include('php', 'viajesiron', 'infrastructure\controllers\capacidad_c
 module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
 module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
 
-
-
 //constantes para guardar los ultimos cambios de cada variable
 define('LAST_MOD', 'viajesiron_last_modification');
 define('MINS_LAST_MOD', 'viajesiron_mins_last_modification');
@@ -20,14 +18,14 @@ define('CAPACIDAD_CARGAS', 'viajesiron_lista_capacidad_carga');
 define('REPORTES_CUMPLIDOS', 'viajesiron_reportes_cumplidos');
 // define('', 'viajesiron_');
 
-
 /**
  * Clase para la administracion de los datos guardados en capa de sesion
  * metodos guardarSesion, cargarSesion y borrarSesion.
  * Propiedades: [LAST_MOD][$variable] -> ultima vez que fue guardada
  *              [MINS_LAST_MOD][$variable] 
  */
-abstract class DataControl {
+abstract class DataControl
+{
     protected static function guardarSesion($variable_sesion, $data)  {
         $_SESSION[LAST_MOD][$variable_sesion] = REQUEST_TIME;
         $_SESSION[$variable_sesion] = $data;
@@ -62,12 +60,12 @@ abstract class DataControl {
     }
 }
 
-
 /** 
  * Controlador de datos guardados en sesion
  * Datos para parametros de consulta en servicios REST - modulo viajes
  */
-class DataControlParametrosREST extends DataControl {
+class DataControlParametrosREST extends DataControl
+{
     protected $variable_sesion = PARAMETROS_REST;
     public function llamarGuardarDato($data) {
         DataControl::guardarSesion($this->variable_sesion, $data);
@@ -88,8 +86,8 @@ class DataControlParametrosREST extends DataControl {
     }
 }
 
-
-class DataControlReportesCumplidos extends DataControl {
+class DataControlReportesCumplidos extends DataControl
+{
     protected $variable_sesion = REPORTES_CUMPLIDOS;
     public function llamarGuardarDato($data) {
         DataControl::guardarSesion($this->variable_sesion, $data);
@@ -111,7 +109,6 @@ class DataControlReportesCumplidos extends DataControl {
         DataControl::borrarSesion($this->variable_sesion);
     }
 }
-
 
 class DataControlTransportadoras extends DataControl 
 {
@@ -138,7 +135,6 @@ class DataControlTransportadoras extends DataControl
     }
 }
 
-
 class DataControlCapacidadCargas extends DataControl 
 {
     protected $variable_sesion = CAPACIDAD_CARGAS;
@@ -155,7 +151,6 @@ class DataControlCapacidadCargas extends DataControl
             $capacidad_carga = (new CapacidadCargaController())->getCapacidadCarga($nombre_carga);
             if ($capacidad_carga) {
                 $data[$nombre_carga] = $capacidad_carga->toArray();
-                add_error($data, 'datos antes de guardado');
                 DataControl::guardarSesion($this->variable_sesion, $data);
             } else {
                 return false;
@@ -169,7 +164,8 @@ class DataControlCapacidadCargas extends DataControl
     }
 }
 
-class DataControlConformador extends DataControl{
+class DataControlConformador extends DataControl
+{
     protected $variable_sesion = 'viajesiron_conformador';
     public function llamarGuardarDato($data) {
         DataControl::guardarSesion($this->variable_sesion, $data);
@@ -187,7 +183,8 @@ class DataControlConformador extends DataControl{
 }
 //TODO: Agregar la logica de tiempo de ultima modificacion a los controles posteriores
 
-class DataControlConceptosAdicionales extends DataControl{
+class DataControlConceptosAdicionales extends DataControl
+{
     protected $variable_sesion = 'viajesiron_conceptos_adicionales';
     public function llamarGuardarDato($data) {
         DataControl::guardarSesion($this->variable_sesion, $data);

@@ -559,6 +559,8 @@ function verificar_capacidad_carga_callback ($form, &$form_state) {
     '#suffix' => '</p>',
     '#attributes' => ($data['tipo_carro'] != '') ? array('style' => 'display:none;') : array('style' => 'display:block;'),
   );
+  add_error('info-capacidad campo:');
+  add_error($form['info_capacidad']);
   return $form['info_capacidad'];
 
 }

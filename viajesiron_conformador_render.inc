@@ -71,7 +71,7 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#element_validate' => array('datos_viaje_formulario_guardar_dato'),
     '#ajax' => array(
       'callback' => 'tipo_carga_ajax_callback',
-      'wrapper' => array('tipo_carro_wrapper', 'info-capacidad'),
+      'wrapper' => array('tipo_carro_wrapper', 'info-capacidad-wrapper'),
     ),
     '#default_value' => ($data['tipo_carga'] != '') ? $data['tipo_carga'] : reset($options),
   );
@@ -97,8 +97,8 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#attributes' => array('class' => array('vi-conformador-textfield'),),
     '#element_validate' => array('datos_viaje_formulario_guardar_dato'),
     '#ajax' => array(
-      'callback' => 'verificar_capacidad_carga_callback',
-      'wrapper' => 'info-capacidad',
+      'callback' => 'ejecutar_capacidad_carga_callback',
+      'wrapper' => 'info-capacidad-wrapper',
     ),
     '#default_value' => $data['tipo_carro'],
   );
@@ -125,7 +125,18 @@ function datos_viaje_formulario_form($form, &$form_state)
   }
 
   //ADVERTENCIA Mensaje de información de la capacidad de carga
-  $form['info_capacidad'] = verificar_capacidad_carga_callback($form, $form_state);
+  $form['info_capacidad_wrapper'] = array(
+    '#type' => 'markup',
+    '#prefix' => '<div id="info-capacidad-wrapper">',
+    '#suffix' => '</div>',
+    //'#attributes' => array('style' => 'display:none;'),
+  );
+  $mensaje = verificar_capacidad_carga_callback()['#markup']; 
+  $form['info_capacidad_wrapper']['info_capacidad'] = array(
+    '#markup' => $mensaje,
+    '#prefix' => '<p>',
+    '#suffix' => '</p>',
+  );
   
   //Boton para evitar que se active algun otro al presiona la tecla enter
   $form['invisible_submit'] = array(
@@ -508,13 +519,13 @@ function tipo_carga_ajax_callback($form, $form_state)
   $form['tipo_carro_wrapper']['tipo_carro']['#value'] = reset($options);
   $_SESSION['viajesiron_data']['tipo_carro'] = reset($options); //data['tipo_carro]
 
-  $form['info_capacidad'] = verificar_capacidad_carga_callback($form, $form_state);
+  $form['info_capacidad_wrapper']['info_capacidad'] = verificar_capacidad_carga_callback($form, $form_state);
 
   return array(
     '#type' => 'ajax',
     '#commands' => array(
       ajax_command_replace("#tipo_carro_wrapper", render($form['tipo_carro_wrapper'])),
-      ajax_command_replace("#info-capacidad", render($form['info_capacidad']))  
+      ajax_command_replace("#info-capacidad-wrapper", render($form['info_capacidad_wrapper']))  
     )
   );
 
@@ -534,8 +545,9 @@ function check_valores_tipo_carro($valor_tipo_carga) {
 }
 
 
-function verificar_capacidad_carga_callback ($form, &$form_state) {
+function verificar_capacidad_carga_callback () {
   $mensaje = '';
+  $form = array();
   $data = bring_data();
   if ($data['tipo_carro'] != '') {
     $datos_capacidad_carga = consultar_capacidad_carga($data['tipo_carro']);
@@ -553,14 +565,30 @@ function verificar_capacidad_carga_callback ($form, &$form_state) {
       '@peso_viaje_kg' => $peso_viaje_kg,
     ));
   }
+  if ($data['tipo_carga'] == 'Paqueteo') { 
+    $mensaje = '';
+  }
   $form['info_capacidad'] = array(
     '#markup' => $mensaje,
-    '#prefix' => '<p id="info-capacidad">',
+    '#prefix' => '<p>',
     '#suffix' => '</p>',
-    '#attributes' => ($data['tipo_carro'] != '') ? array('style' => 'display:none;') : array('style' => 'display:block;'),
   );
+  add_error('info-capacidad campo:');
+  add_error($form['info_capacidad']['#markup']);
   return $form['info_capacidad'];
 
+}
+
+function ejecutar_capacidad_carga_callback ($form, &$form_state) {
+  $form['info_capacidad_wrapper']['info_capacidad'] = verificar_capacidad_carga_callback();
+  add_error('testing');
+  add_error($form['info_capacidad_wrapper']);
+  return array(
+    '#type' => 'ajax',
+    '#commands' => array(
+      ajax_command_replace("#info-capacidad-wrapper", render($form['info_capacidad_wrapper']))  
+    )
+  );
 }
 
 /**

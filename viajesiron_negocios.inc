@@ -221,8 +221,8 @@ function consultar_capacidad_carga($nombre_carga) {
         $decoded_data = call_consultar_carga($nombre_carga);
         if ($decoded_data) {
             $response = array(
-                'carga_maxima' => $decoded_data['cargaBO']['cargaMaxima'],
-                'carga_minima' => $decoded_data['cargaBO']['cargaMinima'],
+                'carga_maxima' => isset($decoded_data['cargaBO']['cargaMaxima']) ? $decoded_data['cargaBO']['cargaMaxima'] : 0,
+                'carga_minima' => isset($decoded_data['cargaBO']['cargaMinima']) ? $decoded_data['cargaBO']['cargaMinima'] : 0,
             );
             $_SESSION['viajesrion_capacidad_carga'][$nombre_carga] = $response;
         } else {

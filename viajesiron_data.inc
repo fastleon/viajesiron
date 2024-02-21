@@ -147,6 +147,8 @@ function convertir_reporte_to_edit($data_reporte) {
   $edit_data['tipo_carro'] = $data_reporte['tipo_carro'];
   $edit_data['transportadora'] = $data_reporte['transportadora']['id'];
   //$edit_data['transportadora']['nombre'] = $data_reporte['transportadora']['nombre'];
+
+  $edit_data['peso_remisiones_kg'] = $data_reporte['peso_total_flete'];
   
   $edit_data['costo_total_flete'] = $data_reporte['costo_total_flete'];
   $edit_data['peso_total_flete'] = $data_reporte['peso_total_flete'];

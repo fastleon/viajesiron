@@ -80,6 +80,7 @@ function viajesiron_menu() {
     'type' => MENU_NORMAL_ITEM,
     'page arguments' => array(1),
   );
+
   $items['viajes/busqueda'] = array(
     'title' => 'Busqueda de Viajes',
     'description' => 'Busqueda de Viajes - Toxement',
@@ -87,6 +88,7 @@ function viajesiron_menu() {
     'access arguments' => array('usuario modulo viajes'),
     'type' => MENU_NORMAL_ITEM,
   );
+
   $items['viajes/editar'] = array(
     'title' => 'Editar Viajes',
     'description' => 'Edición de Viajes - Toxement',
@@ -94,6 +96,7 @@ function viajesiron_menu() {
     'access arguments' => array('administrador modulo viajes'),
     'type' => MENU_NORMAL_ITEM,
   );
+
   $items['busqueda/temporal'] = array(
     'title' => 'REPORTE DE CUMPLIDOS',
     'description' => 'Reporte de Cumplidos',
@@ -101,7 +104,9 @@ function viajesiron_menu() {
     'access arguments' => array('administrador modulo viajes'),
     'type' => MENU_NORMAL_ITEM,
   );
+
   return $items;
+
 }
 
 /**

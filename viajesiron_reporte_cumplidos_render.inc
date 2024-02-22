@@ -9,6 +9,67 @@ module_load_include('php', 'viajesiron', 'tools\simulacion_cumplidos');
 module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
 module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
 
+class Campos_formulario {
+    protected $textfields;
+    protected $datepickers;
+
+    public function __construct() {
+        $this->textfields = array(
+            'remision' => array(
+                'nombre_campo' =>'opcion_remision',
+                'fieldset_text' => 'REMISION',
+                'label' => 'Remision :',
+            ),
+            'ciudad_origen' => array(
+                'nombre_campo' =>'opcion_ciudad_origen',
+                'fieldset_text' => 'CIUDAD DE ORIGEN',
+                'label' => 'Ciudad de Origen :',
+            ),
+            'ciudad_destino' => array(
+                'nombre_campo' =>'opcion_ciudad_destino',
+                'fieldset_text' => 'CIUDAD DE DESTINO',
+                'label' => 'Ciudad de Destino :',
+            ),
+            'tipo_carga' => array(
+                'nombre_campo' =>'opcion_tipo_carga',
+                'fieldset_text' => 'TIPO DE CARGA',
+                'label' => 'Tipo de Carga :',
+            ),
+            'transportadora' => array(
+                'nombre_campo' =>'opcion_transportadora',
+                'fieldset_text' => 'TRANSPORTADORA',
+                'label' => 'Transportadora :',
+            ),
+        );
+    
+        $this->datepickers = array(
+            'fecha_creacion' => array(
+                'nombre_campo' => 'fecha_creacion',
+                'fieldset_text' => 'FECHA DE CREACION',
+            ),
+            'fecha_planeacion' => array(
+                'nombre_campo' => 'opcion_fecha_planeacion',
+                'fieldset_text' => 'FECHA DE PLANEACIÓN',
+            ),
+            'fecha_estimada' => array(
+                'nombre_campo' => 'opcion_fecha_estimada',
+                'fieldset_text' => 'FECHA ESTIMADA',
+            ),
+            'fecha_entrega' => array(
+                'nombre_campo' => 'opcion_fecha_entrega',
+                'fieldset_text' => 'FECHA DE ENTREGA',
+            ),
+        );
+    }
+
+    public function getTextfields () {
+        return $this->textfields;
+    }
+    public function getDatepickers () {
+        return $this->datepickers;
+    }
+
+}
 
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
@@ -16,7 +77,7 @@ module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_
 
 function reporte_cumplidos_render_form($form, &$form_state) {
     //Llamar CSS
-    drupal_add_css(drupal_get_path('module', 'viajesiron') . '/css/viajesiron.css');
+    drupal_add_css(drupal_get_path('module', 'viajesiron') . '/css/vi_reportes_cumplidos.css');
     //Configurar como colombia el formato de moneda
     setlocale(LC_MONETARY, 'es_CO');
 
@@ -41,27 +102,192 @@ function reporte_cumplidos_render_form($form, &$form_state) {
         $datos_modelo[] = $temp_cumplido_model;
     }
 
-    $data_control = new DataControlReportesCumplidos();
-    // $data_control->llamarGuardarDato($datos_modelo);
-    unset($data_control);
+    //Guardar datos modelo en sesion
+    (new DataControlReportesCumplidos())->llamarGuardarDato($datos_modelo);
 
     //TEST +++++++++++++++++++++++++++++++++++++
     // (new DataControlTransportadoras())->llamarBorrarDato();
-    $transportadoras = (new DataControlTransportadoras())->llamarCargarDato(20);
-    add_error($transportadoras, 'transportadoras');
+    // $transportadoras = (new DataControlTransportadoras())->llamarCargarDato(20);
+    // add_error($transportadoras, 'transportadoras');
     
     // (new DataControlCapacidadCargas())->llamarBorrarDato();
-    $capacidad_carga = new CapacidadCargaModel();
-    $capacidad_carga = (new DataControlCapacidadCargas())->llamarCargarDato('Sencillo');
-    add_error($capacidad_carga, 'capacidad carga');
+    // $capacidad_carga = new CapacidadCargaModel();
+    // $capacidad_carga = (new DataControlCapacidadCargas())->llamarCargarDato('Sencillo');
+    // add_error($capacidad_carga, 'capacidad carga');
 
     //FIN TEST
 
+    //Llamar opciones de los campos
+    $campos = new Campos_formulario();
+
+    // "remision":"",
+    $form = array_merge($form, opcion_remision($campos->getTextfields()['remision']));
+
+	// "fechaCreacionInicial":"18/02/2024",// "fechaCreacionFinal":"",
+	$form = array_merge($form, opcion_fecha_creacion($campos->getDatepickers()['fecha_creacion']));
+    
+    // "fechaPlaneacionInicial":"",// "fechaPlaneacionFinal":"",
+    $form = array_merge($form, opcion_fecha_planeacion($campos->getDatepickers()['fecha_planeacion']));
+    
+    // "fechaEstimadaInicial":"",// "fechaEstimadaFinal":"",
+    $form = array_merge($form, opcion_fecha_estimada($campos->getDatepickers()['fecha_estimada']));
+
+	// "fechaEntregaInicial":"",// "fechaEntregaFinal":"",
+    $form = array_merge($form, opcion_fecha_entrega($campos->getDatepickers()['fecha_entrega']));
+
+	// "ciudadOrigen":"",
+    $form = array_merge($form, opcion_ciudad_origen($campos->getTextfields()['ciudad_origen']));
+
+	// "ciudadDestino":"",
+    $form = array_merge($form, opcion_ciudad_destino($campos->getTextfields()['ciudad_destino']));
+
+	// "tipoDeCarga":"Paqueteo",
+    $form = array_merge($form, opcion_tipo_carga($campos->getTextfields()['tipo_carga']));
+
+	// "transportadora":""
+    $form = array_merge($form, opcion_transportadora($campos->getTextfields()['transportadora']));
+
+    //Boton BUSCAR
+    $form = array_merge($form, crear_boton_buscar());
+    
+    //Boton LIMPIAR
+    $form = array_merge($form, crear_boton_limpiar());
+
+
     //RENDER TABLA RESULTADOS
-    //$form = array_merge($form, tabla_resultados());
+    $form = array_merge($form, tabla_resultados());
 
     return $form;
 }
+
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA remision
+ */
+function opcion_remision($textfield) {
+
+    $form = crear_texfield($textfield);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA fecha_creacion
+ */
+function opcion_fecha_creacion($datepicker) {
+
+    $form = crear_date_pickers($datepicker);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA fecha_planeacion
+ */
+function opcion_fecha_planeacion($datepicker) {
+
+    $form = crear_date_pickers($datepicker);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA fecha_estimada
+ */
+function opcion_fecha_estimada($datepicker) {
+
+    $form = crear_date_pickers($datepicker);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA fecha_entrega
+ */
+function opcion_fecha_entrega($datepicker) {
+    
+    $form = crear_date_pickers($datepicker);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA ciudad_origen
+ */
+function opcion_ciudad_origen($textfield) {
+    
+    $form = crear_texfield($textfield);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA ciudad_destino
+ */
+function opcion_ciudad_destino($textfield) {
+
+    $form = crear_texfield($textfield);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA tipo_carga
+ */
+function opcion_tipo_carga($textfield) {
+ 
+    $form = crear_texfield($textfield);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA EL CAMPO DE BUSQUEDA transportadora
+ */
+function opcion_transportadora($textfield) {
+ 
+    $form = crear_texfield($textfield);
+    //TODO: Llamar datos de busquedas anteriores
+    return $form;
+
+}
+
+/**
+ * RENDER PARA BOTON DE BUSCAR
+ */
+function crear_boton_buscar() {
+
+    $form['submit_buscar'] = array(
+        '#name' => 'Buscar',
+        '#type' => 'submit',
+        '#value' => t('Buscar'),
+    );
+    return array();
+
+}
+
+/**
+ * RENDER PARA BOTON DE LIMPIAR
+ */
+function crear_boton_limpiar() {
+
+    $form['submit_limpiar'] = array(
+        '#name' => 'Limpiar', 
+        '#type' => 'submit',
+        '#value' => t('Limpiar'),
+    );
+    return array();
+
+}
+
 
 /**
  * RENDER para TABLA RESULTADOS
@@ -111,5 +337,97 @@ function tabla_resultados() {
         ),
     );
 
+    return $form;
+}
+
+
+/**OPCIONES FUERA DEL RENDER */
+function crear_date_pickers($options) {
+    $nombre_campo = $options['nombre_campo'];
+    $fieldset = $nombre_campo . '_fieldset';
+    $fieldset_text = $options['fieldset_text'];
+    $contenedor = $nombre_campo . '_wrapper'; 
+    $fecha_inicial = $nombre_campo . '_inicial';
+    $fecha_final = $nombre_campo . '_final';
+    $form[$fieldset] = array(
+        '#type' => 'fieldset',
+        '#title' => t($fieldset_text),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+    );
+    $form[$fieldset][$contenedor] = array(
+        '#type' => 'markup',
+        '#prefix' => '<div class="date-picker-container", id="' . $contenedor .'">',
+        '#suffix' => '</div>'
+    );
+    //FECHA INICIAL
+    $form[$fieldset][$contenedor][$fecha_inicial] = array(
+        '#type' => 'date_popup',
+        '#timepicker' => 'timepicker',
+        '#title' => '<h3>' . t('Fecha Inicial Creación: ') . '</h3>',
+        //'#description' => t('rango inferior de la busqueda'),
+        '#date_format' => 'd-m-Y',
+        '#required' => FALSE,
+        '#date_timezone' => date_default_timezone(),
+        '#date_label_position' => 'invisible',
+        '#datepicker_options' => array(
+            'maxDate' =>  0, //hoy
+        ),
+        '#attributes' => array(
+            'class' => array('vi-busqueda-timepicker'),
+        ),
+    );
+    //TODO: llamar dato anterior, si hubo uno busqueda
+
+    //FECHA FINAL
+    $form[$fieldset][$contenedor][$fecha_final] = array(
+        '#type' => 'date_popup',
+        '#timepicker' => 'timepicker',
+        '#title' => '<h3>' . t('Fecha Final Creación: ') . '</h3>',
+        //'#description' => t('rango superior de la busqueda'),
+        '#date_format' => 'd-m-Y',
+        '#required' => FALSE,
+        '#date_timezone' => date_default_timezone(),
+        '#date_label_position' => 'invisible',
+        '#datepicker_options' => array(
+            //'minDate' => isset($form['fecha_inicial']) ? $form_state['values']['fecha_inicial'] : 0, //hoy
+            'maxDate' => 0,
+        ),
+        '#attributes' => array(
+            'class' => array('vi-busqueda-timepicker'),
+        ),
+    );
+    //TODO: llamar dato anterior, si hubo uno busqueda
+
+    return $form;
+}
+
+function crear_texfield($options) {
+    $nombre_campo = $options['nombre_campo'];
+    $fieldset = $nombre_campo . '_fieldset';
+    $fieldset_text = $options['fieldset_text'];
+    $label = $options['label'];
+    $contenedor = $nombre_campo . '_wrapper'; 
+    $form[$fieldset] = array(
+        '#type' => 'fieldset',
+        '#title' => t($fieldset_text),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+    );
+    $form[$fieldset][$contenedor] = array(
+        '#type' => 'markup',
+        '#prefix' => '<div id="' . $contenedor . '">',
+        '#suffix' => '</div>'
+    );
+    $form[$fieldset][$contenedor][$nombre_campo] = array(
+        '#type' => 'textfield',
+        '#title' => '<h3>' . t($label) . '</h3>',
+        '#size' => 20,
+        '#attributes' => array(
+            '#required' => FALSE,
+            //'class' => array('vi-opcion-remision-textfield'),
+        ),
+    );
+    //TODO: llamar dato anterior, si hubo uno busqueda
     return $form;
 }

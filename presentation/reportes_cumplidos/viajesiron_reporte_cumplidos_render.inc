@@ -1,75 +1,6 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'infrastructure\models\reporte_cumplidos_model');
-module_load_include('php', 'viajesiron', 'domain\entities\reporte_cumplidos_entity');
-module_load_include('php', 'viajesiron', 'domain\session\data_control');
-module_load_include('php', 'viajesiron', 'tools\simulacion_cumplidos');
-
-//TEST
-module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
-module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
-
-class Campos_formulario {
-    protected $textfields;
-    protected $datepickers;
-
-    public function __construct() {
-        $this->textfields = array(
-            'remision' => array(
-                'nombre_campo' =>'opcion_remision',
-                'fieldset_text' => 'REMISION',
-                'label' => 'Remision :',
-            ),
-            'ciudad_origen' => array(
-                'nombre_campo' =>'opcion_ciudad_origen',
-                'fieldset_text' => 'CIUDAD DE ORIGEN',
-                'label' => 'Ciudad de Origen :',
-            ),
-            'ciudad_destino' => array(
-                'nombre_campo' =>'opcion_ciudad_destino',
-                'fieldset_text' => 'CIUDAD DE DESTINO',
-                'label' => 'Ciudad de Destino :',
-            ),
-            'tipo_carga' => array(
-                'nombre_campo' =>'opcion_tipo_carga',
-                'fieldset_text' => 'TIPO DE CARGA',
-                'label' => 'Tipo de Carga :',
-            ),
-            'transportadora' => array(
-                'nombre_campo' =>'opcion_transportadora',
-                'fieldset_text' => 'TRANSPORTADORA',
-                'label' => 'Transportadora :',
-            ),
-        );
-    
-        $this->datepickers = array(
-            'fecha_creacion' => array(
-                'nombre_campo' => 'fecha_creacion',
-                'fieldset_text' => 'FECHA DE CREACION',
-            ),
-            'fecha_planeacion' => array(
-                'nombre_campo' => 'opcion_fecha_planeacion',
-                'fieldset_text' => 'FECHA DE PLANEACIÓN',
-            ),
-            'fecha_estimada' => array(
-                'nombre_campo' => 'opcion_fecha_estimada',
-                'fieldset_text' => 'FECHA ESTIMADA',
-            ),
-            'fecha_entrega' => array(
-                'nombre_campo' => 'opcion_fecha_entrega',
-                'fieldset_text' => 'FECHA DE ENTREGA',
-            ),
-        );
-    }
-
-    public function getTextfields () {
-        return $this->textfields;
-    }
-    public function getDatepickers () {
-        return $this->datepickers;
-    }
-
-}
+module_load_include('php', 'viajesiron', 'presentation\reportes_cumplidos\dependencies');
 
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
@@ -82,12 +13,6 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     setlocale(LC_MONETARY, 'es_CO');
 
     //traer información formulario
-
-
-    //Titulo
-    $form['titulo'] = array(
-        '#markup' => '<h2>' . t('REPORTE REMISIONES CUMPLIDAS :') . '</h2>', //@nombre.', array('@nombre' => $data_reporte['nombre_viaje'])) . '</h2>',
-    );
 
     //RENDER FORMULARIO BUSQUEDA
 
@@ -264,28 +189,24 @@ function opcion_transportadora($textfield) {
  * RENDER PARA BOTON DE BUSCAR
  */
 function crear_boton_buscar() {
-
     $form['submit_buscar'] = array(
         '#name' => 'Buscar',
         '#type' => 'submit',
         '#value' => t('Buscar'),
     );
-    return array();
-
+    return $form;
 }
 
 /**
  * RENDER PARA BOTON DE LIMPIAR
  */
 function crear_boton_limpiar() {
-
     $form['submit_limpiar'] = array(
         '#name' => 'Limpiar', 
         '#type' => 'submit',
         '#value' => t('Limpiar'),
     );
-    return array();
-
+    return $form;
 }
 
 
@@ -300,7 +221,7 @@ function tabla_resultados() {
 
     //Titulo
     $form['fs_']['titulo_tabla_'] = array(
-        '#markup' => '<h5>' . t(' resultados :') . '</h5>',
+        '#markup' => '<h5>' . t(' RESULTADOS DE LA BUSQUEDA :') . '</h5>',
     );
 
     //header
@@ -339,7 +260,6 @@ function tabla_resultados() {
 
     return $form;
 }
-
 
 /**OPCIONES FUERA DEL RENDER */
 function crear_date_pickers($options) {

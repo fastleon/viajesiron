@@ -63,6 +63,7 @@ abstract class DataControl
 /** 
  * Controlador de datos guardados en sesion
  * Datos para parametros de consulta en servicios REST - modulo viajes
+ * NO SE ENCUENTRA EN USA ACTUALMENTE -> NO EN _SESSION, ver modulo admin
  */
 class DataControlParametrosREST extends DataControl
 {

@@ -10,7 +10,7 @@ abstract class CallViajesEndpoints {
      * tomar los parametros del servidor guardados en la configuracion del modulo Configuracion -> Viajes Iron Module
     */
     private static function load_server_parameters() {
-        $parametros_rest = (new DataControlServiciosREST())->llamarCargarDato(60);
+        $parametros_rest = (new DataControlParametrosREST())->llamarCargarDato(60);
         //tomar parametros de los datos guardados
         $server_url = $parametros_rest['server_ip_add'];
         $server_port = $parametros_rest['server_port'];
@@ -21,6 +21,7 @@ abstract class CallViajesEndpoints {
         $endpoint_get_consultar_carga = $parametros_rest['get_consultar_carga'];
         $endpoint_post_editar_viaje = $parametros_rest['post_editar_viaje'];
         $endpoint_post_eliminar_viaje = $parametros_rest['post_delete_viaje'];
+        $endpoint_post_reportes_cumplidos = $parametros_rest['post_reportes_cumplidos'];
         
         //generar paths
         if ($server_url == ''){
@@ -36,6 +37,7 @@ abstract class CallViajesEndpoints {
                 'url_get_consultar_carga' => $server_path . '/' . $endpoint_get_consultar_carga,
                 'url_post_editar_viaje' => $server_path . '/' . $endpoint_post_editar_viaje,
                 'url_post_eliminar_viaje' => $server_path . '/' . $endpoint_post_eliminar_viaje,
+                'url_post_reportes_cumplidos' => $server_path . '/' . $endpoint_post_reportes_cumplidos,
             );
             return $response;
         }
@@ -128,7 +130,7 @@ abstract class CallViajesEndpoints {
      * @param string json $proccessed_data
      * @return array response, FALSE si no hay exito
      */
-    static function call_post_crear_viaje_service($proccessed_data){
+    static function call_post_crear_viaje_service($proccessed_data) {
         $params = array(
             'propiedad' => 'url_post_viaje',
             'method' => 'POST',
@@ -144,7 +146,7 @@ abstract class CallViajesEndpoints {
      * @param string json $proccessed_data
      * @return array response, FALSE si no hay exito
      */
-    static function call_post_editar_viaje_service($proccessed_data){
+    static function call_post_editar_viaje_service($proccessed_data) {
         $params = array(
             'propiedad' => 'url_post_editar_viaje',
             'method' => 'POST',
@@ -160,7 +162,7 @@ abstract class CallViajesEndpoints {
      * @param long $id
      * @return array response, FALSE si no hay exito
      */
-    static function call_post_eliminar_viaje_por_id($id){
+    static function call_post_eliminar_viaje_por_id($id) {
         $params = array(
             'propiedad' => 'url_post_eliminar_viaje',
             'method' => 'POST',
@@ -170,5 +172,19 @@ abstract class CallViajesEndpoints {
         return self::llamar_servicio_viajesiron($params);
     }
 
+    /**
+     * Llama al servicio post para reportes cumplidos
+     * @param mixed parametros de busqueda
+     * @return array response, FALSE si no hay exito
+     */
+    static function call_post_reportes_cumplidos($proccessed_data) {
+        $params = array(
+            'propiedad' => 'url_post_reportes_cumplidos',
+            'method' => 'POST',
+            'timeout' => 240,
+            'data' => $proccessed_data,
+        );
+        return self::llamar_servicio_viajesiron($params);
+    }
     
 }

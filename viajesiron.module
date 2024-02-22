@@ -26,7 +26,7 @@ function viajesiron_init(){
   include_once 'viajesiron_negocios.inc';
   include_once 'viajesiron_servicios.inc';
   include_once 'viajesiron_reporte_render.inc';
-  include_once 'viajesiron_reporte_cumplidos_render.inc';
+  include_once 'presentation\reportes_cumplidos\viajesiron_reporte_cumplidos_render.inc';
   module_load_include('inc', 'entity', 'includes/entity.query');
   return;
 }
@@ -98,8 +98,8 @@ function viajesiron_menu() {
   );
 
   $items['busqueda/temporal'] = array(
-    'title' => 'REPORTE DE CUMPLIDOS',
-    'description' => 'Reporte de Cumplidos',
+    'title' => 'BUSQUEDA REPORTES CUMPLIDOS',
+    'description' => 'Reportes Cumplidos',
     'page callback' => 'generador_webpage_reporte_cumplidos',
     'access arguments' => array('administrador modulo viajes'),
     'type' => MENU_NORMAL_ITEM,
@@ -253,6 +253,8 @@ function generador_webpage_edicion() {
  * Callback para generar el formulario de busquedas de CUMPLIDOS
  */
 function generador_webpage_reporte_cumplidos() {
+
+  module_load_include('inc', 'viajesiron', 'presentation\reportes_cumplidos\viajesiron_reporte_cumplidos_render');
 
   //render esttructura de la pagina
   $build = array(

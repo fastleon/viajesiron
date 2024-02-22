@@ -8,7 +8,6 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
         $last_state = $_SESSION['viajesiron_busqueda']['state'];
     }
 
-
     //Cargar las opciones de busqueda
     $options = array(
         'opcion1' => 'Por Transportadora - Fechas',

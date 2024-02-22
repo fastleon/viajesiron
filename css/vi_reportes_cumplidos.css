@@ -1,0 +1,13 @@
+.form-item label {
+    display: inline-block;
+    width: 180px;
+}
+
+.vi-busqueda-timepicker {
+    display: inline-block !important;
+    margin-right: 10px; 
+}
+
+.date-picker-container {
+    display: inline-flex;
+}

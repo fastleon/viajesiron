@@ -23,7 +23,7 @@ function reporte_cumplidos_render_form($form, &$form_state) {
 
 
     //Guardar datos modelo en sesion
-    // (new DataControlReportesCumplidos())->llamarGuardarDato($datos_modelo);
+    // (new DataControlReportesCumplidosResultados())->llamarGuardarDato($datos_modelo);
 
     //TEST +++++++++++++++++++++++++++++++++++++
     // (new DataControlTransportadoras())->llamarBorrarDato();
@@ -34,40 +34,45 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     // $capacidad_carga = new CapacidadCargaModel();
     // $capacidad_carga = (new DataControlCapacidadCargas())->llamarCargarDato('Sencillo');
     // add_error($capacidad_carga, 'capacidad carga');
-    // $test = new FiltroBusquedaReportesCumplidosEntity();
-    // add_error($test, '+++++');
+    // $test = (new DataControlReportesCumplidosResultados())->llamarCargarDato();
+    // add_error($test, 'dato al cargar');
+    // $test2 = (new ReportesCumplidosController())->getReportesCumplidos('');
+    // add_error($test2, 'test2');
 
     //FIN TEST
 
     //Llamar opciones de los campos
     $campos = new Campos_formulario();
+    //cargar estado del formulario
+    $last_values = (new DataControlReportesCumplidosFormulario())->llamarCargarDato();
+    add_error($last_values, 'valores defecto');
+    $campos->setDefaultValues($last_values);
 
-    // "remision":"",
-    $form = array_merge($form, opcion_remision($campos->getTextfields()['remision']));
+    $form = array_merge($form, $campos->crear_texfield('remision'));
 
 	// "fechaCreacionInicial":"18/02/2024",// "fechaCreacionFinal":"",
-	$form = array_merge($form, opcion_fecha_creacion($campos->getDatepickers()['fecha_creacion']));
-    
+    $form = array_merge($form, $campos->crear_date_pickers('fecha_creacion'));
+
     // "fechaPlaneacionInicial":"",// "fechaPlaneacionFinal":"",
-    $form = array_merge($form, opcion_fecha_planeacion($campos->getDatepickers()['fecha_planeacion']));
+    $form = array_merge($form, $campos->crear_date_pickers('fecha_planeacion'));
     
     // "fechaEstimadaInicial":"",// "fechaEstimadaFinal":"",
-    $form = array_merge($form, opcion_fecha_estimada($campos->getDatepickers()['fecha_estimada']));
+    $form = array_merge($form, $campos->crear_date_pickers('fecha_estimada'));
 
 	// "fechaEntregaInicial":"",// "fechaEntregaFinal":"",
-    $form = array_merge($form, opcion_fecha_entrega($campos->getDatepickers()['fecha_entrega']));
+    $form = array_merge($form, $campos->crear_date_pickers('fecha_entrega'));
 
 	// "ciudadOrigen":"",
-    $form = array_merge($form, opcion_ciudad_origen($campos->getTextfields()['ciudad_origen']));
+    $form = array_merge($form, $campos->crear_texfield('ciudad_origen'));
 
 	// "ciudadDestino":"",
-    $form = array_merge($form, opcion_ciudad_destino($campos->getTextfields()['ciudad_destino']));
+    $form = array_merge($form, $campos->crear_texfield('ciudad_destino'));
 
 	// "tipoDeCarga":"Paqueteo",
-    $form = array_merge($form, opcion_tipo_carga($campos->getTextfields()['tipo_carga']));
+    $form = array_merge($form, $campos->crear_texfield('tipo_carga'));
 
 	// "transportadora":""
-    $form = array_merge($form, opcion_transportadora($campos->getTextfields()['transportadora']));
+    $form = array_merge($form, $campos->crear_texfield('transportadora'));
 
     //Boton BUSCAR
     $form = array_merge($form, crear_boton_buscar());
@@ -82,6 +87,9 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     return $form;
 }
 
+/**
+ * RENDER UN TEXFIELD
+ */
 
 /**
  * RENDER PARA EL CAMPO DE BUSQUEDA remision
@@ -210,13 +218,12 @@ function crear_boton_limpiar() {
     return $form;
 }
 
-
 /**
  * RENDER para TABLA RESULTADOS
  */
 function tabla_resultados() {
 
-    $reportes_encontrados = (new DataControlReportesCumplidos())->llamarCargarDato();
+    $reportes_encontrados = (new DataControlReportesCumplidosResultados())->llamarCargarDato();
 
     // DataControlReportesCumplidos::cargarSesion();
 
@@ -323,7 +330,7 @@ function crear_date_pickers($options) {
     return $form;
 }
 
-function crear_texfield($options) {
+function crear_texfield($options, $default = '') {
     $nombre_campo = $options['nombre_campo'];
     $fieldset = $nombre_campo . '_fieldset';
     $fieldset_text = $options['fieldset_text'];
@@ -333,7 +340,7 @@ function crear_texfield($options) {
         '#type' => 'fieldset',
         '#title' => t($fieldset_text),
         '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
+        '#collapsed' => empty($default) ? TRUE : FALSE,
     );
     $form[$fieldset][$contenedor] = array(
         '#type' => 'markup',
@@ -348,6 +355,7 @@ function crear_texfield($options) {
             '#required' => FALSE,
             //'class' => array('vi-opcion-remision-textfield'),
         ),
+        '#default_value' => $default,
     );
     //TODO: llamar dato anterior, si hubo uno busqueda
     return $form;

@@ -22,4 +22,12 @@ class Utils {
         }
     }
 
+    public static function dateToYMD($date) {
+        if (!empty($date)) {
+            return ( date("Y-m-d", strtotime($date)) );
+        } else {
+            return false;
+        }
+    }
+
 }

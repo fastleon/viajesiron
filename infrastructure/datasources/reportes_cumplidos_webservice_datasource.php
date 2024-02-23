@@ -10,26 +10,12 @@ class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosReposito
 
     public function getReportesCumplidos($filter_data)
     {
-        //BORRAR+++++
-        $test_data =  '{
-            "remision":"",
-            "fechaCreacionInicial":"",
-            "fechaCreacionFinal":"",
-            "fechaPlaneacionInicial":"",
-            "fechaPlaneacionFinal":"",
-            "fechaEstimadaInicial":"",
-            "fechaEstimadaFinal":"",
-            "fechaEntregaInicial":"",
-            "fechaEntregaFinal":"",
-            "ciudadOrigen":"",
-            "ciudadDestino":"",
-            "tipoDeCarga":"Paqueteo",
-            "transportadora":""
-        }'; //+++++
+        $filter_data = json_encode($filter_data->toArray());
         $json = CallViajesEndpoints::call_post_reportes_cumplidos($filter_data);
         //TEST +++++
-        //$json = json_decode(mockup_cumplidos2());
-        //FIN TEST
+        $json = mockup_cumplidos2();
+        $json = json_decode($json, true);// +++++
+        
         $list_reporte_cumplido = array();
         if ($json) {
             foreach ($json['resultados'] as $resultado) {
@@ -42,18 +28,6 @@ class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosReposito
         }
         return $reportes_cumplidos;
     }
-
-    // private function getMockup() {
-    //     // Llamado de data simulacion
-    //     $json = mockup_cumplidos2();
-    //     $datos = json_decode($json);
-    //     $datos_modelo = array();
-    //     foreach ($datos as $dato) {
-    //         $temp_cumplido_model = new ReporteCumplidoModel();
-    //         $temp_cumplido_model->fromEntityWebservice($dato);
-    //         $datos_modelo[] = $temp_cumplido_model;
-    //     }
-    // }
 
 }
 

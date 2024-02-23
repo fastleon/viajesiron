@@ -10,23 +10,23 @@ abstract class CallViajesEndpoints {
      * tomar los parametros del servidor guardados en la configuracion del modulo Configuracion -> Viajes Iron Module
     */
     private static function load_server_parameters() {
-        $parametros_rest = (new DataControlParametrosREST())->llamarCargarDato(60);
+        $parametros_rest = (new DataControlParametrosREST())->llamarCargarDato();
         //tomar parametros de los datos guardados
-        $server_url = $parametros_rest['server_ip_add'];
+        $server_url = $parametros_rest['server_ip_address'];
         $server_port = $parametros_rest['server_port'];
         $service_url = $parametros_rest['server_url'];
         $endpoint_post_crear_viaje = $parametros_rest['post_viaje'];
+        $endpoint_post_reportes_cumplidos = $parametros_rest['post_reportes_cumplidos'];
+        $endpoint_post_eliminar_viaje = $parametros_rest['post_delete_viaje'];
+        $endpoint_post_editar_viaje = $parametros_rest['post_edit_viaje'];
         $endpoint_get_viaje_por_id = $parametros_rest['get_viaje_por_id'];
         $endpoint_get_remisiones_sin_viaje = $parametros_rest['get_remisiones_sin_viaje'];
         $endpoint_get_consultar_carga = $parametros_rest['get_consultar_carga'];
-        $endpoint_post_editar_viaje = $parametros_rest['post_editar_viaje'];
-        $endpoint_post_eliminar_viaje = $parametros_rest['post_delete_viaje'];
-        $endpoint_post_reportes_cumplidos = $parametros_rest['post_reportes_cumplidos'];
         
         //generar paths
         if ($server_url == ''){
             drupal_set_message(t('No han sido configurados los parametros del servidor'), 'error');
-            return FALSE;
+            return false;
         } else {
             $server_path = $server_url . ':' . $server_port . '/' . $service_url;
             $response = array(
@@ -43,14 +43,14 @@ abstract class CallViajesEndpoints {
         }
     }
 
-/**
+    /**
      * Llamado a servicios propios del modulo VIAJESIRON
      * @param array params {propiedad, metodo, timeout, data}
      * @return array decoded json
     */
     private static function llamar_servicio_viajesiron($params) {
         
-        $server_params = load_server_parameters();
+        $server_params = self::load_server_parameters();
         $url = $server_params[$params['propiedad']];
         if (($params['method'] == 'GET') && ($params['parametros'])) {
             $url = $url . '?' . http_build_query($params['parametros']); 
@@ -84,46 +84,6 @@ abstract class CallViajesEndpoints {
         return $decoded_response;
 
     }
-
-    /**
-     * Llamado al servicio GET para solicitar viaje por id
-     */
-    static function call_get_viaje_por_id($viaje_id) {
-        $params = array(
-            'propiedad' => 'url_get_viaje_por_id',
-            'parametros' => array('id' => $viaje_id),
-            'method' => 'GET',
-        );
-        return self::llamar_servicio_viajesiron($params);
-    }
-
-
-    /**
-     * Llamado al servicio GET para solicitar remisiones sin viaje
-     */
-    static function call_get_remisiones_sin_viaje() {
-        $params = array(
-            'propiedad' => 'url_get_remisiones_sin_viaje',
-            'method' => 'GET',
-        );
-        return self::llamar_servicio_viajesiron($params);
-    }
-
-
-    /**
-     * Llama al servicio GET para consultar carga y su capacidad
-     * @param string $nombre_carga - nombre de la carga a consultar (Carry, Turbo, Sencillo, Doble Troque, Mula)
-     * @return array response, FALSE si no hay exito. 
-     */
-    static function call_consultar_carga($nombre_carga) {
-        $params = array(
-            'propiedad' => 'url_get_consultar_carga',
-            'parametros' => array('nombre' => $nombre_carga),
-            'method' => 'GET',
-        );
-        return self::llamar_servicio_viajesiron($params);
-    }
-
 
     /**
      * Llama al servicio POST para crear viaje
@@ -187,4 +147,40 @@ abstract class CallViajesEndpoints {
         return self::llamar_servicio_viajesiron($params);
     }
     
+    /**
+     * Llamado al servicio GET para solicitar viaje por id
+     */
+    static function call_get_viaje_por_id($viaje_id) {
+        $params = array(
+            'propiedad' => 'url_get_viaje_por_id',
+            'parametros' => array('id' => $viaje_id),
+            'method' => 'GET',
+        );
+        return self::llamar_servicio_viajesiron($params);
+    }
+
+    /**
+     * Llamado al servicio GET para solicitar remisiones sin viaje
+     */
+    static function call_get_remisiones_sin_viaje() {
+        $params = array(
+            'propiedad' => 'url_get_remisiones_sin_viaje',
+            'method' => 'GET',
+        );
+        return self::llamar_servicio_viajesiron($params);
+    }
+
+    /**
+     * Llama al servicio GET para consultar carga y su capacidad
+     * @param string $nombre_carga - nombre de la carga a consultar (Carry, Turbo, Sencillo, Doble Troque, Mula)
+     * @return array response, FALSE si no hay exito. 
+     */
+    static function call_get_consultar_carga($nombre_carga) {
+        $params = array(
+            'propiedad' => 'url_get_consultar_carga',
+            'parametros' => array('nombre' => $nombre_carga),
+            'method' => 'GET',
+        );
+        return self::llamar_servicio_viajesiron($params);
+    }
 }

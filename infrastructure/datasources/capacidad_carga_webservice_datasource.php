@@ -11,7 +11,7 @@ class CapacidadCargaWebserviceDatasource implements CapacidadCargaRepository {
 
     public function getCapacidadCarga($nombre_carga) {
         $response = false;
-        $json = CallViajesEndpoints::call_consultar_carga($nombre_carga);
+        $json = CallViajesEndpoints::call_get_consultar_carga($nombre_carga);
         if ( isset($json['cargaBO']['id']) ) {
             $response = array();
             $entity = new CapacidadCargaWebserviceEntity();

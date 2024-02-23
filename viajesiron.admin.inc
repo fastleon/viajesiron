@@ -1,5 +1,7 @@
 <?php
 
+module_load_include('php', 'viajesiron', 'domain\session\data_control');
+
 //PARAMETROS DE CONFIGURACION - MUCHO CUIDADO AL EDITAR
 class ConfigEndpoints
 {
@@ -30,6 +32,16 @@ class ConfigEndpoints
 				'old_variable' => 'viajesiron_post_resultados_cumplidos',
 				'default_value' => 'consultarReporteCumplidosTEST',
 			),
+			'post_delete_viaje' => array(
+				'title' => 'operación POST para eliminar viaje',
+				'old_variable' => 'viajesiron_post_delete_viaje',
+				'default_value' => 'eliminarViajeIRONTEST',
+			),
+			'post_edit_viaje' => array(
+				'title' => 'operación POST para editar viaje',
+				'old_variable' => 'viajesiron_post_editar_viaje',
+				'default_value' => 'editarViajeIRONTEST',
+			),
 			'get_viaje_por_id' => array(
 				'title' => 'operación GET de consulta',
 				'old_variable' => 'viajesiron_get_viaje_por_id',
@@ -44,16 +56,6 @@ class ConfigEndpoints
 				'title' => 'operación GET para consultar capacidad de las cargas',
 				'old_variable' => 'viajesiron_get_consultar_carga',
 				'default_value' => 'consultarCargaTEST',
-			),
-			'edit_viaje' => array(
-				'title' => 'operación POST para editar viaje',
-				'old_variable' => 'viajesiron_post_editar_viaje',
-				'default_value' => 'editarViajeIRONTEST',
-			),
-			'delete_viaje' => array(
-				'title' => 'operación POST para eliminar viaje',
-				'old_variable' => 'viajesiron_post_delete_viaje',
-				'default_value' => 'eliminarViajeIRONTEST',
 			),
 		);
 	}
@@ -83,7 +85,8 @@ function viajesiron_admin_settings_form()
 	$form = array();
 	//Creacion de las opciones de configuracion
 	$parametros = ConfigEndpoints::getParametros();
-	$valores_salvados = variable_get('viajesiron_parametros_rest', array());
+	// $valores_salvados = variable_get('viajesiron_parametros_rest', array());
+	$valores_salvados = (new DataControlParametrosREST())->llamarCargarDato();
 
 	foreach ($parametros as $key => $value) {
 		$default = isset($valores_salvados[$key]) ? $valores_salvados[$key] : '';
@@ -105,6 +108,7 @@ function viajesiron_admin_settings_form()
 		'#name' => 'limpieza_contenido',
 		'#value' => t('Limpiar variables temporales'),
 	);
+	//AGREGAR CAMPO TAMBIEN EN CallViajesEndpoints
 	return ($form);
 }
 
@@ -126,8 +130,12 @@ function  viajesiron_admin_settings_form_submit($form, &$form_state)
 			foreach ($parametros as $key => $value) {
 				$save_data[$key] = $form_state['values'][$key];
 			}
-			variable_set('viajesiron_parametros_rest', $save_data);
+			// variable_set('viajesiron_parametros_rest', $save_data);
+			(new DataControlParametrosREST())->llamarGuardarDato($save_data);
 
+			//borrar parametros de ultima carga de DATOS EN SESION
+			unset($_SESSION[LAST_MOD]);
+			unset($_SESSION[MINS_LAST_MOD]);
 			drupal_set_message(t('Configuración guardada correctamente.'));
 			break;
 
@@ -147,9 +155,12 @@ function  viajesiron_admin_settings_form_submit($form, &$form_state)
 			variable_del('viajesiron_get_consultar_carga');
 			variable_del('viajesiron_post_editar_viaje');
 			variable_del('viajesiron_post_delete_viaje');
+			variable_del('viajesiron_rest_viajes');
+			unset($_SESSION[LAST_MOD]);
+			unset($_SESSION[MINS_LAST_MOD]);
 
 			drupal_set_message(t('Variables eliminadas'), 'info');
-			
+
 			break;
 	}
 }

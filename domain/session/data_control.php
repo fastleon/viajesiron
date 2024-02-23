@@ -16,7 +16,7 @@ define('TRANSPORTADORAS', 'viajesiron_transportadoras');
 define('CAPACIDAD_CARGAS', 'viajesiron_lista_capacidad_carga');
 //define('CONFORMADOR', 'viajesiron_conformador');
 define('REPORTES_CUMPLIDOS', 'viajesiron_reportes_cumplidos');
-// define('', 'viajesiron_');
+define('ESTADO_FORM_REPORTES_CUMPLIDOS', 'viajesiron_estado_reportes_cumplidos');
 
 /**
  * Clase para la administracion de los datos guardados en capa de sesion
@@ -29,7 +29,7 @@ abstract class DataControl
     protected static function guardarSesion($variable_sesion, $data)  {
         $_SESSION[LAST_MOD][$variable_sesion] = REQUEST_TIME;
         $_SESSION[$variable_sesion] = $data;
-        add_error('DEBUG: Guardando :' . $variable_sesion);
+        if (DEBUG_MODE) { add_error('DEBUG: Guardando :' . $variable_sesion); }
         // add_error($data, 'dato a guardar');
     }
     
@@ -49,13 +49,13 @@ abstract class DataControl
                 $response = $all_data;
             }
         }
-        add_error('DEBUG: Cargando: ' . $variable_sesion);
+        if (DEBUG_MODE) { add_error('DEBUG: Cargando :' . $variable_sesion); }
         // add_error($response, 'respuesta:');
         return ($response);
     } 
     
     protected static function borrarSesion($variable_sesion) {
-        add_error('DEBUG: eliminando: ' . $variable_sesion);
+        if (DEBUG_MODE) { add_error('DEBUG: borrando :' . $variable_sesion); }
         unset($_SESSION[$variable_sesion]);
     }
 }
@@ -99,7 +99,7 @@ class DataControlParametrosREST extends DataControl
     }
 }
 
-class DataControlReportesCumplidos extends DataControl
+class DataControlReportesCumplidosResultados extends DataControl
 {
     protected $variable_sesion = REPORTES_CUMPLIDOS;
     public function llamarGuardarDato($data) {
@@ -116,6 +116,26 @@ class DataControlReportesCumplidos extends DataControl
         return ($data);
     } 
     
+    public function llamarBorrarDato() {
+        DataControl::borrarSesion($this->variable_sesion);
+    }
+
+}
+class DataControlReportesCumplidosFormulario extends DataControl
+{
+    protected $variable_sesion = ESTADO_FORM_REPORTES_CUMPLIDOS;
+    public function llamarGuardarDato($data) {
+        DataControl::guardarSesion($this->variable_sesion, $data);
+    }
+
+    public function llamarCargarDato($last_time_checked = 0) {
+        //No maneja logica de tiempo de consulta, comunicación directa con $_SESSION
+        $data = DataControl::cargarSesion($this->variable_sesion);
+        $_SESSION[LAST_MOD][$this->variable_sesion] = REQUEST_TIME;
+        if (!$data) { add_error('DEBUG: No hay estados anteriores de este formulario'); }
+        return ($data);
+    } 
+
     public function llamarBorrarDato() {
         DataControl::borrarSesion($this->variable_sesion);
     }

@@ -12,6 +12,8 @@
   use PhpOffice\PhpSpreadsheet\Spreadsheet;
   use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+  define ('DEBUG_MODE', true); 
+
  /** 
   * Implements hook_init() - Llamado de codigo antes de iniciar
   */
@@ -134,7 +136,7 @@ function generador_webpage() {
   );
 
   //imprimir errores debug
-  //mostrar_errores();
+  mostrar_errores();
 
   return $build;
 }
@@ -199,8 +201,8 @@ function generador_webpage_reporte($viaje_id = NULL) {
     'plantilla_viajes' => drupal_get_form('datos_viaje_reporte_form'),
   );
 
-  //imprimir errores debug
-  //mostrar_errores();
+  //imprimir errores debug si esta habilitado
+  mostrar_errores();
 
   return $build;
 }
@@ -216,8 +218,8 @@ function generador_webpage_busqueda() {
     'formulario_busqueda' => drupal_get_form('formulario_busqueda_viajes_form'),
   );
 
-  //imprimir errores debug
-  //mostrar_errores();
+  //imprimir errores debug si esta habilitado
+  mostrar_errores();
 
   return $build;
 
@@ -242,8 +244,8 @@ function generador_webpage_edicion() {
       'formulario_viajes' => drupal_get_form('datos_viaje_formulario_form'),
   );
 
-  //imprimir errores debug
-  //mostrar_errores();
+  //imprimir errores debug si esta habilitado
+  mostrar_errores();
   
   return $build;
 }
@@ -261,7 +263,7 @@ function generador_webpage_reporte_cumplidos() {
     'formulario_busqueda' => drupal_get_form('reporte_cumplidos_render_form'),
   );
 
-  //imprimir errores debug
+  //imprimir errores debug si esta habilitado
   mostrar_errores();
 
   return $build;
@@ -285,10 +287,12 @@ function add_error($dato, $clave = '') {
  * Funcion para desplegar todos los errores almacenados antes del llamado al callback
  */
 function mostrar_errores() {
-  echo "<pre>";
-  print_r(variable_get('viajesiron_error', 'no errores'));
-  echo "</pre>";
-  variable_del('viajesiron_error');
+  if (DEBUG_MODE) {
+    echo "<pre>";
+    print_r(variable_get('viajesiron_error', 'no errores'));
+    echo "</pre>";
+    variable_del('viajesiron_error');
+  }
 }
 
 

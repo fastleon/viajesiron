@@ -1,7 +1,13 @@
 <?php
-
+module_load_include('php', 'viajesiron', 'domain\entities\reporte_cumplido_entity');
+module_load_include('php', 'viajesiron', 'domain\entities\filtro_busqueda_reportes_cumplidos_entity');
+module_load_include('php', 'viajesiron', 'domain\session\data_control');
+module_load_include('php', 'viajesiron', 'infrastructure\controllers\reportes_cumplidos_controller');
+module_load_include('php', 'viajesiron', 'infrastructure\models\reporte_cumplido_model');
 module_load_include('php', 'viajesiron', 'presentation\reportes_cumplidos\dependencies');
+module_load_include('php', 'viajesiron', 'tools\simulacion_cumplidos');
 
+module_load_include('inc', 'viajesiron', 'presentation\reportes_cumplidos\viajesiron_reporte_cumplidos_submit');
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
  */
@@ -12,23 +18,12 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     //Configurar como colombia el formato de moneda
     setlocale(LC_MONETARY, 'es_CO');
 
-    //traer información formulario
-
     //RENDER FORMULARIO BUSQUEDA
 
 
-    //Llamado de data simulacion
-    $json = mockup_cumplidos();
-    $datos = json_decode($json);
-    $datos_modelo = array();
-    foreach ($datos as $dato) {
-        $temp_cumplido_model = new ReporteCumplidosModel();
-        $temp_cumplido_model->fromEntity($dato);
-        $datos_modelo[] = $temp_cumplido_model;
-    }
 
     //Guardar datos modelo en sesion
-    (new DataControlReportesCumplidos())->llamarGuardarDato($datos_modelo);
+    // (new DataControlReportesCumplidos())->llamarGuardarDato($datos_modelo);
 
     //TEST +++++++++++++++++++++++++++++++++++++
     // (new DataControlTransportadoras())->llamarBorrarDato();
@@ -39,6 +34,8 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     // $capacidad_carga = new CapacidadCargaModel();
     // $capacidad_carga = (new DataControlCapacidadCargas())->llamarCargarDato('Sencillo');
     // add_error($capacidad_carga, 'capacidad carga');
+    // $test = new FiltroBusquedaReportesCumplidosEntity();
+    // add_error($test, '+++++');
 
     //FIN TEST
 
@@ -205,6 +202,10 @@ function crear_boton_limpiar() {
         '#name' => 'Limpiar', 
         '#type' => 'submit',
         '#value' => t('Limpiar'),
+        '#limit_validation_errors' => array(),
+        '#submit' => array('outsourcing'),
+        //'#parameters' => array(array('test')),
+        // '#attributes' => array('onclick' => 'alert("Hiciste clic en mi botón personalizado.");'),
     );
     return $form;
 }
@@ -215,7 +216,7 @@ function crear_boton_limpiar() {
  */
 function tabla_resultados() {
 
-    $reporte_cumplidos = (new DataControlReportesCumplidos())->llamarCargarDato();
+    $reportes_encontrados = (new DataControlReportesCumplidos())->llamarCargarDato();
 
     // DataControlReportesCumplidos::cargarSesion();
 
@@ -241,9 +242,9 @@ function tabla_resultados() {
 
     //datos
     $options = array();
-    if ( (isset($reporte_cumplidos)) && ($reporte_cumplidos != array()) ) {
-        foreach ($reporte_cumplidos as $dato) {
-            $options[] = $dato->toArray();
+    if ( (isset($reportes_encontrados)) && ($reportes_encontrados != array()) ) {
+        foreach ($reportes_encontrados as $dato) {
+            $options[] = $dato;
         }
     }
 
@@ -254,7 +255,7 @@ function tabla_resultados() {
         '#header' => $header,
         '#rows' => $options,
         '#attributes' => array(
-            //'class' => array('vi-reporte-tabla-'),
+        //'class' => array('vi-reporte-tabla-'),
         ),
     );
 

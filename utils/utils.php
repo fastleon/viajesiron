@@ -14,4 +14,12 @@ class Utils {
         return $resultado;
     }
 
+    public static function dateToDMY($date) {
+        if (!empty($date)) {
+            return ( date("d-m-Y", strtotime($date)) );
+        } else {
+            return false;
+        }
+    }
+
 }

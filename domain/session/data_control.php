@@ -11,7 +11,7 @@ define('LAST_MOD', 'viajesiron_last_modification');
 define('MINS_LAST_MOD', 'viajesiron_mins_last_modification');
 
 //constantes de sesion para cada dato bajo control de esta clase
-define('PARAMETROS_REST', 'viajesiron_rest_viajes');
+define('PARAMETROS_REST', 'viajesiron_parametros_rest');
 define('TRANSPORTADORAS', 'viajesiron_transportadoras');
 define('CAPACIDAD_CARGAS', 'viajesiron_lista_capacidad_carga');
 //define('CONFORMADOR', 'viajesiron_conformador');
@@ -29,7 +29,7 @@ abstract class DataControl
     protected static function guardarSesion($variable_sesion, $data)  {
         $_SESSION[LAST_MOD][$variable_sesion] = REQUEST_TIME;
         $_SESSION[$variable_sesion] = $data;
-        add_error('Guardando :' . $variable_sesion);
+        add_error('DEBUG: Guardando :' . $variable_sesion);
         // add_error($data, 'dato a guardar');
     }
     
@@ -49,13 +49,13 @@ abstract class DataControl
                 $response = $all_data;
             }
         }
-        add_error('Cargando: ' . $variable_sesion);
+        add_error('DEBUG: Cargando: ' . $variable_sesion);
         // add_error($response, 'respuesta:');
         return ($response);
     } 
     
     protected static function borrarSesion($variable_sesion) {
-        add_error('eliminando: ' . $variable_sesion);
+        add_error('DEBUG: eliminando: ' . $variable_sesion);
         unset($_SESSION[$variable_sesion]);
     }
 }
@@ -63,27 +63,39 @@ abstract class DataControl
 /** 
  * Controlador de datos guardados en sesion
  * Datos para parametros de consulta en servicios REST - modulo viajes
- * NO SE ENCUENTRA EN USA ACTUALMENTE -> NO EN _SESSION, ver modulo admin
+ * NO USA ACTUALMENTE _SESSION.
  */
 class DataControlParametrosREST extends DataControl
 {
-    protected $variable_sesion = PARAMETROS_REST;
+    protected $variable_drupal = PARAMETROS_REST;
     public function llamarGuardarDato($data) {
-        DataControl::guardarSesion($this->variable_sesion, $data);
+        // DataControl::guardarSesion($this->variable_sesion, $data);
+        variable_set($this->variable_drupal, $data);
     }
 
     public function llamarCargarDato($last_time_checked = 0) {
-        $data = DataControl::cargarSesion($this->variable_sesion);
+        // $minutos_ultima_modificacion = $last_time_checked;
+        // if ( !empty($_SESSION[LAST_MOD][$this->variable_drupal]) ){
+        //     $ultima_modificacion = $_SESSION[LAST_MOD][$this->variable_drupal];
+        //     $minutos_ultima_modificacion = (REQUEST_TIME - $ultima_modificacion) / 60;
+        // }
+        // if ($minutos_ultima_modificacion >= $last_time_checked) {
+            //LOGICA SI SE BUSCARA DE DOS FUENTES SEGUN EL TIEMPO DE ULTIMA CONSULTA
+        // }
+        // $data = DataControl::cargarSesion($this->variable_drupal);
+        $data = variable_get($this->variable_drupal, false);
+        $_SESSION[LAST_MOD][$this->variable_drupal] = REQUEST_TIME;
         if (!$data) {
             form_set_error('', 'No se logró cargar los parametros de configuración del modulo, por favor comuniquese con su administrador.');
         }
         return ($data);
     } 
-    
+
     public function llamarBorrarDato() {
-        DataControl::borrarSesion($this->variable_sesion);
-        unset($_SESSION[LAST_MOD][$this->variable_sesion]);
-        unset($_SESSION[MINS_LAST_MOD][$this->variable_sesion]);
+        variable_del($this->variable_drupal);
+        // DataControl::borrarSesion($this->variable_drupal);
+        unset($_SESSION[LAST_MOD][$this->variable_drupal]);
+        unset($_SESSION[MINS_LAST_MOD][$this->variable_drupal]);
     }
 }
 
@@ -95,14 +107,12 @@ class DataControlReportesCumplidos extends DataControl
     }
 
     public function llamarCargarDato($last_time_checked = 0) {
+        //No maneja logica de tiempo de consulta, comunicación directa con $_SESSION
         $data = DataControl::cargarSesion($this->variable_sesion);
-        if ( isset($_SESSION[MINS_LAST_MOD][$this->variable_sesion]) && $_SESSION[MINS_LAST_MOD][$this->variable_sesion]>$last_time_checked ) {
-            //no aplica logica de carga cada tiempo determinado
-            //TODO: REVISAR si aplica el tiempo de carga
+        $_SESSION[LAST_MOD][$this->variable_sesion] = REQUEST_TIME;
+        if (!$data) {
+            add_error('DEBUG: No se encontraron datos para cargar tabla reportes cumplidos');
         }
-
-        unset($data['mins_last_mod']);
-        if ($data == array()){ $data = new ReporteCumplidosModel(); }
         return ($data);
     } 
     

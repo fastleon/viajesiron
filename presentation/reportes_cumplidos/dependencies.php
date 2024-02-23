@@ -1,10 +1,5 @@
 <<?php
 
-module_load_include('php', 'viajesiron', 'infrastructure\models\reporte_cumplidos_model');
-module_load_include('php', 'viajesiron', 'domain\entities\reporte_cumplidos_entity');
-module_load_include('php', 'viajesiron', 'domain\session\data_control');
-module_load_include('php', 'viajesiron', 'tools\simulacion_cumplidos');
-
 //TEST
 module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
 module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
@@ -44,7 +39,7 @@ class Campos_formulario {
     
         $this->datepickers = array(
             'fecha_creacion' => array(
-                'nombre_campo' => 'fecha_creacion',
+                'nombre_campo' => 'opcion_fecha_creacion',
                 'fieldset_text' => 'FECHA DE CREACION',
             ),
             'fecha_planeacion' => array(

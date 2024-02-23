@@ -2,6 +2,6 @@
 
 interface ReportesCumplidosRepository {
 
-    public function getReportesCumplidos();
+    public function getReportesCumplidos($filter_data);
 
 }

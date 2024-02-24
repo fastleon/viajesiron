@@ -22,10 +22,10 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
     '#title' => '<h3>' . t('Selecciona que tipo de busqueda deseas realizar: ') . '</h3>',
     '#options' => $options,
     '#required' => TRUE,
-    // '#ajax' => array(
-    //     'callback' => 'cambiar_busqueda_ajax_callback',
-    //     'wrapper' => 'datos_busqueda_wrapper',
-    //     ),
+    '#ajax' => array(
+        'callback' => 'cambiar_busqueda_ajax_callback',
+        'wrapper' => 'datos_busqueda_wrapper',
+        ),
     );
     if (isset($_SESSION['viajesiron_busqueda']['state'])){
         if ($_SESSION['viajesiron_busqueda']['state']['opcion_busqueda'] == 'Nombre'){
@@ -157,7 +157,7 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
         //Sin busqueda realizada
     }
 
-    //$form['datos_busqueda_wrapper'] = cambiar_busqueda_ajax_callback ($form, $form_state);
+    $form['datos_busqueda_wrapper'] = cambiar_busqueda_ajax_callback ($form, $form_state);
     return $form;
 
 }

@@ -7,31 +7,45 @@
  * tomar los parametros del servidor guardados en la configuracion del modulo Configuracion -> Viajes Iron Module
 */
 function load_server_parameters() {
+    $parametros_rest = (new DataControlParametrosREST())->llamarCargarDato();
     //tomar parametros de los datos guardados
-    $server_url = variable_get('viajesiron_server_ip_add', '');
-    $server_port = variable_get('viajesiron_server_port', '');
-    $service_url = variable_get('viajesiron_server_url', '');
-    $propiedad_post_crear_viaje = variable_get('viajesiron_post_viaje', '');
-    $propiedad_get_viaje_por_id = variable_get('viajesiron_get_viaje_por_id', '');
-    $propiedad_get_remisiones_sin_viaje = variable_get('viajesiron_get_remisiones_sin_viaje', '');
-    $propiedad_get_consultar_carga = variable_get('viajesiron_get_consultar_carga', '');
-    $propiedad_post_editar_viaje = variable_get('viajesiron_post_editar_viaje', '');
-    $propiedad_post_eliminar_viaje = variable_get('viajesiron_post_delete_viaje', '');
+    $server_url = $parametros_rest['server_ip_address'];
+    $server_port = $parametros_rest['server_port'];
+    $service_url = $parametros_rest['server_url'];
+    $endpoint_post_crear_viaje = $parametros_rest['post_viaje'];
+    $endpoint_post_reportes_cumplidos = $parametros_rest['post_reportes_cumplidos'];
+    $endpoint_post_eliminar_viaje = $parametros_rest['post_delete_viaje'];
+    $endpoint_post_editar_viaje = $parametros_rest['post_edit_viaje'];
+    $endpoint_get_viaje_por_id = $parametros_rest['get_viaje_por_id'];
+    $endpoint_get_remisiones_sin_viaje = $parametros_rest['get_remisiones_sin_viaje'];
+    $endpoint_get_consultar_carga = $parametros_rest['get_consultar_carga'];
+
+    // Antiguas variables - abandonado
+    // $server_url = variable_get('viajesiron_server_ip_add', '');
+    // $server_port = variable_get('viajesiron_server_port', '');
+    // $service_url = variable_get('viajesiron_server_url', '');
+    // $endpoint_post_crear_viaje = variable_get('viajesiron_post_viaje', '');
+    // $endpoint_get_viaje_por_id = variable_get('viajesiron_get_viaje_por_id', '');
+    // $endpoint_get_remisiones_sin_viaje = variable_get('viajesiron_get_remisiones_sin_viaje', '');
+    // $endpoint_get_consultar_carga = variable_get('viajesiron_get_consultar_carga', '');
+    // $endpoint_post_editar_viaje = variable_get('viajesiron_post_editar_viaje', '');
+    // $endpoint_post_eliminar_viaje = variable_get('viajesiron_post_delete_viaje', '');
     
     //generar paths
     if ($server_url == ''){
         drupal_set_message(t('No han sido configurados los parametros del servidor'), 'error');
-        return FALSE;
+        return false;
     } else {
         $server_path = $server_url . ':' . $server_port . '/' . $service_url;
         $response = array(
             'server_url' => $server_path,
-            'url_post_viaje' => $server_path . '/' . $propiedad_post_crear_viaje,
-            'url_get_viaje_por_id' => $server_path . '/' . $propiedad_get_viaje_por_id,
-            'url_get_remisiones_sin_viaje' => $server_path . '/' . $propiedad_get_remisiones_sin_viaje,
-            'url_get_consultar_carga' => $server_path . '/' . $propiedad_get_consultar_carga,
-            'url_post_editar_viaje' => $server_path . '/' . $propiedad_post_editar_viaje,
-            'url_post_eliminar_viaje' => $server_path . '/' . $propiedad_post_eliminar_viaje,
+            'url_post_crear_viaje' => $server_path . '/' . $endpoint_post_crear_viaje,
+            'url_post_reportes_cumplidos' => $server_path . '/' . $endpoint_post_reportes_cumplidos,
+            'url_post_eliminar_viaje' => $server_path . '/' . $endpoint_post_eliminar_viaje,
+            'url_post_editar_viaje' => $server_path . '/' . $endpoint_post_editar_viaje,
+            'url_get_viaje_por_id' => $server_path . '/' . $endpoint_get_viaje_por_id,
+            'url_get_remisiones_sin_viaje' => $server_path . '/' . $endpoint_get_remisiones_sin_viaje,
+            'url_get_consultar_carga' => $server_path . '/' . $endpoint_get_consultar_carga,
         );
         return $response;
     }
@@ -100,7 +114,7 @@ function call_consultar_carga($nombre_carga) {
  */
 function call_post_crear_viaje_service($proccessed_data){
     $params = array(
-        'propiedad' => 'url_post_viaje',
+        'propiedad' => 'url_post_crear_viaje',
         'method' => 'POST',
         'timeout' => 240,
         'data' => $proccessed_data,

@@ -18,29 +18,6 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     //Configurar como colombia el formato de moneda
     setlocale(LC_MONETARY, 'es_CO');
 
-    //RENDER FORMULARIO BUSQUEDA
-
-
-
-    //Guardar datos modelo en sesion
-    // (new DataControlReportesCumplidosResultados())->llamarGuardarDato($datos_modelo);
-
-    //TEST +++++++++++++++++++++++++++++++++++++
-    // (new DataControlTransportadoras())->llamarBorrarDato();
-    // $transportadoras = (new DataControlTransportadoras())->llamarCargarDato(20);
-    // add_error($transportadoras, 'transportadoras');
-    
-    // (new DataControlCapacidadCargas())->llamarBorrarDato();
-    // $capacidad_carga = new CapacidadCargaModel();
-    // $capacidad_carga = (new DataControlCapacidadCargas())->llamarCargarDato('Sencillo');
-    // add_error($capacidad_carga, 'capacidad carga');
-    // $test = (new DataControlReportesCumplidosResultados())->llamarCargarDato();
-    // add_error($test, 'dato al cargar');
-    // $test2 = (new ReportesCumplidosController())->getReportesCumplidos('');
-    // add_error($test2, 'test2');
-
-    //FIN TEST
-
     //Llamar opciones de los campos
     $campos = new Campos_formulario();
     //cargar estado del formulario

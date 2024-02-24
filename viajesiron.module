@@ -29,8 +29,8 @@ function viajesiron_init(){
   include_once 'viajesiron_servicios.inc';
   include_once 'viajesiron_reporte_render.inc';
   module_load_include('inc', 'entity', 'includes/entity.query');
-      //llamar la data_control
-    module_load_include('php', 'viajesiron', 'domain\session\data_control');
+    //llamar la data_control
+  module_load_include('php', 'viajesiron', 'domain\session\data_control');
   return;
 }
 

@@ -5,6 +5,30 @@ module_load_include('php', 'viajesiron', 'domain\entities\filtro_busqueda_report
 module_load_include('php', 'viajesiron', 'presentation\reportes_cumplidos\dependencies');
 
 /**
+ * HOOK VALIDATE
+*/
+function reporte_cumplidos_render_form_validate($form, &$form_state) {
+
+    $button_clicked = $form_state['triggering_element']['#name'];
+    $valores = $form_state['values'];
+
+    switch ($button_clicked) {
+        case 'Buscar':
+            break;
+        case 'Limpiar':
+            break;
+        case 'Excel':
+            if (count($form_state['complete form']['tbl']['tabla_resultados']['#rows']) == 0) {
+                form_set_error('submit_Excel', t('No hay datos en la tabla'));
+                // add_error(count($form_state['complete form']['tbl']['tabla_resultados']['#rows']));
+            }
+            break;
+    }
+
+}
+
+
+/**
  * HOOK SUBMIT
 */
 function reporte_cumplidos_render_form_submit($form, &$form_state) {
@@ -40,18 +64,104 @@ function reporte_cumplidos_render_form_submit($form, &$form_state) {
             //pasar datos a la estructura definida y enviar la solicitud de la consulta
             $parametros_consulta = (new FiltroBusquedaReportesCumplidosEntity())->fromArray($filtro);
             $reportes_encontrados = (new ReportesCumplidosController())->getReportesCumplidos($parametros_consulta);
+            add_error($reportes_encontrados, 'DEBUG: reportes encontrados POO');
             //guardar el resultado en sesion en modo array para mejor manejor y evitar error __PHP
-            (new DataControlReportesCumplidosResultados())->llamarGuardarDato($reportes_encontrados->toArray());
+            if ($reportes_encontrados) {
+                (new DataControlReportesCumplidosResultados())->llamarGuardarDato($reportes_encontrados->toArray());
+            } else {
+                drupal_set_message(t('La busqueda no arrojo resultados'), 'info');
+            }
             
             break;
 
         case 'Limpiar':
             //Borrar formulario
-
-            //Borrar resultados
             (new DataControlReportesCumplidosFormulario())->llamarBorrarDato();
+            //Borrar resultados
             (new DataControlReportesCumplidosResultados())->llamarBorrarDato();
+            
+            break;
+
+        case 'Excel':
+            // $valores = (new DataControlReportesCumplidosResultados())->llamarCargarDato();
+            $valores = $form_state['complete form']['tbl']['tabla_resultados']['#rows'];
+            add_error($valores);
+            if (count($valores)) {
+                $nombre_archivo = 'Respotes_cumplidos_' . date('YmdHis');
+                exportar_excel_reportes_cumplidos($valores, $nombre_archivo);
+            } else{
+                drupal_set_message(t('No hay datos que exportar'), 'info');
+            }
             break;
 
     }
+}
+
+/**
+ * Metodo para exportar a Excel y descargar en PC del usuario
+ */
+function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
+    $titulo = 'ResultadoReportesCumplidos';
+    /* EXPORTAR A EXCEL *************************************************/
+    // Crear una instancia de la clase Spreadsheet
+    $spreadsheet = new PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setTitle($titulo, true);
+
+    // Datos sueltos
+    $sheet->setCellValue('A1', 'N° Entrega');
+    $sheet->setCellValue('B1', 'cargue en platadforma');
+    $sheet->setCellValue('C1', 'Fecha SAP');
+    $sheet->setCellValue('F1', 'Fecha cargue cumplido');
+    $sheet->setCellValue('G1', 'Paqueteo/cupo');
+    $sheet->setCellValue('K1', 'Soporte entrega');
+    
+    // Agregar datos a la tabla de prueba
+    $sheet->setCellValue('A2', 'WHS Pedido');
+    $sheet->setCellValue('B2', 'Creación de Remisión');
+    $sheet->setCellValue('C2', 'Planeación INFORME');
+    $sheet->setCellValue('D2', 'Fecha Est. de Entrega');
+    $sheet->setCellValue('E2', 'Localidad Origen');
+    $sheet->setCellValue('F2', 'Prueba de entrega');
+    $sheet->setCellValue('G2', 'Tipo de Carga');
+    $sheet->setCellValue('H2', 'Días de Entrega');
+    $sheet->setCellValue('I2', 'Ciudad Destino');
+    $sheet->setCellValue('J2', 'Línea Transporte');
+    $sheet->setCellValue('K2', 'Fotos POD/PDF');
+    //$sheet->setCellValue('', '');
+
+    $rownum = 3;
+    foreach($datos_respuesta as $dato) {
+        $sheet->setCellValue('A'.$rownum, $dato['whs_id']);
+        $sheet->setCellValue('B'.$rownum, Utils::dateToDMY($dato['fecha_creacion']));
+        $sheet->setCellValue('C'.$rownum, Utils::dateToDMY($dato['planeacion_informe']));
+        $sheet->setCellValue('D'.$rownum, Utils::dateToDMY($dato['fecha_estimada_entrega']));
+        $sheet->setCellValue('E'.$rownum, $dato['ciudad_origen']);
+        $sheet->setCellValue('F'.$rownum, Utils::dateToDMY($dato['prueba_entrega']));
+        $sheet->setCellValue('G'.$rownum, $dato['tipo_carga']);
+        $sheet->setCellValue('H'.$rownum, $dato['dias_entrega']);
+        $sheet->setCellValue('I'.$rownum, $dato['ciudad_destino']);
+        $sheet->setCellValue('J'.$rownum, $dato['transportadora']);
+        $sheet->setCellValue('K'.$rownum, $dato['fotos']);
+        // $sheet->setCellValue('L'.$rownum, $dato['']);
+        $rownum += 1;
+    }
+        
+    /*/RUTA PRUEBA TABLA - Guardado "Local Drupal"
+    $module_path = drupal_get_path('module', 'viajesiron');
+    // Construir la ruta completa de la subcarpeta "excel"
+    $excel_folder_path = $module_path . '/excel';
+    $excel_file_path = $excel_folder_path . '/tabla_prueba.xlsx';*/
+    //$writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet); //, 'Excel2007'
+    //$writer->save($excel_file_path);
+    
+    ob_end_clean();
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment;filename="' . $nombre_archivo . '.xlsx"');
+    //header('Content-Disposition: attachment;filename="filename_' . time() . '.xlsx"');
+    header('Cache-Control: max-age=0');
+
+    $xlsxWriter = PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $xlsxWriter = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    exit($xlsxWriter->save('php://output'));
 }

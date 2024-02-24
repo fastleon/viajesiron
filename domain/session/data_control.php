@@ -121,6 +121,7 @@ class DataControlReportesCumplidosResultados extends DataControl
     }
 
 }
+
 class DataControlReportesCumplidosFormulario extends DataControl
 {
     protected $variable_sesion = ESTADO_FORM_REPORTES_CUMPLIDOS;
@@ -149,20 +150,30 @@ class DataControlTransportadoras extends DataControl
         DataControl::guardarSesion($this->variable_sesion, $data);
     }
     
-    public function llamarCargarDato($last_time_checked = 0) {
-        $data = DataControl::cargarSesion($this->variable_sesion);
-        if ( (!$data) || ($_SESSION[MINS_LAST_MOD][$this->variable_sesion] > $last_time_checked) ) {
+    /**
+     * Carga los datos de las transportadoras de SESSION si han pasado $last_time_checked mins desde la ultima consulta
+     */
+    public function llamarCargarDato($last_time_checked = 15) {
+        $minutos_ultima_modificacion = $last_time_checked;
+        if ( !empty($_SESSION[LAST_MOD][$this->variable_sesion]) ){
+            $ultima_modificacion = $_SESSION[LAST_MOD][$this->variable_sesion];
+            $minutos_ultima_modificacion = (REQUEST_TIME - $ultima_modificacion) / 60;
+        }
+        if ($minutos_ultima_modificacion >= $last_time_checked) { 
             $data = (new TransportadorasController())->getTransportadoras();
             if ($data) {
                 $data = $data->toArray();
                 DataControl::guardarSesion($this->variable_sesion, $data);
             }
+        } else {
+            $data = DataControl::cargarSesion($this->variable_sesion);
         }
         return ($data);
     } 
     
     public function llamarBorrarDato() {
         DataControl::borrarSesion($this->variable_sesion);
+        unset( $_SESSION[LAST_MOD][$this->variable_sesion]);
     }
 }
 

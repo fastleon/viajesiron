@@ -14,6 +14,7 @@ function reporte_cumplidos_render_form_validate($form, &$form_state) {
 
     switch ($button_clicked) {
         case 'Buscar':
+            //TODO: falta revisar que las fechas la final sea posterior a la fecha inicial
             break;
         case 'Limpiar':
             break;

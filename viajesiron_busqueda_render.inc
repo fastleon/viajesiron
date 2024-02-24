@@ -8,6 +8,7 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
         $last_state = $_SESSION['viajesiron_busqueda']['state'];
     }
 
+
     //Cargar las opciones de busqueda
     $options = array(
         'opcion1' => 'Por Transportadora - Fechas',
@@ -21,10 +22,10 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
     '#title' => '<h3>' . t('Selecciona que tipo de busqueda deseas realizar: ') . '</h3>',
     '#options' => $options,
     '#required' => TRUE,
-    '#ajax' => array(
-        'callback' => 'cambiar_busqueda_ajax_callback',
-        'wrapper' => 'datos_busqueda_wrapper',
-        ),
+    // '#ajax' => array(
+    //     'callback' => 'cambiar_busqueda_ajax_callback',
+    //     'wrapper' => 'datos_busqueda_wrapper',
+    //     ),
     );
     if (isset($_SESSION['viajesiron_busqueda']['state'])){
         if ($_SESSION['viajesiron_busqueda']['state']['opcion_busqueda'] == 'Nombre'){
@@ -33,29 +34,31 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
             $form['opcion_busqueda']['#default_value'] = 'Por Transportadora - Fechas';
         }
     }
-
+    add_error($form['opcion_busqueda']);
+    
     //Wrapper para el ajax
     $form['datos_busqueda_wrapper'] = array(
         '#type' => 'markup',
         '#prefix' => '<div id="datos_busqueda_wrapper">',
         '#suffix' => '</div>'
     );
-
+    
     /*****************FIELDSET BUSQUEDA POR FECHAS ********************* */
     $form['datos_busqueda_wrapper']['fs_busqueda_fechas'] = array(
         '#type' => 'fieldset',
         '#title' => t('Buscar por fechas'),
         '#access' => TRUE,
     );
-
+    
     //TITULO
     $form['datos_busqueda_wrapper']['fs_busqueda_fechas']['titulo_busqueda_transportadora'] = array(
-    '#markup' => '<h2>' . t('Seleccione la transportadora y las fechas correspondientes') . '</h2>',
+        '#markup' => '<h2>' . t('Seleccione la transportadora y las fechas correspondientes') . '</h2>',
     );
-
+    
     //SELECT TRANSPORTADORA
     $options = cargar_opciones_transportadora();
     $options[0] = 'TODAS LAS TRANSPORTADORAS';
+
     $form['datos_busqueda_wrapper']['fs_busqueda_fechas']['transportadora'] = array(
         '#type' => 'select',
         '#title' => '<h3>' . t('Transportadora: ') . '</h3>',
@@ -113,7 +116,7 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
     if (isset($_SESSION['viajesiron_busqueda']['state']['fecha_final'])){
         $form['datos_busqueda_wrapper']['fs_busqueda_fechas']['fecha_final']['#default_value'] = $_SESSION['viajesiron_busqueda']['state']['fecha_final'];
     }
-
+    
     /*****************FIELDSET BUSQUEDA POR NOMBRE ********************* */
     $form['datos_busqueda_wrapper']['fs_busqueda_nombre'] = array(
         '#type' => 'fieldset',
@@ -154,7 +157,7 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
         //Sin busqueda realizada
     }
 
-    $form['datos_busqueda_wrapper'] = cambiar_busqueda_ajax_callback ($form, $form_state);
+    //$form['datos_busqueda_wrapper'] = cambiar_busqueda_ajax_callback ($form, $form_state);
     return $form;
 
 }
@@ -313,10 +316,10 @@ function cambiar_busqueda_ajax_callback ($form, $form_state) {
     return $form['datos_busqueda_wrapper'];
   }
 
-function viajesiron_form_formulario_busqueda_viajes_form_alter($form, &$form_state){
-    //hook_formid_form_alter NO USADO 
-    //drupal_rebuild_form($form_id, $form_state, $form);
-}
+// function viajesiron_form_formulario_busqueda_viajes_form_alter($form, &$form_state){
+//     //hook_formid_form_alter NO USADO 
+//     //drupal_rebuild_form($form_id, $form_state, $form);
+// }
 
 function crear_textfield_busqueda($label, $valor, $css_class){
     $texfield = array();

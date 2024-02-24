@@ -31,7 +31,7 @@ abstract class CallViajesEndpoints {
             $server_path = $server_url . ':' . $server_port . '/' . $service_url;
             $response = array(
                 'server_url' => $server_path,
-                'url_post_viaje' => $server_path . '/' . $endpoint_post_crear_viaje,
+                'url_post_crear_viaje' => $server_path . '/' . $endpoint_post_crear_viaje,
                 'url_get_viaje_por_id' => $server_path . '/' . $endpoint_get_viaje_por_id,
                 'url_get_remisiones_sin_viaje' => $server_path . '/' . $endpoint_get_remisiones_sin_viaje,
                 'url_get_consultar_carga' => $server_path . '/' . $endpoint_get_consultar_carga,
@@ -92,7 +92,7 @@ abstract class CallViajesEndpoints {
      */
     static function call_post_crear_viaje_service($proccessed_data) {
         $params = array(
-            'propiedad' => 'url_post_viaje',
+            'propiedad' => 'url_post_crear_viaje',
             'method' => 'POST',
             'timeout' => 240,
             'data' => $proccessed_data,

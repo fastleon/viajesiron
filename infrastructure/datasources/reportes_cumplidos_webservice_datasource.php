@@ -13,17 +13,17 @@ class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosReposito
         $filter_data = json_encode($filter_data->toArray());
         add_error($filter_data, 'DEBUG: json a enviar a la consulta');
         $json = CallViajesEndpoints::call_post_reportes_cumplidos($filter_data);
+        add_error($json, 'DEBUG: json recibido del servidor');
         // TEST +++++
-        $ruta_test_file = drupal_get_path('module','viajesiron') . '\tools\respuesta_reportes_cumplidos.json';
-        $json = file_get_contents($ruta_test_file);
-        $json = json_decode($json, true);
-        add_error('OJO USANDO JSON DE PRUEBAS NO UNA CONSULTA REAL');
+        // $ruta_test_file = drupal_get_path('module','viajesiron') . '\tools\respuesta_reportes_cumplidos.json';
+        // $json = file_get_contents($ruta_test_file);
+        // $json = json_decode($json, true);
+        // add_error('OJO USANDO JSON DE PRUEBAS NO UNA CONSULTA REAL');
         // END TEST +++++
-        
-        
-        $reportes_cumplidos = false;
-        $list_reporte_cumplido = array();
-        if ($json) {
+        if ( !$json || empty($json['resultados']) ) {
+            return false;
+        } else {
+            $list_reporte_cumplido = array();
             foreach ($json['resultados'] as $resultado) {
                 $entity = new ReporteCumplidoEntityWebservice();
                 $entity = $entity->fromJson($resultado);
@@ -31,8 +31,8 @@ class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosReposito
                 $list_reporte_cumplido[] = $local_model->fromEntityWebservice($entity);
             }
             $reportes_cumplidos = new ReportesCumplidosModel($list_reporte_cumplido);
+            return $reportes_cumplidos;
         }
-        return $reportes_cumplidos;
     }
 
 }

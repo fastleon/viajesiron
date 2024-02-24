@@ -145,7 +145,7 @@ function  viajesiron_admin_settings_form_submit($form, &$form_state)
 			break;
 
 		case 'limpieza_contenido':
-			//variables antiguas de admin
+		//variables antiguas de admin
 			variable_del('viajesiron_server_ip_add');
 			variable_del('viajesiron_server_port');
 			variable_del('viajesiron_server_url');
@@ -156,11 +156,14 @@ function  viajesiron_admin_settings_form_submit($form, &$form_state)
 			variable_del('viajesiron_post_editar_viaje');
 			variable_del('viajesiron_post_delete_viaje');
 			variable_del('viajesiron_rest_viajes');
+		//variables de tiempo
 			unset($_SESSION[LAST_MOD]);
 			unset($_SESSION[MINS_LAST_MOD]);
+		//variables de reportes cumplidos
+            (new DataControlReportesCumplidosFormulario())->llamarBorrarDato();
+            (new DataControlReportesCumplidosResultados())->llamarBorrarDato();
 
 			drupal_set_message(t('Variables eliminadas'), 'info');
-
 			break;
 	}
 }

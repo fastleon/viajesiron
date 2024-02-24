@@ -15,6 +15,22 @@ function reporte_cumplidos_render_form_validate($form, &$form_state) {
     switch ($button_clicked) {
         case 'Buscar':
             //TODO: falta revisar que las fechas la final sea posterior a la fecha inicial
+            $campos = new Campos_formulario();
+            $datepickers = $campos->getDatepickers();
+            foreach($datepickers as $datepicker) {
+                $campo_fecha_inicial = $datepicker['nombre_campo'] . '_inicial';
+                $campo_fecha_final = $datepicker['nombre_campo'] . '_final';
+                $fecha_inicial = strtotime($valores[$campo_fecha_inicial]);
+                $fecha_final = strtotime($valores[$campo_fecha_final]);
+                $hoy = strtotime(date('Y-m-d'));
+                add_error($fecha_inicial . ' ' . $fecha_final, 'fehchas');
+                if ($fecha_final < $fecha_inicial) {
+                    form_set_error($campo_fecha_final, t('La fecha final debe ser porterior a la inicial'));
+                }
+                if ( ($fecha_inicial > $hoy) || ($fecha_final > $hoy) ) {
+                    form_set_error($campo_fecha_final, t('La fecha no puede ser porterior al día de hoy'));
+                }
+            }
             break;
         case 'Limpiar':
             break;
@@ -34,7 +50,6 @@ function reporte_cumplidos_render_form_validate($form, &$form_state) {
 */
 function reporte_cumplidos_render_form_submit($form, &$form_state) {
 
-    
     //Realizar logica según el boton presionado
     $button_clicked = $form_state['triggering_element']['#name'];
 
@@ -88,7 +103,7 @@ function reporte_cumplidos_render_form_submit($form, &$form_state) {
             $valores = $form_state['complete form']['tbl']['tabla_resultados']['#rows'];
             add_error($valores);
             if (count($valores)) {
-                $nombre_archivo = 'Respotes_cumplidos_' . date('YmdHis');
+                $nombre_archivo = 'Reportes_cumplidos_' . date('YmdHis');
                 exportar_excel_reportes_cumplidos($valores, $nombre_archivo);
             } else{
                 drupal_set_message(t('No hay datos que exportar'), 'info');

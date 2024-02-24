@@ -14,10 +14,10 @@ class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosReposito
         add_error($filter_data, 'DEBUG: json a enviar a la consulta');
         $json = CallViajesEndpoints::call_post_reportes_cumplidos($filter_data);
         // TEST +++++
-        // $ruta_test_file = drupal_get_path('module','viajesiron') . '\tools\respuesta_reportes_cumplidos.json';
-        // $json = file_get_contents($ruta_test_file);
-        // $json = json_decode($json, true);
-        // add_error('OJO USANDO JSON DE PRUEBAS NO UNA CONSULTA REAL');
+        $ruta_test_file = drupal_get_path('module','viajesiron') . '\tools\respuesta_reportes_cumplidos.json';
+        $json = file_get_contents($ruta_test_file);
+        $json = json_decode($json, true);
+        add_error('OJO USANDO JSON DE PRUEBAS NO UNA CONSULTA REAL');
         // END TEST +++++
         
         

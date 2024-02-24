@@ -110,8 +110,6 @@ function tabla_resultados() {
 
     $reportes_encontrados = (new DataControlReportesCumplidosResultados())->llamarCargarDato();
 
-    // DataControlReportesCumplidos::cargarSesion();
-
     //Titulo
     $form['tbl']['titulo_tabla'] = array(
         '#markup' => '<h5>' . t(' RESULTADOS DE LA BUSQUEDA :') . '</h5>',

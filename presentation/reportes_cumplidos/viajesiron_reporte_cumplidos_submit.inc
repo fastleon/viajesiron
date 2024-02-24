@@ -23,7 +23,6 @@ function reporte_cumplidos_render_form_validate($form, &$form_state) {
                 $fecha_inicial = strtotime($valores[$campo_fecha_inicial]);
                 $fecha_final = strtotime($valores[$campo_fecha_final]);
                 $hoy = strtotime(date('Y-m-d'));
-                add_error($fecha_inicial . ' ' . $fecha_final, 'fehchas');
                 if ($fecha_final < $fecha_inicial) {
                     form_set_error($campo_fecha_final, t('La fecha final debe ser porterior a la inicial'));
                 }
@@ -80,7 +79,7 @@ function reporte_cumplidos_render_form_submit($form, &$form_state) {
             //pasar datos a la estructura definida y enviar la solicitud de la consulta
             $parametros_consulta = (new FiltroBusquedaReportesCumplidosEntity())->fromArray($filtro);
             $reportes_encontrados = (new ReportesCumplidosController())->getReportesCumplidos($parametros_consulta);
-            add_error($reportes_encontrados, 'DEBUG: reportes encontrados POO');
+                // add_error($reportes_encontrados, 'DEBUG: reportes encontrados POO');
             //guardar el resultado en sesion en modo array para mejor manejor y evitar error __PHP
             if ($reportes_encontrados) {
                 (new DataControlReportesCumplidosResultados())->llamarGuardarDato($reportes_encontrados->toArray());

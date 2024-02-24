@@ -12,7 +12,7 @@
   use PhpOffice\PhpSpreadsheet\Spreadsheet;
   use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-  define ('DEBUG_MODE', true); 
+  define ('DEBUG_MODE', false); 
 
  /** 
   * Implements hook_init() - Llamado de codigo antes de iniciar
@@ -100,7 +100,7 @@ function viajesiron_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
-  $items['busqueda/temporal'] = array(
+  $items['viajes/reportes_cumplidos'] = array(
     'title' => 'BUSQUEDA REPORTES CUMPLIDOS',
     'description' => 'Reportes Cumplidos',
     'page callback' => 'generador_webpage_reporte_cumplidos',

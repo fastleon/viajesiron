@@ -136,7 +136,7 @@ function  viajesiron_admin_settings_form_submit($form, &$form_state)
 			//borrar parametros de ultima carga de DATOS EN SESION
 			unset($_SESSION[LAST_MOD]);
 			unset($_SESSION[MINS_LAST_MOD]);
-			drupal_set_message(t('Configuración guardada correctamente.'));
+			drupal_set_message(t('Configuración guardada correctamente, recuerde limpiar el cache'));
 			break;
 
 		case 'revisar_contenido':

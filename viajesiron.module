@@ -28,8 +28,9 @@ function viajesiron_init(){
   include_once 'viajesiron_negocios.inc';
   include_once 'viajesiron_servicios.inc';
   include_once 'viajesiron_reporte_render.inc';
-  include_once 'presentation\reportes_cumplidos\viajesiron_reporte_cumplidos_render.inc';
   module_load_include('inc', 'entity', 'includes/entity.query');
+      //llamar la data_control
+    module_load_include('php', 'viajesiron', 'domain\session\data_control');
   return;
 }
 
@@ -257,22 +258,19 @@ function generador_webpage_edicion() {
 function generador_webpage_reporte_cumplidos() {
 
   module_load_include('inc', 'viajesiron', 'presentation\reportes_cumplidos\viajesiron_reporte_cumplidos_render');
-
   //render esttructura de la pagina
   $build = array(
     'formulario_busqueda' => drupal_get_form('reporte_cumplidos_render_form'),
   );
-
   //imprimir errores debug si esta habilitado
   mostrar_errores();
 
   return $build;
-
 }
 
 
 /**
- * Funcion para depuracion de datos o errores dentro de las funciones callback
+ * Funcion para depuracion de datos o errores dentro de las funciones callback (DEBUG)
  * @param {varios} dato, string o similar para visualizar
  */
 function add_error($dato, $clave = '') {

@@ -23,12 +23,20 @@ function reporte_cumplidos_render_form_validate($form, &$form_state) {
                 $fecha_inicial = strtotime($valores[$campo_fecha_inicial]);
                 $fecha_final = strtotime($valores[$campo_fecha_final]);
                 $hoy = strtotime(date('Y-m-d'));
+            //fecha final posterior a la inicial
                 if ($fecha_final < $fecha_inicial) {
-                    form_set_error($campo_fecha_final, t('La fecha final debe ser porterior a la inicial'));
+                    form_set_error($campo_fecha_final, t('La fecha final debe ser posterior a la inicial.'));
                 }
+            //que ambas fechas sean anteriores a "hoy"
                 if ( ($fecha_inicial > $hoy) || ($fecha_final > $hoy) ) {
-                    form_set_error($campo_fecha_final, t('La fecha no puede ser porterior al día de hoy'));
+                    form_set_error($campo_fecha_final, t('La fecha no puede ser posterior al día de hoy.'));
                 }
+            //que la diferencia de fechas no supere un mes
+                $diferencia = $fecha_final - $fecha_inicial; //segundos
+                $diferencia = $diferencia / ( 60*60*24 );  //dias
+                if ($diferencia > 31) {
+                    form_set_error($campo_fecha_final, 'La diferencia entre fechas no puede ser mayor a 30 días.');
+                }  
             }
             break;
         case 'Limpiar':

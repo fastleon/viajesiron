@@ -100,20 +100,6 @@ class FiltroBusquedaReportesCumplidosEntity {
         foreach($datos_formulario as $propiedad => $campo) {
             $this->$propiedad = $data[$campo];
         }
-        // $this->remision = $data[$formulario['remision']];
-        // $this->fechaCreacionInicial = $data[$formulario['fechaCreacionInicial']];
-        // $this->fechaCreacionFinal = $data[$formulario['fechaCreacionFinal']];
-        // $this->fechaPlaneacionInicial = $data[$formulario['fechaPlaneacionInicial']];
-        // $this->fechaPlaneacionFinal = $data[$formulario['fechaPlaneacionFinal']];
-        // $this->fechaEstimadaInicial = $data[$formulario['fechaEstimadaInicial']];
-        // $this->fechaEstimadaFinal = $data[$formulario['fechaEstimadaFinal']];
-        // $this->fechaEntregaInicial = $data[$formulario['fechaEntregaInicial']];
-        // $this->fechaEntregaFinal = $data[$formulario['fechaEntregaFinal']];
-        // $this->ciudadOrigen = $data[$formulario['ciudadOrigen']];
-        // $this->ciudadDestino = $data[$formulario['ciudadDestino']];
-        // $this->tipoDeCarga = $data[$formulario['tipoDeCarga']];
-        // $this->transportadora = $data[$formulario['transportadora']];
-        add_error($this);
         return $this;    
     }
 

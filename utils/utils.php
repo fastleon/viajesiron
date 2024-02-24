@@ -18,7 +18,7 @@ class Utils {
         if (!empty($date)) {
             return ( date("d-m-Y", strtotime($date)) );
         } else {
-            return false;
+            return '';
         }
     }
 
@@ -26,7 +26,7 @@ class Utils {
         if (!empty($date)) {
             return ( date("Y-m-d", strtotime($date)) );
         } else {
-            return false;
+            return '';
         }
     }
 

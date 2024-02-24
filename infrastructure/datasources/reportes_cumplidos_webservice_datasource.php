@@ -11,11 +11,17 @@ class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosReposito
     public function getReportesCumplidos($filter_data)
     {
         $filter_data = json_encode($filter_data->toArray());
+        add_error($filter_data, 'DEBUG: json a enviar a la consulta');
         $json = CallViajesEndpoints::call_post_reportes_cumplidos($filter_data);
         //TEST +++++
-        $json = mockup_cumplidos2();
-        $json = json_decode($json, true);// +++++
+        $ruta_test_file = drupal_get_path('module','viajesiron') . '\tools\respuesta_reportes_cumplidos.json';
+        $json = file_get_contents($ruta_test_file);
+        $json = json_decode($json, true);
+        add_error('OJO USANDO JSON DE PRUEBAS NO UNA CONSULTA REAL');
+        //END TEST +++++
         
+        
+        $reportes_cumplidos = false;
         $list_reporte_cumplido = array();
         if ($json) {
             foreach ($json['resultados'] as $resultado) {

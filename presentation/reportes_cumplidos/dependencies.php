@@ -1,12 +1,13 @@
 <<?php
 
-//TEST
 module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
 module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
+module_load_include('php', 'viajesiron', 'domain\constantes');
 
 class Campos_formulario {
     protected $textfields;
     protected $datepickers;
+    protected $selects;
     protected $default_values;
 
     public function __construct() {
@@ -56,8 +57,26 @@ class Campos_formulario {
                 'fieldset_text' => 'FECHA DE ENTREGA',
             ),
         );
+        
+        $this->selects = array(
+            'tipo_carga' => array(
+                'nombre_campo' => 'opcion_tipo_carga',
+                'fieldset_text' => 'TIPO DE CARGA',
+                'options' => self::buscarTiposCarga(),
+                'title' => '<h3>' . t('Tipo de carga:') . '</h3>',
+            ),
+            'transportadora' => array(
+                'nombre_campo' =>'opcion_transportadora',
+                'fieldset_text' => 'TRANSPORTADORA',
+                'options' => self::buscarTiposTransportadoras(),
+                'title' => '<h3>' . t('Transportadora :') . '</h3>',
+            ),
+        );
 
-        $this->default_values = array();
+        $this->default_values = array(
+            // 'tipo_carga' => 'TODOS LOS TIPOS', //ligado a funcion buscarTiposCarga
+            // 'transportadora' => 'TODAS LAS TRANSPORTADORAS', //ligado a funcion buscarTiposTransportadoras
+        );
     }
 
     public function getTextfields() {
@@ -70,9 +89,21 @@ class Campos_formulario {
         $this->default_values = $default_values;
     } 
 
+    private static function buscarTiposCarga() {
+        $options_tipo_carga = Constantes::$tipo_de_cargas;
+        $options_tipo_carga = array_merge(array('TODOS LOS TIPOS'), $options_tipo_carga);//ligado al construcotr
+        $options_tipo_carga = drupal_map_assoc($options_tipo_carga);
+        return $options_tipo_carga;
+    }
+    private static function buscarTiposTransportadoras() {
+        $options_transportadora = (new DataControlTransportadoras())->llamarCargarDato();
+        $valor = array(0=>'TODAS LAS TRANSPORTADORAS');
+        $options_transportadora = $valor + $options_transportadora;
+        return $options_transportadora;
+    }
+
     public function crear_date_pickers($campo) {
         $nombre_campo = $this->datepickers[$campo]['nombre_campo'];
-        add_error($this->default_values[$campo . '_inicial'] , '++++++++++++++');
         $default_inicial = empty($this->default_values[$campo . '_inicial']) ? '' : $this->default_values[$campo . '_inicial'];
         $default_final = empty($this->default_values[$campo . '_final']) ? '' : $this->default_values[$campo . '_final'];
         $fieldset = $nombre_campo . '_fieldset';
@@ -80,7 +111,6 @@ class Campos_formulario {
         $contenedor = $nombre_campo . '_wrapper'; 
         $fecha_inicial = $nombre_campo . '_inicial';
         $fecha_final = $nombre_campo . '_final';
-        add_error($this->default_values, '++++++++++++++');
         $form[$fieldset] = array(
             '#type' => 'fieldset',
             '#title' => t($fieldset_text),
@@ -106,7 +136,7 @@ class Campos_formulario {
                 'maxDate' =>  0, //hoy
             ),
             '#attributes' => array(
-                'class' => array('vi-busqueda-timepicker'),
+                'class' => array('vi-rc-timepicker'),
             ),
             '#default_value' => Utils::dateToYMD($default_inicial),
         );
@@ -127,7 +157,7 @@ class Campos_formulario {
                 'maxDate' => 0,
             ),
             '#attributes' => array(
-                'class' => array('vi-busqueda-timepicker'),
+                'class' => array('vi-rc-timepicker'),
             ),
             '#default_value' => Utils::dateToYMD($default_final),
         );
@@ -136,7 +166,7 @@ class Campos_formulario {
         return $form;
     }
     
-    public function crear_texfield($campo) {
+    public function crear_textfield($campo) {
         $nombre_campo = $this->textfields[$campo]['nombre_campo'];
         $default = empty($this->default_values[$campo]) ? '' : $this->default_values[$campo];
         
@@ -161,12 +191,48 @@ class Campos_formulario {
             '#size' => 20,
             '#attributes' => array(
                 '#required' => FALSE,
-                //'class' => array('vi-opcion-remision-textfield'),
+                'class' => array('vi-rc-textfield'),
             ),
             '#default_value' => $default,
         );
         //TODO: llamar dato anterior, si hubo uno busqueda
         return $form;
+    }
+
+    public function crear_select($campo) {
+
+        $nombre_campo = $this->selects[$campo]['nombre_campo'];
+        $default = empty($this->default_values[$campo]) ? '' : $this->default_values[$campo];
+        $title = $this->selects[$campo]['title'];
+        $options = $this->selects[$campo]['options'];
+        $fieldset = $nombre_campo . '_fieldset';
+        $fieldset_text = $this->textfields[$campo]['fieldset_text'];
+        $contenedor = $nombre_campo . '_wrapper'; 
+
+        $form[$fieldset] = array(
+            '#type' => 'fieldset',
+            '#title' => t($fieldset_text),
+            '#collapsible' => TRUE,
+            '#collapsed' => empty($default) ? TRUE : FALSE,
+        );
+        $form[$fieldset][$contenedor] = array(
+            '#type' => 'markup',
+            '#prefix' => '<div id="' . $contenedor . '">',
+            '#suffix' => '</div>'
+        );
+        $form[$fieldset][$contenedor][$nombre_campo] = array(
+            '#type' => 'select',
+            '#title' => $title,
+            //'#description' => t('Opciones predeterminadas'),
+            '#options' => $options,
+            '#required' => false,
+            '#attributes' => array(
+                'class' => array('vi-rc-textfield'),
+            ),
+            '#default_value' => $default,
+        );
+        return $form;
+
     }
 
 }

@@ -1,8 +1,8 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'domain\repositories\transportadoras_repository');
-module_load_include('php', 'viajesiron', 'domain\rest_service\call_webservice_endpoints');
-module_load_include('php', 'viajesiron', 'domain\entities\transportadora_entity');
+module_load_include('php', 'viajesiron', 'domain/repositories/transportadoras_repository');
+module_load_include('php', 'viajesiron', 'domain/rest_service/call_webservice_endpoints');
+module_load_include('php', 'viajesiron', 'domain/entities/transportadora_entity');
 
 class TransportadorasWebserviceDatasource implements TransportadorasRepository {
 

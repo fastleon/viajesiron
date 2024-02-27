@@ -8,7 +8,7 @@
 */
 function load_server_parameters() {
     //llamar la data_control
-    module_load_include('php', 'viajesiron', 'domain\session\data_control');
+    module_load_include('php', 'viajesiron', 'domain/session/data_control');
     $parametros_rest = (new DataControlParametrosREST())->llamarCargarDato();
     //tomar parametros de los datos guardados
     $server_url = $parametros_rest['server_ip_address'];

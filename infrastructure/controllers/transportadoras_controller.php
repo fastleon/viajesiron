@@ -2,7 +2,7 @@
 
 //module_load_include('php', 'viajesiron', 'domain/repositories/transportadoras_repository');
 //module_load_include('php', 'viajesiron', 'domain/entities/transportadora_entity');
-module_load_include('php', 'viajesiron', 'infrastructure\datasources\transportadoras_webservice_datasource');
+module_load_include('php', 'viajesiron', 'infrastructure/datasources/transportadoras_webservice_datasource');
 
 
 class TransportadorasController  {

@@ -176,7 +176,7 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
     // Construir la ruta completa de la subcarpeta "excel"
     $excel_folder_path = $module_path . '/excel';
     $excel_file_path = $excel_folder_path . '/tabla_prueba.xlsx';*/
-    //$writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet); //, 'Excel2007'
+    //$writer = new PhpOffice/PhpSpreadsheet/Writer/Xlsx($spreadsheet); //, 'Excel2007'
     //$writer->save($excel_file_path);
     
     ob_end_clean();

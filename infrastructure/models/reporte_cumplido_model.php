@@ -1,6 +1,6 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'Utils\utils');
+module_load_include('php', 'viajesiron', 'Utils/utils');
 
 class ReporteCumplidoModel {
 

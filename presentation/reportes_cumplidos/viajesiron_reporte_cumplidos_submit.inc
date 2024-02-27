@@ -1,8 +1,8 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'domain\entities\reporte_cumplido_entity');
-module_load_include('php', 'viajesiron', 'domain\entities\filtro_busqueda_reportes_cumplidos_entity');
-module_load_include('php', 'viajesiron', 'presentation\reportes_cumplidos\dependencies');
+module_load_include('php', 'viajesiron', 'domain/entities/reporte_cumplido_entity');
+module_load_include('php', 'viajesiron', 'domain/entities/filtro_busqueda_reportes_cumplidos_entity');
+module_load_include('php', 'viajesiron', 'presentation/reportes_cumplidos/dependencies');
 
 /**
  * HOOK VALIDATE
@@ -175,7 +175,7 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
     // Construir la ruta completa de la subcarpeta "excel"
     $excel_folder_path = $module_path . '/excel';
     $excel_file_path = $excel_folder_path . '/tabla_prueba.xlsx';*/
-    //$writer = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet); //, 'Excel2007'
+    //$writer = new PhpOffice/PhpSpreadsheet/Writer/Xlsx($spreadsheet); //, 'Excel2007'
     //$writer->save($excel_file_path);
     
     ob_end_clean();
@@ -184,7 +184,7 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
     //header('Content-Disposition: attachment;filename="filename_' . time() . '.xlsx"');
     header('Cache-Control: max-age=0');
 
-    $xlsxWriter = PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-    $xlsxWriter = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $xlsxWriter = PhpOffice/PhpSpreadsheet/IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $xlsxWriter = new PhpOffice/PhpSpreadsheet/Writer/Xlsx($spreadsheet);
     exit($xlsxWriter->save('php://output'));
 }

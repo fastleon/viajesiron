@@ -1,9 +1,9 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'domain\repositories\reportes_cumplidos_repository');
-module_load_include('php', 'viajesiron', 'domain\entities\reporte_cumplido_entity');
-module_load_include('php', 'viajesiron', 'domain\rest_service\call_viajes_endpoints');
-//module_load_include('php', 'viajesiron', 'domain\rest_service\call_webservice_endpoints');
+module_load_include('php', 'viajesiron', 'domain/repositories/reportes_cumplidos_repository');
+module_load_include('php', 'viajesiron', 'domain/entities/reporte_cumplido_entity');
+module_load_include('php', 'viajesiron', 'domain/rest_service/call_viajes_endpoints');
+//module_load_include('php', 'viajesiron', 'domain/rest_service/call_webservice_endpoints');
 
 
 class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosRepository {
@@ -15,7 +15,7 @@ class ReportesCumplidosWebserviceDatasource implements ReportesCumplidosReposito
         $json = CallViajesEndpoints::call_post_reportes_cumplidos($filter_data);
         add_error($json, 'DEBUG: json recibido del servidor');
         // TEST +++++
-        // $ruta_test_file = drupal_get_path('module','viajesiron') . '\tools\respuesta_reportes_cumplidos.json';
+        // $ruta_test_file = drupal_get_path('module','viajesiron') . '/tools/respuesta_reportes_cumplidos.json';
         // $json = file_get_contents($ruta_test_file);
         // $json = json_decode($json, true);
         // add_error('OJO USANDO JSON DE PRUEBAS NO UNA CONSULTA REAL');

@@ -30,7 +30,7 @@ function viajesiron_init(){
   include_once 'viajesiron_reporte_render.inc';
   module_load_include('inc', 'entity', 'includes/entity.query');
     //llamar la data_control
-  module_load_include('php', 'viajesiron', 'domain\session\data_control');
+  module_load_include('php', 'viajesiron', 'domain/session/data_control');
   return;
 }
 
@@ -257,7 +257,7 @@ function generador_webpage_edicion() {
  */
 function generador_webpage_reporte_cumplidos() {
 
-  module_load_include('inc', 'viajesiron', 'presentation\reportes_cumplidos\viajesiron_reporte_cumplidos_render');
+  module_load_include('inc', 'viajesiron', 'presentation/reportes_cumplidos/viajesiron_reporte_cumplidos_render');
   //render esttructura de la pagina
   $build = array(
     'formulario_busqueda' => drupal_get_form('reporte_cumplidos_render_form'),

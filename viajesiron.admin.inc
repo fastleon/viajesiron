@@ -1,6 +1,6 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'domain\session\data_control');
+module_load_include('php', 'viajesiron', 'domain/session/data_control');
 
 //PARAMETROS DE CONFIGURACION - MUCHO CUIDADO AL EDITAR
 class ConfigEndpoints

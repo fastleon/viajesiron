@@ -1,8 +1,8 @@
 <<?php
 
-module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
-module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
-module_load_include('php', 'viajesiron', 'domain\constantes');
+module_load_include('php', 'viajesiron', 'infrastructure/models/transportadora_model');
+module_load_include('php', 'viajesiron', 'infrastructure/models/capacidad_carga_model');
+module_load_include('php', 'viajesiron', 'domain/constantes');
 
 class Campos_formulario {
     protected $textfields;

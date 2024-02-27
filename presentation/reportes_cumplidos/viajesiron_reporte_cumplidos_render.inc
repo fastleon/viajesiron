@@ -1,13 +1,13 @@
 <?php
-module_load_include('php', 'viajesiron', 'domain\entities\reporte_cumplido_entity');
-module_load_include('php', 'viajesiron', 'domain\entities\filtro_busqueda_reportes_cumplidos_entity');
-module_load_include('php', 'viajesiron', 'domain\session\data_control');
-module_load_include('php', 'viajesiron', 'infrastructure\controllers\reportes_cumplidos_controller');
-module_load_include('php', 'viajesiron', 'infrastructure\models\reporte_cumplido_model');
-module_load_include('php', 'viajesiron', 'presentation\reportes_cumplidos\dependencies');
-module_load_include('php', 'viajesiron', 'tools\simulacion_cumplidos');
+module_load_include('php', 'viajesiron', 'domain/entities/reporte_cumplido_entity');
+module_load_include('php', 'viajesiron', 'domain/entities/filtro_busqueda_reportes_cumplidos_entity');
+module_load_include('php', 'viajesiron', 'domain/session/data_control');
+module_load_include('php', 'viajesiron', 'infrastructure/controllers/reportes_cumplidos_controller');
+module_load_include('php', 'viajesiron', 'infrastructure/models/reporte_cumplido_model');
+module_load_include('php', 'viajesiron', 'presentation/reportes_cumplidos/dependencies');
+module_load_include('php', 'viajesiron', 'tools/simulacion_cumplidos');
 
-module_load_include('inc', 'viajesiron', 'presentation\reportes_cumplidos\viajesiron_reporte_cumplidos_submit');
+module_load_include('inc', 'viajesiron', 'presentation/reportes_cumplidos/viajesiron_reporte_cumplidos_submit');
 /**
  * ARCHIVO QUE GENERA EL RENDER DEL REPORTE DE CUMPLIDOS
  */

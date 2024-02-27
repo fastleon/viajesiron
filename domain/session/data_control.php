@@ -1,10 +1,10 @@
 <?php
 
 //dependencias
-module_load_include('php', 'viajesiron', 'infrastructure\controllers\transportadoras_controller');
-module_load_include('php', 'viajesiron', 'infrastructure\controllers\capacidad_carga_controller');
-module_load_include('php', 'viajesiron', 'infrastructure\models\transportadora_model');
-module_load_include('php', 'viajesiron', 'infrastructure\models\capacidad_carga_model');
+module_load_include('php', 'viajesiron', 'infrastructure/controllers/transportadoras_controller');
+module_load_include('php', 'viajesiron', 'infrastructure/controllers/capacidad_carga_controller');
+module_load_include('php', 'viajesiron', 'infrastructure/models/transportadora_model');
+module_load_include('php', 'viajesiron', 'infrastructure/models/capacidad_carga_model');
 
 //constantes para guardar los ultimos cambios de cada variable
 define('LAST_MOD', 'viajesiron_last_modification');

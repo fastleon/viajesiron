@@ -1,7 +1,7 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'Utils\utils');
-module_load_include('php', 'viajesiron', 'domain\entities\capacidad_carga_entity');
+module_load_include('php', 'viajesiron', 'Utils/utils');
+module_load_include('php', 'viajesiron', 'domain/entities/capacidad_carga_entity');
 
 class CapacidadCargaModel {
     private $tipo_carro;

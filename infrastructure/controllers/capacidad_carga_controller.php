@@ -1,6 +1,6 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'infrastructure\datasources\capacidad_carga_webservice_datasource');
+module_load_include('php', 'viajesiron', 'infrastructure/datasources/capacidad_carga_webservice_datasource');
 
 
 class CapacidadCargaController implements CapacidadCargaRepository {

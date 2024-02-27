@@ -1,7 +1,7 @@
 <?php
 
 module_load_include('php', 'viajesiron', 'Utils/utils');
-module_load_include('php', 'viajesiron', 'domain\entities\transportadora_entity');
+module_load_include('php', 'viajesiron', 'domain/entities/transportadora_entity');
 
 class TransportadoraModel {
     private $id;

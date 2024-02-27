@@ -1,6 +1,6 @@
 <?php
 
-module_load_include('php', 'viajesiron', 'infrastructure\datasources\reportes_cumplidos_webservice_datasource');
+module_load_include('php', 'viajesiron', 'infrastructure/datasources/reportes_cumplidos_webservice_datasource');
 
 
 class ReportesCumplidosController  {

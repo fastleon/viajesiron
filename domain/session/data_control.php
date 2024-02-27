@@ -86,7 +86,7 @@ class DataControlParametrosREST extends DataControl
         $data = variable_get($this->variable_drupal, false);
         $_SESSION[LAST_MOD][$this->variable_drupal] = REQUEST_TIME;
         if (!$data) {
-            form_set_error('', 'No se logró cargar los parametros de configuración del modulo, por favor comuniquese con su administrador.');
+            drupal_set_message('No se logró cargar los parametros de configuración del modulo, por favor comuniquese con su administrador.', 'warning');
         }
         return ($data);
     } 

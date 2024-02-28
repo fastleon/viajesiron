@@ -184,7 +184,7 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
     //header('Content-Disposition: attachment;filename="filename_' . time() . '.xlsx"');
     header('Cache-Control: max-age=0');
 
-    $xlsxWriter = PhpOffice/PhpSpreadsheet/IOFactory::createWriter($spreadsheet, 'Xlsx');
-    $xlsxWriter = new PhpOffice/PhpSpreadsheet/Writer/Xlsx($spreadsheet);
+    $xlsxWriter = PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+    $xlsxWriter = new PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
     exit($xlsxWriter->save('php://output'));
 }

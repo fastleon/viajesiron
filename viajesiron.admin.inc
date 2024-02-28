@@ -30,7 +30,7 @@ class ConfigEndpoints
 			'post_reportes_cumplidos' => array(
 				'title' => 'operación POST para la busqueda filtrada de resultados cumplidos',
 				'old_variable' => 'viajesiron_post_resultados_cumplidos',
-				'default_value' => 'consultarReporteCumplidosTEST',
+				'default_value' => 'consultarReporteCumplidos',
 			),
 			'post_delete_viaje' => array(
 				'title' => 'operación POST para eliminar viaje',

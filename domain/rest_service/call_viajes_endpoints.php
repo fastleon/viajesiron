@@ -78,7 +78,12 @@ abstract class CallViajesEndpoints {
         }
         else {
             drupal_set_message('Error en la solicitud: ' . $response->code, 'error');
-            return FALSE;
+			if (DEBUG_MODE) {
+				drupal_set_message($response->status_message, 'error');
+				drupal_set_message($response->error, 'error');
+				drupal_set_message($response->request, 'error');
+			}	
+			return FALSE;
         }
 
         return $decoded_response;

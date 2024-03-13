@@ -1,8 +1,10 @@
-<<?php
+<?php
 
 module_load_include('php', 'viajesiron', 'infrastructure/models/transportadora_model');
 module_load_include('php', 'viajesiron', 'infrastructure/models/capacidad_carga_model');
 module_load_include('php', 'viajesiron', 'domain/constantes');
+module_load_include('php', 'viajesiron', 'utils/utils');
+
 
 class Campos_formulario {
     protected $textfields;
@@ -14,27 +16,27 @@ class Campos_formulario {
         $this->textfields = array(
             'remision' => array(
                 'nombre_campo' =>'opcion_remision',
-                'fieldset_text' => 'REMISION',
+                'fieldset_text' => 'Remision',
                 'label' => 'Remision :',
             ),
             'ciudad_origen' => array(
                 'nombre_campo' =>'opcion_ciudad_origen',
-                'fieldset_text' => 'CIUDAD DE ORIGEN',
+                'fieldset_text' => 'Ciudad de origen',
                 'label' => 'Ciudad de Origen :',
             ),
             'ciudad_destino' => array(
                 'nombre_campo' =>'opcion_ciudad_destino',
-                'fieldset_text' => 'CIUDAD DE DESTINO',
+                'fieldset_text' => 'Ciudad de Destino',
                 'label' => 'Ciudad de Destino :',
             ),
             'tipo_carga' => array(
                 'nombre_campo' =>'opcion_tipo_carga',
-                'fieldset_text' => 'TIPO DE CARGA',
+                'fieldset_text' => 'Tipo de carga',
                 'label' => 'Tipo de Carga :',
             ),
             'transportadora' => array(
                 'nombre_campo' =>'opcion_transportadora',
-                'fieldset_text' => 'TRANSPORTADORA',
+                'fieldset_text' => 'Transportadora',
                 'label' => 'Transportadora :',
             ),
         );
@@ -42,32 +44,32 @@ class Campos_formulario {
         $this->datepickers = array(
             'fecha_creacion' => array(
                 'nombre_campo' => 'opcion_fecha_creacion',
-                'fieldset_text' => 'FECHA DE CREACION',
+                'fieldset_text' => 'Fecha de creación',
             ),
             'fecha_planeacion' => array(
                 'nombre_campo' => 'opcion_fecha_planeacion',
-                'fieldset_text' => 'FECHA DE PLANEACIÓN',
+                'fieldset_text' => 'Fecha de planeación',
             ),
             'fecha_estimada' => array(
                 'nombre_campo' => 'opcion_fecha_estimada',
-                'fieldset_text' => 'FECHA ESTIMADA',
+                'fieldset_text' => 'Fecha estimada de entrega',
             ),
             'fecha_entrega' => array(
                 'nombre_campo' => 'opcion_fecha_entrega',
-                'fieldset_text' => 'FECHA DE ENTREGA',
+                'fieldset_text' => 'Fecha de entrega',
             ),
         );
         
         $this->selects = array(
             'tipo_carga' => array(
                 'nombre_campo' => 'opcion_tipo_carga',
-                'fieldset_text' => 'TIPO DE CARGA',
+                'fieldset_text' => 'Tipo de carga',
                 'options' => self::buscarTiposCarga(),
                 'title' => '<h3>' . t('Tipo de carga:') . '</h3>',
             ),
             'transportadora' => array(
                 'nombre_campo' =>'opcion_transportadora',
-                'fieldset_text' => 'TRANSPORTADORA',
+                'fieldset_text' => 'Transportadora',
                 'options' => self::buscarTiposTransportadoras(),
                 'title' => '<h3>' . t('Transportadora :') . '</h3>',
             ),
@@ -102,7 +104,7 @@ class Campos_formulario {
         return $options_transportadora;
     }
 
-    public function crear_date_pickers($campo) {
+    public function crear_date_pickers($label, $campo) {
         $nombre_campo = $this->datepickers[$campo]['nombre_campo'];
         $default_inicial = empty($this->default_values[$campo . '_inicial']) ? '' : $this->default_values[$campo . '_inicial'];
         $default_final = empty($this->default_values[$campo . '_final']) ? '' : $this->default_values[$campo . '_final'];
@@ -126,7 +128,7 @@ class Campos_formulario {
         $form[$fieldset][$contenedor][$fecha_inicial] = array(
             '#type' => 'date_popup',
             '#timepicker' => 'timepicker',
-            '#title' => '<h3>' . t('Fecha Inicial Creación: ') . '</h3>',
+            '#title' => '<h3>' . t('Fecha Inicial '.$label.': ') . '</h3>',
             //'#description' => t('rango inferior de la busqueda'),
             '#date_format' => 'd-m-Y',
             '#required' => FALSE,
@@ -146,7 +148,7 @@ class Campos_formulario {
         $form[$fieldset][$contenedor][$fecha_final] = array(
             '#type' => 'date_popup',
             '#timepicker' => 'timepicker',
-            '#title' => '<h3>' . t('Fecha Final Creación: ') . '</h3>',
+            '#title' => '<h3>' . t('Fecha Final '.$label.': ') . '</h3>',
             //'#description' => t('rango superior de la busqueda'),
             '#date_format' => 'd-m-Y',
             '#required' => FALSE,

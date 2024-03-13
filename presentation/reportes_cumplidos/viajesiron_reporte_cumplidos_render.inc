@@ -27,16 +27,16 @@ function reporte_cumplidos_render_form($form, &$form_state) {
     $form = array_merge($form, $campos->crear_textfield('remision'));
 
 	// "fechaCreacionInicial":"18/02/2024",// "fechaCreacionFinal":"",
-    $form = array_merge($form, $campos->crear_date_pickers('fecha_creacion'));
+    $form = array_merge($form, $campos->crear_date_pickers('Creación','fecha_creacion'));
 
     // "fechaPlaneacionInicial":"",// "fechaPlaneacionFinal":"",
-    $form = array_merge($form, $campos->crear_date_pickers('fecha_planeacion'));
+    $form = array_merge($form, $campos->crear_date_pickers('de Planeación','fecha_planeacion'));
     
     // "fechaEstimadaInicial":"",// "fechaEstimadaFinal":"",
-    $form = array_merge($form, $campos->crear_date_pickers('fecha_estimada'));
+    $form = array_merge($form, $campos->crear_date_pickers('estimada de entrega','fecha_estimada'));
 
 	// "fechaEntregaInicial":"",// "fechaEntregaFinal":"",
-    $form = array_merge($form, $campos->crear_date_pickers('fecha_entrega'));
+    $form = array_merge($form, $campos->crear_date_pickers('de entrega','fecha_entrega'));
 
 	// "ciudadOrigen":"",
     $form = array_merge($form, $campos->crear_textfield('ciudad_origen'));
@@ -112,7 +112,7 @@ function tabla_resultados() {
 
     //Titulo
     $form['tbl']['titulo_tabla'] = array(
-        '#markup' => '<h5>' . t(' RESULTADOS DE LA BUSQUEDA :') . '</h5>',
+        '#markup' => '<h5>' . t(' Resultados de la búsqueda :') . '</h5>',
     );
 
     //header

@@ -132,28 +132,40 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
     $sheet->setTitle($titulo, true);
 
     // Datos sueltos
-    $sheet->setCellValue('A1', 'N° Entrega');
-    $sheet->setCellValue('B1', 'cargue en platadforma');
-    $sheet->setCellValue('C1', 'Fecha SAP');
-    $sheet->setCellValue('F1', 'Fecha cargue cumplido');
-    $sheet->setCellValue('G1', 'Paqueteo/cupo');
-    $sheet->setCellValue('K1', 'Soporte entrega');
+    //$sheet->setCellValue('A1', 'N° Entrega');
+    //$sheet->setCellValue('B1', 'Cargue en plataforma');
+    //$sheet->setCellValue('C1', 'Fecha SAP');
+    //$sheet->setCellValue('F1', 'Fecha cargue cumplido');
+    //$sheet->setCellValue('G1', 'Paqueteo/cupo');
+    //$sheet->setCellValue('K1', 'Soporte entrega');
+	
+	$sheet->getColumnDimension('A')->setWidth(15);
+	$sheet->getColumnDimension('B')->setWidth(20);
+	$sheet->getColumnDimension('C')->setWidth(20);
+	$sheet->getColumnDimension('D')->setWidth(25);
+	$sheet->getColumnDimension('E')->setWidth(25);
+	$sheet->getColumnDimension('F')->setWidth(20);
+	$sheet->getColumnDimension('G')->setWidth(15);
+	$sheet->getColumnDimension('H')->setWidth(15);
+	$sheet->getColumnDimension('I')->setWidth(20);
+	$sheet->getColumnDimension('J')->setWidth(30);
+	$sheet->getColumnDimension('K')->setWidth(15);
     
     // Agregar datos a la tabla de prueba
-    $sheet->setCellValue('A2', 'WHS Pedido');
-    $sheet->setCellValue('B2', 'Creación de Remisión');
-    $sheet->setCellValue('C2', 'Planeación INFORME');
-    $sheet->setCellValue('D2', 'Fecha Est. de Entrega');
-    $sheet->setCellValue('E2', 'Localidad Origen');
-    $sheet->setCellValue('F2', 'Prueba de entrega');
-    $sheet->setCellValue('G2', 'Tipo de Carga');
-    $sheet->setCellValue('H2', 'Días de Entrega');
-    $sheet->setCellValue('I2', 'Ciudad Destino');
-    $sheet->setCellValue('J2', 'Línea Transporte');
-    $sheet->setCellValue('K2', 'Fotos POD/PDF');
+    $sheet->setCellValue('A1', 'WHS Pedido');
+    $sheet->setCellValue('B1', 'Creación de Remisión');
+    $sheet->setCellValue('C1', 'Planeación Informe');
+    $sheet->setCellValue('D1', 'Fecha Estimada de Entrega');
+    $sheet->setCellValue('E1', 'Localidad de Origen');
+    $sheet->setCellValue('F1', 'Prueba de Entrega');
+    $sheet->setCellValue('G1', 'Tipo de Carga');
+    $sheet->setCellValue('H1', 'Días de Entrega');
+    $sheet->setCellValue('I1', 'Ciudad Destino');
+    $sheet->setCellValue('J1', 'Línea de Transporte');
+    $sheet->setCellValue('K1', 'Fotos POD/PDF');
     //$sheet->setCellValue('', '');
 
-    $rownum = 3;
+    $rownum = 2;
     foreach($datos_respuesta as $dato) {
         $sheet->setCellValue('A'.$rownum, $dato['whs_id']);
         $sheet->setCellValue('B'.$rownum, Utils::dateToDMY($dato['fecha_creacion']));

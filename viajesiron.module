@@ -101,7 +101,7 @@ function viajesiron_menu() {
   );
 
   $items['viajes/reportes_cumplidos'] = array(
-    'title' => 'BUSQUEDA REPORTES CUMPLIDOS',
+    'title' => 'Reporte de cumplidos',
     'description' => 'Reportes Cumplidos',
     'page callback' => 'generador_webpage_reporte_cumplidos',
     'access arguments' => array('administrador modulo viajes'),

@@ -190,8 +190,8 @@ function mostrar_resultados_busqueda($form, &$form_state) {
         $temp_data['fechaEntregaCalculada'] = empty($viaje['fechaEntregaCalculada']) ? '' : $viaje['fechaEntregaCalculada'];
         $temp_data['pesoBruto'] = empty(round($viaje['pesoBruto'], 2) . ' KG') ? '' : round($viaje['pesoBruto'], 2) . ' KG';
         $temp_data['costoTotalRemision'] = empty(money_format20($viaje['costoTotalRemision'])) ? '' : money_format20($viaje['costoTotalRemision']);
-        $temp_data['numeroPoblacion'] = empty($viaje['numeroPoblacion']) ? '' : $viaje['numeroPoblacion'];
         $temp_data['zonaVentas'] = empty($viaje['zonaVentas']) ? '' : $viaje['zonaVentas'];
+        $temp_data['numeroPoblacion'] = empty($viaje['numeroPoblacion']) ? '' : $viaje['numeroPoblacion'];
         $resultado_anidado[$nombre_viaje]['tabla'][] = $temp_data; 
 
     }
@@ -258,8 +258,8 @@ function crear_estructura_resultados($viaje, $form) {
         'areaEntrega'=> t('Area Entrega'),
         'empresaReceptora'=> t('Nombre'),
         'direccionEmpresaReceptora'=> t('Dirección'),
-        'numeroPoblacion' => t('Numero de Población'),
         'zonaVentas' => t('Zona de Ventas'),
+        'numeroPoblacion' => t('Numero de Población'),
         'fechaEntregaCalculada'=> t('Fecha calculada de Entrega'),
         'pesoBruto'=> t('Peso Bruto'),
         'costoTotalRemision'=> t('Costo Flete'),
@@ -275,8 +275,8 @@ function crear_estructura_resultados($viaje, $form) {
             'areaEntrega' => empty($fila['areaEntrega']) ? '' : $fila['areaEntrega'],
             'empresaReceptora' => empty($fila['empresaReceptora']) ? '' : $fila['empresaReceptora'],
             'direccionEmpresaReceptora' => empty($fila['direccionEmpresaReceptora']) ? '' : $fila['direccionEmpresaReceptora'],
-            'numeroPoblacion' => empty($fila['numeroPoblacion']) ? '' : $fila['numeroPoblacion'],
             'zonaVentas' => empty($fila['zonaVentas']) ? '' : $fila['zonaVentas'],
+            'numeroPoblacion' => empty($fila['numeroPoblacion']) ? '' : $fila['numeroPoblacion'],
             'fechaEntregaCalculada' => empty($fila['fechaEntregaCalculada']) ? '' : $fila['fechaEntregaCalculada'],
             'pesoBruto' => empty($fila['pesoBruto']) ? '' : $fila['pesoBruto'],
             'costoTotalRemision' => empty($fila['costoTotalRemision']) ? '' : $fila['costoTotalRemision'],

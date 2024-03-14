@@ -163,8 +163,8 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
     $sheet->setCellValue('G1', 'Tipo de Carga');
     $sheet->setCellValue('H1', 'Días de Entrega');
     $sheet->setCellValue('I1', 'Ciudad Destino');
-    $sheet->setCellValue('J1', 'Numero de Población');
-    $sheet->setCellValue('K1', 'Zona de Ventas');
+    $sheet->setCellValue('J1', 'Zona de Ventas');
+    $sheet->setCellValue('K1', 'Numero de Población');
     $sheet->setCellValue('L1', 'Línea de Transporte');
     $sheet->setCellValue('M1', 'Fotos POD/PDF');
     //$sheet->setCellValue('', '');
@@ -180,8 +180,8 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
         $sheet->setCellValue('G'.$rownum, $dato['tipo_carga']);
         $sheet->setCellValue('H'.$rownum, $dato['dias_entrega']);
         $sheet->setCellValue('I'.$rownum, $dato['ciudad_destino']);
-        $sheet->setCellValue('J'.$rownum, $dato['numero_poblacion']);
-        $sheet->setCellValue('K'.$rownum, $dato['zona_ventas']);
+        $sheet->setCellValue('J'.$rownum, $dato['zona_ventas']);
+        $sheet->setCellValue('K'.$rownum, $dato['numero_poblacion']);
         $sheet->setCellValue('L'.$rownum, $dato['transportadora']);
         $sheet->setCellValue('M'.$rownum, $dato['fotos']);
         // $sheet->setCellValue('L'.$rownum, $dato['']);

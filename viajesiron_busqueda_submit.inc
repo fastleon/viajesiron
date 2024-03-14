@@ -137,10 +137,10 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
     $sheet->setCellValue('G1', 'Direccion Empresa Receptora');
     $sheet->setCellValue('H1', 'Empresa Receptora');
     $sheet->setCellValue('I1', 'Fecha Entrega Calculada');
-    $sheet->setCellValue('J1', 'Numero de Población');
+    $sheet->setCellValue('J1', 'Númerode Población');
     $sheet->setCellValue('K1', 'Zona de Ventas');
     $sheet->setCellValue('L1', 'Nombre Viaje');
-    $sheet->setCellValue('M1', 'Numero Remision');
+    $sheet->setCellValue('M1', 'NúmeroRemision');
     $sheet->setCellValue('N1', 'Peso Bruto');
     $sheet->setCellValue('O1', 'Peso Total Flete');
     $sheet->setCellValue('P1', 'Tipo De Carga');

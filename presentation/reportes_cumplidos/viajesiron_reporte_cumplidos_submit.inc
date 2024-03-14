@@ -164,7 +164,7 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
     $sheet->setCellValue('H1', 'Días de Entrega');
     $sheet->setCellValue('I1', 'Ciudad Destino');
     $sheet->setCellValue('J1', 'Zona de Ventas');
-    $sheet->setCellValue('K1', 'Numero de Población');
+    $sheet->setCellValue('K1', 'Númerode Población');
     $sheet->setCellValue('L1', 'Línea de Transporte');
     $sheet->setCellValue('M1', 'Fotos POD/PDF');
     //$sheet->setCellValue('', '');

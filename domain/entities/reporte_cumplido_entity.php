@@ -14,6 +14,8 @@ class ReporteCumplidoEntityWebservice {
     private $ciudad_destino;
     private $fotos;
     private $transportadora;
+    private $numero_poblacion;
+    private $zona_ventas;
 
     function __construct(
         $whs_id = '',
@@ -26,7 +28,9 @@ class ReporteCumplidoEntityWebservice {
         $dias_entrega = '',
         $ciudad_destino = '',
         $fotos = '',
-        $transportadora = ''
+        $transportadora = '',
+        $numero_poblacion = '',
+        $zona_ventas = ''
     )
     {
         $this->whs_id = $whs_id;
@@ -40,6 +44,8 @@ class ReporteCumplidoEntityWebservice {
         $this->ciudad_destino = $ciudad_destino;
         $this->fotos = $fotos;
         $this->transportadora = $transportadora;
+        $this->numero_poblacion = $numero_poblacion;
+        $this->zona_ventas = $zona_ventas;
     }
    
     public function setWhsId($whs_id) {$this->whs_id = $whs_id;}
@@ -53,6 +59,8 @@ class ReporteCumplidoEntityWebservice {
     public function setCiudadDestino($ciudad) {$this->ciudad_destino = $ciudad;}
     public function setFotos($fotos) {$this->fotos = $fotos;}
     public function setTransportadora($transportadora) {$this->transportadora = $transportadora;}
+    public function setNumeroPoblacion($numero_poblacion) {$this->numero_poblacion = $numero_poblacion;}
+    public function setZonaVentas($zona_ventas) {$this->zona_ventas = $zona_ventas;}
 
     public function getWhsId() {return $this->whs_id;}
     public function getFechaCreacion() {return $this->fecha_creacion;}
@@ -65,6 +73,8 @@ class ReporteCumplidoEntityWebservice {
     public function getCiudadDestino() {return $this->ciudad_destino;}
     public function getFotos() {return $this->fotos;}
     public function getTransportadora() {return $this->transportadora;}
+    public function getNumeroPoblacion() {return $this->numero_poblacion;}
+    public function getZonaVentas() {return $this->zona_ventas;}
 
     public function toArray() {
         return Utils::toArray($this);
@@ -84,7 +94,9 @@ class ReporteCumplidoEntityWebservice {
             empty($json['diasDeEntrega']) ? '' : $this->setDiasEntrega($json['diasDeEntrega']);
             empty($json['ciudadDestino']) ? '' : $this->setCiudadDestino($json['ciudadDestino']);
             empty($json['soportes']) ? '' : $this->setFotos($json['soportes']);
-            empty($json['transportadora']) ? '' : $this->setTransportadora($json['transportadora']);           
+            empty($json['transportadora']) ? '' : $this->setTransportadora($json['transportadora']);      
+            empty($json['numeroPoblacion']) ? '' : $this->setNumeroPoblacion($json['numeroPoblacion']);      
+            empty($json['zonaVentas']) ? '' : $this->setZonaVentas($json['zonaVentas']);
             return $this;
         } else {
             return false;
@@ -93,20 +105,21 @@ class ReporteCumplidoEntityWebservice {
     /* Ejemplo respuesta
     {"resultados": [
         {
-        "ciudadDestino": "BOGOTA, D.C.",
-        "ciudadOrigen": "TOCANCIPA",
-        "departamentoDestino": "Distrito capital",
-        "departamentoOrigen": "Cundinamarca",
-        "diasDeEntrega": "5",
-        "fechaCreacion": "2024-02-19",
-        "fechaDeEntrega": "",
-        "fechaEstimadaDeEntrega": "2024-01-30",
-        "fechaPlaneadaDeEntrega": "2024-01-31",
-        "remision": "50904091",
-        "soportes": "",
-        "tipoDeCarga": "Paqueteo",
-        "transportadora": "EXPRESO ANDINO DE CARGA SA"
-     },
+            "ciudadDestino": "MEDELLIN",
+            "ciudadOrigen": "TOCANCIPA",
+            "denominacionZonaVentas": "ZONA ANTIOQUIA",
+            "departamentoDestino": "Antioquia",
+            "departamentoOrigen": "Cundinamarca",
+            "diasDeEntrega": "1",
+            "fechaCreacion": "2023-11-01",
+            "fechaEstimadaDeEntrega": "2023-11-03",
+            "fechaPlaneadaDeEntrega": "2023-11-01",
+            "numeroPoblacion": "50001",
+            "remision": "50809844",
+            "tipoDeCarga": "Paqueteo",
+            "transportadora": "EXPRESO ANDINO DE CARGA SA",
+            "zonaVentas": "CO04"
+        },
         ...
     ]}
     */

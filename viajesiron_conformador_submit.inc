@@ -153,9 +153,9 @@ function datos_viaje_formulario_form_submit($form, &$form_state) {
             //Buscar por duplicados
             $repetido = FALSE;
             foreach ($data['remisiones'] as $remision){
-            if ($remision['remision'] == $resultado['id']){
-              $repetido = TRUE;
-            }
+              if ($remision['remision'] == $resultado['id']){
+                $repetido = TRUE;
+              }
             }
             //duplicado
             if ($repetido == TRUE){
@@ -170,6 +170,8 @@ function datos_viaje_formulario_form_submit($form, &$form_state) {
                 'direccion_expedidor' => $resultado['info']['direccionExpedidor'],
                 'poblacion_receptor' => $resultado['info']['poblacionReceptor'],
                 'direccion_receptor' => $resultado['info']['direccionReceptor'],
+                'numeroPoblacion' => $resultado['info']['numeroPoblacion'],
+                'zonaVentas' => $resultado['info']['zonaVentas'],
                 'fecha_entrega' => $resultado['info']['fechaEntregaPlanificadaFormato'],
                 'peso' => $resultado['info']['pesoBruto'],
                 'unidad_peso' => $resultado['info']['unidadPesoBruto'],

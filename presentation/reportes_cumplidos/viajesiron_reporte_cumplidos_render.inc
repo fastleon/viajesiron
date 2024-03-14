@@ -126,6 +126,8 @@ function tabla_resultados() {
         'tipo_carga' => t('Tipo de Carga'),
         'dias_entrega' => t('Días Entrega'),
         'ciudad' => t('Ciudad'),
+        'numeroPoblacion' => t('Numero de Población'),
+        'zonaVentas' => t('Zona de Ventas'),
         'transportadora' => t('Linea Transportadora'),
         'fotos' => t('Fotos POD/PDF'),
     );

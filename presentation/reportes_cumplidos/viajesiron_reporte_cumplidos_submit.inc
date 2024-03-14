@@ -148,8 +148,10 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
 	$sheet->getColumnDimension('G')->setWidth(15);
 	$sheet->getColumnDimension('H')->setWidth(15);
 	$sheet->getColumnDimension('I')->setWidth(20);
-	$sheet->getColumnDimension('J')->setWidth(30);
-	$sheet->getColumnDimension('K')->setWidth(15);
+	$sheet->getColumnDimension('J')->setWidth(20);
+	$sheet->getColumnDimension('K')->setWidth(20);
+	$sheet->getColumnDimension('L')->setWidth(30);
+	$sheet->getColumnDimension('M')->setWidth(15);
     
     // Agregar datos a la tabla de prueba
     $sheet->setCellValue('A1', 'WHS Pedido');
@@ -161,8 +163,10 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
     $sheet->setCellValue('G1', 'Tipo de Carga');
     $sheet->setCellValue('H1', 'Días de Entrega');
     $sheet->setCellValue('I1', 'Ciudad Destino');
-    $sheet->setCellValue('J1', 'Línea de Transporte');
-    $sheet->setCellValue('K1', 'Fotos POD/PDF');
+    $sheet->setCellValue('J1', 'Numero de Población');
+    $sheet->setCellValue('K1', 'Zona de Ventas');
+    $sheet->setCellValue('L1', 'Línea de Transporte');
+    $sheet->setCellValue('M1', 'Fotos POD/PDF');
     //$sheet->setCellValue('', '');
 
     $rownum = 2;
@@ -176,8 +180,10 @@ function exportar_excel_reportes_cumplidos($datos_respuesta, $nombre_archivo){
         $sheet->setCellValue('G'.$rownum, $dato['tipo_carga']);
         $sheet->setCellValue('H'.$rownum, $dato['dias_entrega']);
         $sheet->setCellValue('I'.$rownum, $dato['ciudad_destino']);
-        $sheet->setCellValue('J'.$rownum, $dato['transportadora']);
-        $sheet->setCellValue('K'.$rownum, $dato['fotos']);
+        $sheet->setCellValue('J'.$rownum, $dato['numero_poblacion']);
+        $sheet->setCellValue('K'.$rownum, $dato['zona_ventas']);
+        $sheet->setCellValue('L'.$rownum, $dato['transportadora']);
+        $sheet->setCellValue('M'.$rownum, $dato['fotos']);
         // $sheet->setCellValue('L'.$rownum, $dato['']);
         $rownum += 1;
     }

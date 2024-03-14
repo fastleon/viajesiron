@@ -34,7 +34,6 @@ function formulario_busqueda_viajes_form($form, &$form_state) {
             $form['opcion_busqueda']['#default_value'] = 'Por Transportadora - Fechas';
         }
     }
-    add_error($form['opcion_busqueda']);
     
     //Wrapper para el ajax
     $form['datos_busqueda_wrapper'] = array(
@@ -181,16 +180,18 @@ function mostrar_resultados_busqueda($form, &$form_state) {
 
         //datos multiples;
         $temp_data = array();
-        $temp_data['numeroRemision'] = $viaje['numeroRemision'];
-        $temp_data['departamentoOrigen'] = $viaje['departamentoOrigen'];
-        $temp_data['ciudadOrigen'] = $viaje['ciudadOrigen'];
-        $temp_data['departamentoEntrega'] = $viaje['departamentoEntrega'];
-        $temp_data['areaEntrega'] = $viaje['areaEntrega'];
-        $temp_data['empresaReceptora'] = $viaje['empresaReceptora'];
-        $temp_data['direccionEmpresaReceptora'] = $viaje['direccionEmpresaReceptora'];
-        $temp_data['fechaEntregaCalculada'] = $viaje['fechaEntregaCalculada'];
-        $temp_data['pesoBruto'] = round($viaje['pesoBruto'], 2) . ' KG';
-        $temp_data['costoTotalFlete'] = money_format20($viaje['costoTotalFlete']);
+        $temp_data['numeroRemision'] = empty($viaje['numeroRemision']) ? '' : $viaje['numeroRemision'];
+        $temp_data['departamentoOrigen'] = empty($viaje['departamentoOrigen']) ? '' : $viaje['departamentoOrigen'];
+        $temp_data['ciudadOrigen'] = empty($viaje['ciudadOrigen']) ? '' : $viaje['ciudadOrigen'];
+        $temp_data['departamentoEntrega'] = empty($viaje['departamentoEntrega']) ? '' : $viaje['departamentoEntrega'];
+        $temp_data['areaEntrega'] = empty($viaje['areaEntrega']) ? '' : $viaje['areaEntrega'];
+        $temp_data['empresaReceptora'] = empty($viaje['empresaReceptora']) ? '' : $viaje['empresaReceptora'];
+        $temp_data['direccionEmpresaReceptora'] = empty($viaje['direccionEmpresaReceptora']) ? '' : $viaje['direccionEmpresaReceptora'];
+        $temp_data['fechaEntregaCalculada'] = empty($viaje['fechaEntregaCalculada']) ? '' : $viaje['fechaEntregaCalculada'];
+        $temp_data['pesoBruto'] = empty(round($viaje['pesoBruto'], 2) . ' KG') ? '' : round($viaje['pesoBruto'], 2) . ' KG';
+        $temp_data['costoTotalFlete'] = empty(money_format20($viaje['costoTotalFlete'])) ? '' : money_format20($viaje['costoTotalFlete']);
+        $temp_data['numeroPoblacion'] = empty($viaje['numeroPoblacion']) ? '' : $viaje['numeroPoblacion'];
+        $temp_data['zonaVentas'] = empty($viaje['zonaVentas']) ? '' : $viaje['zonaVentas'];
         $resultado_anidado[$nombre_viaje]['tabla'][] = $temp_data; 
 
     }
@@ -257,6 +258,8 @@ function crear_estructura_resultados($viaje, $form) {
         'areaEntrega'=> t('Area Entrega'),
         'empresaReceptora'=> t('Nombre'),
         'direccionEmpresaReceptora'=> t('Dirección'),
+        'numeroPoblacion' => t('Numero de Población'),
+        'zonaVentas' => t('Zona de Ventas'),
         'fechaEntregaCalculada'=> t('Fecha calculada de Entrega'),
         'pesoBruto'=> t('Peso Bruto'),
         'costoTotalFlete'=> t('Costo Flete'),
@@ -265,16 +268,18 @@ function crear_estructura_resultados($viaje, $form) {
     $options = array();
     foreach ($viaje['tabla'] as $fila){
         $options[] = array(
-            'numeroRemision' => $fila['numeroRemision'],
-            'departamentoOrigen' => $fila['departamentoOrigen'],
-            'ciudadOrigen' => $fila['ciudadOrigen'],
-            'departamentoEntrega' => $fila['departamentoEntrega'],
-            'areaEntrega' => $fila['areaEntrega'],
-            'empresaReceptora' => $fila['empresaReceptora'],
-            'direccionEmpresaReceptora' => $fila['direccionEmpresaReceptora'],
-            'fechaEntregaCalculada' => $fila['fechaEntregaCalculada'],
-            'pesoBruto' => $fila['pesoBruto'],
-            'costoTotalFlete' => $fila['costoTotalFlete'],
+            'numeroRemision' => empty($fila['numeroRemision']) ? '' : $fila['numeroRemision'],
+            'departamentoOrigen' => empty($fila['departamentoOrigen']) ? '' : $fila['departamentoOrigen'],
+            'ciudadOrigen' => empty($fila['ciudadOrigen']) ? '' : $fila['ciudadOrigen'],
+            'departamentoEntrega' => empty($fila['departamentoEntrega']) ? '' : $fila['departamentoEntrega'],
+            'areaEntrega' => empty($fila['areaEntrega']) ? '' : $fila['areaEntrega'],
+            'empresaReceptora' => empty($fila['empresaReceptora']) ? '' : $fila['empresaReceptora'],
+            'direccionEmpresaReceptora' => empty($fila['direccionEmpresaReceptora']) ? '' : $fila['direccionEmpresaReceptora'],
+            'numeroPoblacion' => empty($fila['numeroPoblacion']) ? '' : $fila['numeroPoblacion'],
+            'zonaVentas' => empty($fila['zonaVentas']) ? '' : $fila['zonaVentas'],
+            'fechaEntregaCalculada' => empty($fila['fechaEntregaCalculada']) ? '' : $fila['fechaEntregaCalculada'],
+            'pesoBruto' => empty($fila['pesoBruto']) ? '' : $fila['pesoBruto'],
+            'costoTotalFlete' => empty($fila['costoTotalFlete']) ? '' : $fila['costoTotalFlete'],
         ); 
     }
 

@@ -160,6 +160,7 @@ function datos_viaje_reporte_form($form, &$form_state) {
 function datos_form($form, $data_reporte) {
   if (isset($data_reporte['remisiones']) && ($data_reporte['remisiones'] != array())) {
     $info = $data_reporte['remisiones'];
+    add_error($info, 'info');
 
     //Titulo
     $form['fs_']['titulo_tabla_'] = array(
@@ -173,6 +174,8 @@ function datos_form($form, $data_reporte) {
       'direccion_expedidor' => t('Dirección de Expedidor'),
       'poblacion_receptor' => t('Población del Receptor'),
       'direccion_receptor' => t('Dirección del Receptor'),
+      'numeroPoblacion' => t('Numero de Población'),
+      'zonaVentas' => t('Zona de Ventas'),
       'fecha_entrega' => t('Fecha entrega calculada'),
       'costo' => t('Costo Flete'),
       'peso' => t('Peso Bruto'),
@@ -189,14 +192,16 @@ function datos_form($form, $data_reporte) {
         );
         $temp_data = array(
           'remision' => l($remision['remision'], $URL_REMISION_DETAIL, $link_options),
-          'poblacion_expedidor' => $remision['poblacion_expedidor'],
-          'direccion_expedidor' => $remision['direccion_expedidor'],
-          'poblacion_receptor' => $remision['poblacion_receptor'],
-          'direccion_receptor' => $remision['direccion_receptor'],
-          'fecha_entrega' => $remision['fecha_entrega'],
-          'costo' => money_format20($remision['costo']),
-          'peso' => round($remision['peso'], 2),
-          'unidad_peso' => $remision['unidad_peso'],
+          'poblacion_expedidor' => empty($remision['poblacion_expedidor']) ? '' : $remision['poblacion_expedidor'],
+          'direccion_expedidor' => empty($remision['direccion_expedidor']) ? '' : $remision['direccion_expedidor'],
+          'poblacion_receptor' => empty($remision['poblacion_receptor']) ? '' : $remision['poblacion_receptor'],
+          'direccion_receptor' => empty($remision['direccion_receptor']) ? '' : $remision['direccion_receptor'],
+          'numeroPoblacion' => empty($remision['numeroPoblacion']) ? '' : $remision['numeroPoblacion'],
+          'zonaVentas' => empty($remision['zonaVentas']) ? '' : $remision['zonaVentas'],
+          'fecha_entrega' => empty($remision['fecha_entrega']) ? '' : $remision['fecha_entrega'],
+          'costo' => empty($remision['costo']) ? '' : money_format20($remision['costo']),
+          'peso' => empty($remision['peso']) ? '' : round($remision['peso'], 2),
+          'unidad_peso' => empty($remision['unidad_peso']) ? '' : $remision['unidad_peso'],
         );
         $options[] = $temp_data;
       }

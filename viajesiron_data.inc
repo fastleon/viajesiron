@@ -113,13 +113,15 @@ function convertir_serverdata_to_localdata($get_data) {
     $temp_data = array(
       'remision' => $despacho['tmsMaestroDTO']['idExpedicion'],
       'costo' => $costo_flete,
-      'poblacion_expedidor' => $despacho['tmsMaestroDTO']['poblacionExpedidor'],
-      'direccion_expedidor' => $despacho['tmsMaestroDTO']['direccionExpedidor'],
-      'poblacion_receptor' => $despacho['tmsMaestroDTO']['poblacionReceptor'],
-      'direccion_receptor' => $despacho['tmsMaestroDTO']['direccionReceptor'],
-      'fecha_entrega' => $despacho['fechaCalculadaEntregaPlanificadaFormato'],
-      'peso' => $despacho['tmsMaestroDTO']['pesoBruto'],
-      'unidad_peso' => $despacho['tmsMaestroDTO']['unidadPesoBruto'],
+      'poblacion_expedidor' => empty($despacho['tmsMaestroDTO']['poblacionExpedidor']) ? '' : $despacho['tmsMaestroDTO']['poblacionExpedidor'],
+      'direccion_expedidor' => empty($despacho['tmsMaestroDTO']['direccionExpedidor']) ? '' : $despacho['tmsMaestroDTO']['direccionExpedidor'],
+      'poblacion_receptor' => empty($despacho['tmsMaestroDTO']['poblacionReceptor']) ? '' : $despacho['tmsMaestroDTO']['poblacionReceptor'],
+      'direccion_receptor' => empty($despacho['tmsMaestroDTO']['direccionReceptor']) ? '' : $despacho['tmsMaestroDTO']['direccionReceptor'],
+      'numeroPoblacion' => empty($despacho['tmsMaestroDTO']['numeroPoblacion']) ? '' : $despacho['tmsMaestroDTO']['numeroPoblacion'],
+      'zonaVentas' => empty($despacho['tmsMaestroDTO']['zonaVentas']) ? '' : $despacho['tmsMaestroDTO']['zonaVentas'],
+      'fecha_entrega' => empty($despacho['fechaCalculadaEntregaPlanificadaFormato']) ? '' : $despacho['fechaCalculadaEntregaPlanificadaFormato'],
+      'peso' => empty($despacho['tmsMaestroDTO']['pesoBruto']) ? '' : $despacho['tmsMaestroDTO']['pesoBruto'],
+      'unidad_peso' => empty($despacho['tmsMaestroDTO']['unidadPesoBruto']) ? '' : $despacho['tmsMaestroDTO']['unidadPesoBruto'],
     );
     $data_reporte['remisiones'][] = $temp_data;
   }

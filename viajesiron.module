@@ -12,7 +12,7 @@
   use PhpOffice\PhpSpreadsheet\Spreadsheet;
   use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-  define ('DEBUG_MODE', false); 
+  define ('DEBUG_MODE', true); 
 
  /** 
   * Implements hook_init() - Llamado de codigo antes de iniciar
@@ -258,7 +258,7 @@ function generador_webpage_edicion() {
 function generador_webpage_reporte_cumplidos() {
 
   module_load_include('inc', 'viajesiron', 'presentation/reportes_cumplidos/viajesiron_reporte_cumplidos_render');
-  //render esttructura de la pagina
+  //render estructura de la pagina
   $build = array(
     'formulario_busqueda' => drupal_get_form('reporte_cumplidos_render_form'),
   );

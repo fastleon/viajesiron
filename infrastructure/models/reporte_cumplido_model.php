@@ -13,6 +13,8 @@ class ReporteCumplidoModel {
     private $tipo_carga;
     private $dias_entrega;
     private $ciudad_destino;
+    private $numero_poblacion;
+    private $zona_ventas;
     private $transportadora;
     private $fotos;
     
@@ -26,6 +28,8 @@ class ReporteCumplidoModel {
         $tipo_carga = '',
         $dias_entrega = '',
         $ciudad_destino = '',
+        $numero_poblacion = '',
+        $zona_ventas = '',
         $transportadora = '',
         $fotos = ''
         )
@@ -39,6 +43,8 @@ class ReporteCumplidoModel {
             $this->tipo_carga = $tipo_carga;
             $this->dias_entrega = $dias_entrega;
             $this->ciudad_destino = $ciudad_destino;
+            $this->numero_poblacion = $numero_poblacion;
+            $this->zona_ventas = $zona_ventas;
             $this->transportadora = $transportadora;
             $this->fotos = $fotos;
         }
@@ -52,6 +58,8 @@ class ReporteCumplidoModel {
     public function setTipoCarga($tipo_carga) {$this->tipo_carga = $tipo_carga;}
     public function setDiasEntrega($dias_entrega) {$this->dias_entrega = $dias_entrega;}
     public function setCiudadDestino($ciudad_destino) {$this->ciudad_destino = $ciudad_destino;}
+    public function setNumeroPoblacion($numero_poblacion) {$this->numero_poblacion = $numero_poblacion;}
+    public function setZonaVentas($zona_ventas) {$this->zona_ventas = $zona_ventas;}
     public function setFotos($fotos) {$this->fotos = $fotos;}
     public function setTransportadora($transportadora) {$this->transportadora = $transportadora;}
 
@@ -64,6 +72,8 @@ class ReporteCumplidoModel {
     public function getTipoCarga() {return $this->tipo_carga;}
     public function getDiasEntrega() {return $this->dias_entrega;}
     public function getCiudadDestino() {return $this->ciudad_destino;}
+    public function getNumeroPoblacion() {return $this->numero_poblacion;}
+    public function getZonaVentas() {return $this->zona_ventas;}
     public function getFotos() {return $this->fotos;}
     public function getTransportadora() {return $this->transportadora;}
     
@@ -78,6 +88,8 @@ class ReporteCumplidoModel {
             isset($array_data['tipo_carga']) ? $array_data['tipo_carga'] : null,
             isset($array_data['dias_entrega']) ? $array_data['dias_entrega'] : null,
             isset($array_data['ciudad']) ? $array_data['ciudad'] : null,
+            isset($array_data['numero_poblacion']) ? $array_data['numero_poblacion'] : null,
+            isset($array_data['zona_ventas']) ? $array_data['zona_ventas'] : null,
             isset($array_data['transportadora']) ? $array_data['transportadora'] : null,
             isset($array_data['fotos']) ? $array_data['fotos'] : null
         );
@@ -93,6 +105,8 @@ class ReporteCumplidoModel {
         $this->setTipoCarga($reporte->getTipoCarga());
         $this->setDiasEntrega($reporte->getDiasEntrega());
         $this->setCiudadDestino($reporte->getCiudadDestino());
+        $this->setNumeroPoblacion($reporte->getNumeroPoblacion());
+        $this->setZonaVentas($reporte->getZonaVentas());
         $this->setFotos($reporte->getFotos());
         $this->setTransportadora($reporte->getTransportadora());
         return $this;

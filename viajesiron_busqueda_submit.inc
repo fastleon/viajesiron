@@ -137,14 +137,16 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
     $sheet->setCellValue('G1', 'Direccion Empresa Receptora');
     $sheet->setCellValue('H1', 'Empresa Receptora');
     $sheet->setCellValue('I1', 'Fecha Entrega Calculada');
-    $sheet->setCellValue('J1', 'Nombre Viaje');
-    $sheet->setCellValue('K1', 'Numero Remision');
-    $sheet->setCellValue('L1', 'Peso Bruto');
-    $sheet->setCellValue('M1', 'Peso Total Flete');
-    $sheet->setCellValue('N1', 'Tipo De Carga');
-    $sheet->setCellValue('O1', 'Tipo De Carro');
-    $sheet->setCellValue('P1', 'Transportadora');
-    $sheet->setCellValue('Q1', 'Unidad');
+    $sheet->setCellValue('J1', 'Numero de Población');
+    $sheet->setCellValue('K1', 'Zona de Ventas');
+    $sheet->setCellValue('L1', 'Nombre Viaje');
+    $sheet->setCellValue('M1', 'Numero Remision');
+    $sheet->setCellValue('N1', 'Peso Bruto');
+    $sheet->setCellValue('O1', 'Peso Total Flete');
+    $sheet->setCellValue('P1', 'Tipo De Carga');
+    $sheet->setCellValue('Q1', 'Tipo De Carro');
+    $sheet->setCellValue('R1', 'Transportadora');
+    $sheet->setCellValue('S1', 'Unidad');
     
     $rownum = 2;
     foreach($datos_respuesta['reporteViajesDTO'] as $dato){
@@ -160,14 +162,16 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
         $sheet->setCellValue('G'.$rownum, $dato['direccionEmpresaReceptora']);
         $sheet->setCellValue('H'.$rownum, $dato['empresaReceptora']);
         $sheet->setCellValue('I'.$rownum, $dato['fechaEntregaCalculada']);
-        $sheet->setCellValue('J'.$rownum, $dato['nombreViaje']);
-        $sheet->setCellValue('K'.$rownum, $dato['numeroRemision']);
-        $sheet->setCellValue('L'.$rownum, $dato['pesoBruto']);
-        $sheet->setCellValue('M'.$rownum, $dato['pesoTotalFlete']);
-        $sheet->setCellValue('N'.$rownum, $dato['tipoDeCarga']);
-        $sheet->setCellValue('O'.$rownum, $dato['tipoDeCarro']);
-        $sheet->setCellValue('P'.$rownum, $dato['transportadora']);
-        $sheet->setCellValue('Q'.$rownum, $dato['unidad']);
+        $sheet->setCellValue('J'.$rownum, $dato['numeroPoblacion']);
+        $sheet->setCellValue('K'.$rownum, $dato['zonaVentas']);
+        $sheet->setCellValue('L'.$rownum, $dato['nombreViaje']);
+        $sheet->setCellValue('M'.$rownum, $dato['numeroRemision']);
+        $sheet->setCellValue('N'.$rownum, $dato['pesoBruto']);
+        $sheet->setCellValue('O'.$rownum, $dato['pesoTotalFlete']);
+        $sheet->setCellValue('P'.$rownum, $dato['tipoDeCarga']);
+        $sheet->setCellValue('Q'.$rownum, $dato['tipoDeCarro']);
+        $sheet->setCellValue('R'.$rownum, $dato['transportadora']);
+        $sheet->setCellValue('S'.$rownum, $dato['unidad']);
         $rownum += 1;
     }
         

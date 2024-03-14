@@ -155,8 +155,8 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
         if (!isset($dato['costoFlete'])){
             $dato['costoFlete'] = 0;
         }
-        $sheet->setCellValue('C'.$rownum, $dato['costoFlete']);
-        $sheet->setCellValue('D'.$rownum, $dato['costoTotalFlete']);
+        $sheet->setCellValue('C'.$rownum, $dato['costoTotalRemision']);
+        $sheet->setCellValue('D'.$rownum, $dato['costoTotalViaje']);
         $sheet->setCellValue('E'.$rownum, $dato['departamentoEntrega']);
         $sheet->setCellValue('F'.$rownum, $dato['departamentoOrigen']);
         $sheet->setCellValue('G'.$rownum, $dato['direccionEmpresaReceptora']);
@@ -167,7 +167,7 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
         $sheet->setCellValue('L'.$rownum, $dato['nombreViaje']);
         $sheet->setCellValue('M'.$rownum, $dato['numeroRemision']);
         $sheet->setCellValue('N'.$rownum, $dato['pesoBruto']);
-        $sheet->setCellValue('O'.$rownum, $dato['pesoTotalFlete']);
+        $sheet->setCellValue('O'.$rownum, $dato['pesoTotalViaje']);
         $sheet->setCellValue('P'.$rownum, $dato['tipoDeCarga']);
         $sheet->setCellValue('Q'.$rownum, $dato['tipoDeCarro']);
         $sheet->setCellValue('R'.$rownum, $dato['transportadora']);

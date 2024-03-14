@@ -267,6 +267,12 @@ function buscar_viaje_por_fechas($params)
 {
     //$params => array('fechaInicial'=>'2022-11-20', 'fechaFinal'=>'2023-12-04', 'idTransportadora'=>'1',);
     $response = call_get_viajes_por_fecha($params); //already decoded
+    // TEST +++++
+        // $ruta_test_file = drupal_get_path('module','viajesiron') . '/tools/consultarViajesPorRangoDeFechas.json';
+        // $json = file_get_contents($ruta_test_file);
+        // $response = json_decode($json, true);
+        // add_error('OJO USANDO JSON DE PRUEBAS NO UNA CONSULTA REAL');
+    // END TEST +++++
     return $response;
 }
 

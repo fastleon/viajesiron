@@ -174,8 +174,8 @@ function mostrar_resultados_busqueda($form, &$form_state) {
             $resultado_anidado[$nombre_viaje]['tipoDeCarga'] = $viaje['tipoDeCarga'];
             $resultado_anidado[$nombre_viaje]['tipoDeCarro'] = $viaje['tipoDeCarro'];
             $resultado_anidado[$nombre_viaje]['transportadora'] = $viaje['transportadora'];
-            $resultado_anidado[$nombre_viaje]['pesoTotalFlete'] = round($viaje['pesoTotalFlete'], 2) . ' KG';
-            $resultado_anidado[$nombre_viaje]['costoTotalFlete'] = money_format20($viaje['costoTotalFlete']);
+            $resultado_anidado[$nombre_viaje]['pesoTotalViaje'] = round($viaje['pesoTotalViaje'], 2) . ' KG';
+            $resultado_anidado[$nombre_viaje]['costoTotalViaje'] = money_format20($viaje['costoTotalViaje']);
         }
 
         //datos multiples;
@@ -189,7 +189,7 @@ function mostrar_resultados_busqueda($form, &$form_state) {
         $temp_data['direccionEmpresaReceptora'] = empty($viaje['direccionEmpresaReceptora']) ? '' : $viaje['direccionEmpresaReceptora'];
         $temp_data['fechaEntregaCalculada'] = empty($viaje['fechaEntregaCalculada']) ? '' : $viaje['fechaEntregaCalculada'];
         $temp_data['pesoBruto'] = empty(round($viaje['pesoBruto'], 2) . ' KG') ? '' : round($viaje['pesoBruto'], 2) . ' KG';
-        $temp_data['costoTotalFlete'] = empty(money_format20($viaje['costoTotalFlete'])) ? '' : money_format20($viaje['costoTotalFlete']);
+        $temp_data['costoTotalRemision'] = empty(money_format20($viaje['costoTotalRemision'])) ? '' : money_format20($viaje['costoTotalRemision']);
         $temp_data['numeroPoblacion'] = empty($viaje['numeroPoblacion']) ? '' : $viaje['numeroPoblacion'];
         $temp_data['zonaVentas'] = empty($viaje['zonaVentas']) ? '' : $viaje['zonaVentas'];
         $resultado_anidado[$nombre_viaje]['tabla'][] = $temp_data; 
@@ -206,9 +206,9 @@ function mostrar_resultados_busqueda($form, &$form_state) {
             'class' => array('vi-consolidado-container'),
           ),
         );
-    $peso_total_con = $_SESSION['viajesiron_busqueda']['data']['pesoTotalFlete'];
+    $peso_total_con = $_SESSION['viajesiron_busqueda']['data']['pesoTotalReporte'];
     $peso_total_con = round($peso_total_con, 2) . ' KG';
-    $costo_total_con = $_SESSION['viajesiron_busqueda']['data']['costoTotalFlete'];
+    $costo_total_con = $_SESSION['viajesiron_busqueda']['data']['costoTotalReporte'];
     $costo_total_con = money_format20($costo_total_con);
     $form['consolidado_container']['peso_total'] = crear_textfield_busqueda('Peso Total : ', $peso_total_con, array('vi-textfields-consolidado'));
     $form['consolidado_container']['costo_total'] = crear_textfield_busqueda('Costo Total : ', $costo_total_con, array('vi-textfields-consolidado'));
@@ -245,8 +245,8 @@ function crear_estructura_resultados($viaje, $form) {
     $form[$nombre_viaje]['titulo_tipo_carga'] = crear_textfield_busqueda('Tipo de Carga:', $viaje['tipoDeCarga'], array('vi-texfields-busqueda_items',));
     $form[$nombre_viaje]['titulo_tipo_carro'] = crear_textfield_busqueda('Tipo de Carro:', $viaje['tipoDeCarro'], array('vi-texfields-busqueda_items',));
     $form[$nombre_viaje]['titulo_transportadora'] = crear_textfield_busqueda('Transportadora:', $viaje['transportadora'], array('vi-texfields-busqueda_items',));
-    $form[$nombre_viaje]['titulo_peso_total'] = crear_textfield_busqueda('Peso Total:', $viaje['pesoTotalFlete'], array('vi-texfields-busqueda_items', 'vi-texfields-textright',));
-    $form[$nombre_viaje]['titulo_costo_total'] = crear_textfield_busqueda('Costo Total:', $viaje['costoTotalFlete'], array('vi-texfields-busqueda_items', 'vi-texfields-textright',));
+    $form[$nombre_viaje]['titulo_peso_total'] = crear_textfield_busqueda('Peso Total:', $viaje['pesoTotalViaje'], array('vi-texfields-busqueda_items', 'vi-texfields-textright',));
+    $form[$nombre_viaje]['titulo_costo_total'] = crear_textfield_busqueda('Costo Total:', $viaje['costoTotalViaje'], array('vi-texfields-busqueda_items', 'vi-texfields-textright',));
     $form[$nombre_viaje]['titulo_espacio'] = array('#markup' => '<br>',);
 
     //HEADER
@@ -262,7 +262,7 @@ function crear_estructura_resultados($viaje, $form) {
         'zonaVentas' => t('Zona de Ventas'),
         'fechaEntregaCalculada'=> t('Fecha calculada de Entrega'),
         'pesoBruto'=> t('Peso Bruto'),
-        'costoTotalFlete'=> t('Costo Flete'),
+        'costoTotalRemision'=> t('Costo Flete'),
     );
 
     $options = array();
@@ -279,7 +279,7 @@ function crear_estructura_resultados($viaje, $form) {
             'zonaVentas' => empty($fila['zonaVentas']) ? '' : $fila['zonaVentas'],
             'fechaEntregaCalculada' => empty($fila['fechaEntregaCalculada']) ? '' : $fila['fechaEntregaCalculada'],
             'pesoBruto' => empty($fila['pesoBruto']) ? '' : $fila['pesoBruto'],
-            'costoTotalFlete' => empty($fila['costoTotalFlete']) ? '' : $fila['costoTotalFlete'],
+            'costoTotalRemision' => empty($fila['costoTotalRemision']) ? '' : $fila['costoTotalRemision'],
         ); 
     }
 

@@ -274,12 +274,12 @@ function filtrar_remisiones_reporte_callback($form, &$form_state) {
   $header = $form_state['complete form']['fs_remisiones']['tabla_remisiones_wrapper']['tabla_remisiones']['#header'];
 
   //datos
-  $filtro = $form_state['values']['filtro_remisiones'];
+  $filtro = trim($form_state['values']['filtro_remisiones']);
   $options = array();
 
   foreach($info as $remision){
     if (isset($remision['remision'])) {
-      if (strstr($remision['remision'], $filtro)) {
+      if (strstr($remision['remision'], $filtro) || $filtro == '') {
         $URL_REMISION_DETAIL = 'ironconsulta/report/detail';
         $link_options = array(
           'query' => array('idExpedicion' => $remision['remision']),

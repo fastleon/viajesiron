@@ -16,6 +16,13 @@ function datos_viaje_reporte_form($form, &$form_state) {
     module_load_include('inc', 'entity', 'includes/entity.query');
   }*/
 
+  //Deshabilita el enter en los textfields
+  //$form['#attributes'] = array('onsubmit' => 'return false'); //deshabilita todos los submits
+  $form['#attached']['js'][] = array(
+    'type' => 'file',
+    'data' => drupal_get_path('module', 'viajesiron') . '/js/evitar_enter.js',
+  );
+
   //traer información
   if (isset($_SESSION['viajesiron_data_reporte'])){
     $data_reporte = $_SESSION['viajesiron_data_reporte'];
@@ -160,11 +167,45 @@ function datos_viaje_reporte_form($form, &$form_state) {
 function datos_form($form, $data_reporte) {
   if (isset($data_reporte['remisiones']) && ($data_reporte['remisiones'] != array())) {
     $info = $data_reporte['remisiones'];
-    add_error($info, 'info');
+    //add_error($info, 'info');
+
+    // Filtro de remisiones
+    $form['fs_remisiones']['filtro_remisiones'] = array(
+      '#type' => 'textfield',
+      '#title' => '<h3>' . t('Filtro por remisiones : ') . '</h3>',
+      '#default_value' => '',
+      '#required' => FALSE,
+      '#disabled' => FALSE,
+      '#attributes' => array(
+        'class' => array('vi-texfields-filtro'),
+      ),
+      '#executes_submit_callback' => FALSE,
+      '#ajax' => array(
+        'callback' => 'filtrar_remisiones_reporte_callback',
+        'wrapper' => 'tabla_remisiones_wrapper',
+        'event' => 'change', // Puedes usar 'change', 'click', 'keyup', etc.
+        'method' => 'replace', // Opcional, default: 'replace'
+        'effect' => 'fade', // Opcional, default: 'fade'
+        'progress' => array(
+          'type' => 'throbber', // Opcional, default: 'throbber'
+          'message' => 'Filtrando remisiones...', // Opcional
+        ),
+        'params' => array(
+          'info' => $info,
+        ),
+      )
+    );
 
     //Titulo
-    $form['fs_']['titulo_tabla_'] = array(
+    $form['fs_remisiones']['titulo_tabla_remisiones'] = array(
       '#markup' => '<h5>' . t(' anexas :') . '</h5>',
+    );
+
+    //Wrapper para el ajax
+    $form['fs_remisiones']['tabla_remisiones_wrapper'] = array(
+      '#type' => 'markup',
+      '#prefix' => '<div id="tabla-remisiones-wrapper">',
+      '#suffix' => '</div>'
     );
 
     //header
@@ -183,6 +224,7 @@ function datos_form($form, $data_reporte) {
     );
 
     //datos
+    $options = array();
     foreach($info as $remision){
       if (isset($remision['remision'])) {
         $URL_REMISION_DETAIL = 'ironconsulta/report/detail';
@@ -207,18 +249,78 @@ function datos_form($form, $data_reporte) {
       }
     }
     //Creamos el render de la tabla
-    $form['fs_']['tabla_'] = array(
-      '#name' => 'tabla_',
+    $form['fs_remisiones']['tabla_remisiones_wrapper']['tabla_remisiones'] = array(
+      '#name' => 'tabla_remisiones',
       '#theme' => 'table',
       '#header' => $header,
       '#rows' => $options,
       '#attributes' => array(
-        'class' => array('vi-reporte-tabla-'),
+        'class' => array('vi-reporte-tabla-remisiones'),
         ),
       );
-    }
+    
     return $form;
+  }
 }
+
+
+/**
+ * AJAX - funcion para filtrar por numero de remision en tabla
+ */
+function filtrar_remisiones_reporte_callback($form, &$form_state) {
+  $info = $form_state['triggering_element']['#ajax']['params']['info'];
+  // add_error($info, 'info');
+  //header
+  $header = $form_state['complete form']['fs_remisiones']['tabla_remisiones_wrapper']['tabla_remisiones']['#header'];
+
+  //datos
+  $filtro = $form_state['values']['filtro_remisiones'];
+  $options = array();
+
+  foreach($info as $remision){
+    if (isset($remision['remision'])) {
+      if (strstr($remision['remision'], $filtro)) {
+        $URL_REMISION_DETAIL = 'ironconsulta/report/detail';
+        $link_options = array(
+          'query' => array('idExpedicion' => $remision['remision']),
+          'attributes' => array('target' => '_blank'),
+        );
+        $temp_data = array(
+          'remision' => l($remision['remision'], $URL_REMISION_DETAIL, $link_options),
+          'poblacion_expedidor' => empty($remision['poblacion_expedidor']) ? '' : $remision['poblacion_expedidor'],
+          'direccion_expedidor' => empty($remision['direccion_expedidor']) ? '' : $remision['direccion_expedidor'],
+          'poblacion_receptor' => empty($remision['poblacion_receptor']) ? '' : $remision['poblacion_receptor'],
+          'direccion_receptor' => empty($remision['direccion_receptor']) ? '' : $remision['direccion_receptor'],
+          'zonaVentas' => empty($remision['zonaVentas']) ? '' : $remision['zonaVentas'],
+          'numeroPoblacion' => empty($remision['numeroPoblacion']) ? '' : $remision['numeroPoblacion'],
+          'fecha_entrega' => empty($remision['fecha_entrega']) ? '' : $remision['fecha_entrega'],
+          'costo' => empty($remision['costo']) ? '' : money_format20($remision['costo']),
+          'peso' => empty($remision['peso']) ? '' : round($remision['peso'], 2),
+          'unidad_peso' => empty($remision['unidad_peso']) ? '' : $remision['unidad_peso'],
+        );
+        $options[] = $temp_data;
+      }
+    }
+  }
+  //Creamos el render de la tabla
+  $form['fs_remisiones']['tabla_remisiones_wrapper']['tabla_remisiones'] = array(
+    '#name' => 'tabla_remisiones',
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows' => $options,
+    '#attributes' => array(
+      'class' => array('vi-reporte-tabla-remisiones'),
+    ),
+  );
+
+  return array(
+    '#type' => 'ajax',
+    '#commands' => array(
+      ajax_command_replace("#tabla-remisiones-wrapper", render($form['fs_remisiones']['tabla_remisiones_wrapper'])),
+    )
+  );
+}
+
 
 /**
  * Generar Render para TABLA ADICIONALES
@@ -266,7 +368,7 @@ function datos_viaje_reporte_form_validate($form, &$form_state){
 
 }
 
-function datos_viaje_reporte_form_submit($form, &$form_state){
+function datos_viaje_reporte_form_submit($form, &$form_state) {
   //traer información
   if (isset($_SESSION['viajesiron_data_reporte'])){
     $data_reporte = $_SESSION['viajesiron_data_reporte'];

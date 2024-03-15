@@ -31,6 +31,14 @@
   font-weight: normal;
 }
 
+.vi-texfields-filtro {
+  width: 200px;
+  background-color:rgba(197, 255, 159, 0.164);
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: normal;
+}
+
 .form-item label {
   display: inline-block;
   width: 180px;
@@ -48,14 +56,6 @@
 .form-type-select .form-required {
   display: inline-block;
 }
-
-.vi-texfields-reporte {
-  width: 300px;
-  background-color:rgba(255, 229, 159, 0.164);
-  font-size: 13px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: normal;
-  }
 
 .vi-conformador-busqueda-whs * {
   display: inline-block;

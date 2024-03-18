@@ -137,8 +137,8 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
     $sheet->setCellValue('G1', 'Direccion Empresa Receptora');
     $sheet->setCellValue('H1', 'Empresa Receptora');
     $sheet->setCellValue('I1', 'Fecha Entrega Calculada');
-    $sheet->setCellValue('J1', 'Númerode Población');
-    $sheet->setCellValue('K1', 'Zona de Ventas');
+    $sheet->setCellValue('J1', 'Zona de Ventas');
+    $sheet->setCellValue('K1', 'Número de Población');
     $sheet->setCellValue('L1', 'Nombre Viaje');
     $sheet->setCellValue('M1', 'NúmeroRemision');
     $sheet->setCellValue('N1', 'Peso Bruto');
@@ -162,8 +162,8 @@ function exportar_excel($datos_respuesta, $nombre_archivo){
         $sheet->setCellValue('G'.$rownum, $dato['direccionEmpresaReceptora']);
         $sheet->setCellValue('H'.$rownum, $dato['empresaReceptora']);
         $sheet->setCellValue('I'.$rownum, $dato['fechaEntregaCalculada']);
-        $sheet->setCellValue('J'.$rownum, $dato['numeroPoblacion']);
-        $sheet->setCellValue('K'.$rownum, $dato['zonaVentas']);
+        $sheet->setCellValue('J'.$rownum, $dato['zonaVentas']);
+        $sheet->setCellValue('K'.$rownum, $dato['numeroPoblacion']);
         $sheet->setCellValue('L'.$rownum, $dato['nombreViaje']);
         $sheet->setCellValue('M'.$rownum, $dato['numeroRemision']);
         $sheet->setCellValue('N'.$rownum, $dato['pesoBruto']);

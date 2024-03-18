@@ -216,7 +216,7 @@ function datos_form($form, $data_reporte) {
       'poblacion_receptor' => t('Población del Receptor'),
       'direccion_receptor' => t('Dirección del Receptor'),
       'zonaVentas' => t('Zona de Ventas'),
-      'numeroPoblacion' => t('Númerode Población'),
+      'numeroPoblacion' => t('Número de Población'),
       'fecha_entrega' => t('Fecha entrega calculada'),
       'costo' => t('Costo Flete'),
       'peso' => t('Peso Bruto'),

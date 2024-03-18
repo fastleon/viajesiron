@@ -259,7 +259,7 @@ function crear_estructura_resultados($viaje, $form) {
         'empresaReceptora'=> t('Nombre'),
         'direccionEmpresaReceptora'=> t('Dirección'),
         'zonaVentas' => t('Zona de Ventas'),
-        'numeroPoblacion' => t('Númerode Población'),
+        'numeroPoblacion' => t('Número de Población'),
         'fechaEntregaCalculada'=> t('Fecha calculada de Entrega'),
         'pesoBruto'=> t('Peso Bruto'),
         'costoTotalRemision'=> t('Costo Flete'),

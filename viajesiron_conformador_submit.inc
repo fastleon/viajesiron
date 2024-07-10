@@ -166,17 +166,20 @@ function datos_viaje_formulario_form_submit($form, &$form_state) {
                 'remision' => $resultado['id'],
               );
               $data_plus = array(
-                'poblacion_expedidor' => $resultado['info']['poblacionExpedidor'],
-                'direccion_expedidor' => $resultado['info']['direccionExpedidor'],
-                'poblacion_receptor' => $resultado['info']['poblacionReceptor'],
-                'direccion_receptor' => $resultado['info']['direccionReceptor'],
-                'zonaVentas' => $resultado['info']['zonaVentas'],
-                'numeroPoblacion' => $resultado['info']['numeroPoblacion'],
-                'fecha_entrega' => $resultado['info']['fechaEntregaPlanificadaFormato'],
-                'peso' => $resultado['info']['pesoBruto'],
-                'unidad_peso' => $resultado['info']['unidadPesoBruto'],
+                'poblacion_expedidor' => empty($resultado['info']['poblacionExpedidor']) ? '' : $resultado['info']['poblacionExpedidor'],
+                'direccion_expedidor' => empty($resultado['info']['direccionExpedidor']) ? '' : $resultado['info']['direccionExpedidor'],
+                'poblacion_receptor' => empty($resultado['info']['poblacionReceptor']) ? '' : $resultado['info']['poblacionReceptor'],
+                'direccion_receptor' => empty($resultado['info']['direccionReceptor']) ? '' : $resultado['info']['direccionReceptor'],
+                'zonaVentas' => empty($resultado['info']['zonaVentas']) ? '' : $resultado['info']['zonaVentas'],
+                'numeroPoblacion' => empty($resultado['info']['numeroPoblacion']) ? '' : $resultado['info']['numeroPoblacion'],
+                'fecha_entrega' => empty($resultado['info']['fechaEntregaPlanificadaFormato']) ? '' : $resultado['info']['fechaEntregaPlanificadaFormato'],
+                'peso' => empty($resultado['info']['pesoBruto']) ? '' : $resultado['info']['pesoBruto'],
+                'unidad_peso' => empty($resultado['info']['unidadPesoBruto']) ? '' : $resultado['info']['unidadPesoBruto'],
               );
               //sumamos el peso anexado al viaje
+              if ( empty($resultado['info']['pesoBruto']) ) {
+                $resultado['info']['pesoBruto'] = 0;
+              }
               if ($resultado['info']['unidadPesoBruto'] == 'KG') {
                 $data['peso_remisiones_kg'] += $resultado['info']['pesoBruto'];
               } else {

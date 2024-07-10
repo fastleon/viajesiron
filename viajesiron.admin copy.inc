@@ -161,11 +161,14 @@ function  viajesiron_admin_settings_form_submit($form, &$form_state)
 			unset($_SESSION[MINS_LAST_MOD]);
 		//Variable de viajes/busqueda
 			unset($_SESSION['viajesiron_busqueda']);
+		//Variable de transportadora y tipo de carro
+		unset($_SESSION['viajesiron_transportadoras']);
+		unset($_SESSION['viajesiron_rel_carga_carro']);
 		//variables de reportes cumplidos
             (new DataControlReportesCumplidosFormulario())->llamarBorrarDato();
             (new DataControlReportesCumplidosResultados())->llamarBorrarDato();
 
-			drupal_set_message(t('Variables eliminadas'), 'info');
+			drupal_set_message(t('Variables eliminadas.'), 'info');
 			break;
 	}
 }

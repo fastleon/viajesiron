@@ -67,7 +67,6 @@ function datos_viaje_formulario_form($form, &$form_state)
     '#attributes' => array(
       'class' => array('vi-conformador-textfield'),
     ),
-    //**************************************TTTTTTTTTTTTTTTT */
     '#element_validate' => array('datos_viaje_formulario_guardar_dato'),
     '#ajax' => array(
       'callback' => 'tipo_carga_ajax_callback',

@@ -591,6 +591,7 @@ function llamar_variable_tipo_carga() {
           'Turbo',
           'Sencillo',
           'DobleTroque',
+          'Mula'
       ),
       'Todas' => array(
           '',
